@@ -36,10 +36,6 @@ ICELAND = 1
 FAROE = 0
 BORNHOLM = 0
 
-
-# Show graphs, or dump to file ?
-visual = 1
-
 # <codecell>
 
 # Model parameters
