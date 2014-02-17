@@ -334,7 +334,7 @@ for idx, file in enumerate(directory) :
 	allsd = []
 	allrs = []
 	allrd = []
-	I = np.zeros_like(C)
+	I = []
 	pbar = progressbar.ProgressBar(widgets = \
 			[progressbar.Percentage(), progressbar.Bar(), progressbar.ETA()], \
 			maxval = int(sys.argv[2]))
@@ -342,7 +342,6 @@ for idx, file in enumerate(directory) :
 
 	for q in range(int(sys.argv[2])) :
 	    
-	    # Initialise
 	    predI = np.zeros_like(C)
 	    predS = np.zeros_like(C)
 	    starts = [e[0] for e in epi]
@@ -364,22 +363,20 @@ for idx, file in enumerate(directory) :
 	                                                   max(np.round(predI[i-1]), 1) / ( max(np.round(predI[i-1]), 1) + \
 	                                                               r[i % periodicity] * ( predI[i-1] ** alphaSbar ) * predS[i-1]))
 	            #predI[i] = np.random.poisson(r[i % periodicity] * ( predI[i-1] ** alphaSbar ) * predS[i-1])
-	            predS[i] = np.round(B[max(i - delay, 0)] + predS[i-1] - predI[i])
+	            predS[i] = B[max(i - delay, 0)] + predS[i-1] - predI[i]
 	            
 	        simsizes.append(np.sum(predI[e:]))
 	        simduration.append(min(np.argmin(predI[e:]), maxdur[index]))
 	        realduration.append(np.argmin(C[e:] * rho[e:]))
 	        realsizes.append(np.sum(rho[e:e+realduration[-1]] * C[e:e+realduration[-1]]))
 	        
-	    pbar.update(q)
-	        
+	        pbar.update(q)
+
 	    allss.append(simsizes)
 	    allrs.append(realsizes)
 	    allsd.append(simduration)
 	    allrd.append(realduration)
-	    I += predI
-
-
+	    I.append(predI)
 	    
 
 	    
@@ -409,21 +406,16 @@ for idx, file in enumerate(directory) :
 	dfit.fit(allrd, allsd)
 	sfit.fit(allrs, allss)
 
+	I = np.array(I)    
 	    
 	    
-	    
-	# Plot 
+	# Plot   
+	
 	plt.figure()
-
-	plt.subplot(211)
-	plt.plot(C*rho, linewidth=2)
-	plt.plot(I/q, c=colours[2], linewidth=2)
-	plt.title("Per-Epidemic Predictions, %s" % names[idx])
-	plt.legend(["Observed", "Predicted"], loc=2)
-
-	plt.subplot(212)
-	plt.plot(predI - C*rho, linewidth=2)
-	plt.title("Errors")
+	for i in I :
+	    plt.plot(i, c = colours[2], linewidth=1, alpha=0.05)
+	#plt.plot(np.mean(I, axis=0), c=colours[2], linewidth=2)
+	plt.plot(C*rho, c = colours[0], linewidth=4, alpha=0.5)
 
 	plt.tight_layout()
 	plt.savefig(prefix + "results/%s_3_predictions.pdf" % names[idx])
