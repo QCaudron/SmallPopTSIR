@@ -47,31 +47,24 @@ plot(X, type = "l", ylab = "Cumulative Cases", xlab = "Time")
 
 ##################### Susceptible reconstruction ###########################################
 
+### Lowess regression
+lowess.fit <- lowess(X, Y, f = 2/3, iter = 0)
+plot(time, Y, type = "l", ylab = "Cumulative Births/Cases")
+lines(time, lowess.fit$y, type = "l", col = "blue") #predicted cumulative births (blue)
+lines(time, cumsum(C), col = "red")
 
-########## DOES NOT WORK!#########
-cum.reg <- lm(Y ~ X + I(X^2) + I(X^3) + I(X^4) + I(X^5) + I(X^6) + I(X^7)) 
+plot(X, Y, type = "l")
+lines(lowess.fit$x, lowess.fit$y, type = "l")
 
-test <- lm(Y ~ poly(X, i)) 
-summary(test)
 
-Y <- as.matrix(Y)
-for (i in 3) {
-  
-  ## Create X (called V here) matrix for this specific regression
-  V <- vandermonde.matrix(X, i)
-  ## Choose beta-hat to minimize the sum of squared residuals
-  ## resulting in matrix of estimated coefficients:
-  bhat <- solve(t(V) %*% (V)) %*% t(V) %*% Y
-  
-  #yhat <- bhat%*%V
-  
-}
 
-dim(V)
-dim(t(V) %*% V)
-solve(t(V) %*% V)
-####################################################
+low2 <- loess(Y ~ X)
+summary(low2)
 
+
+############################
+
+# polynomial
 reg1 <- lm(Y ~ X)
 rsquared <- summary(reg1)$r.squared 
 
