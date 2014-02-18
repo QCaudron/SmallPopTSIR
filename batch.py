@@ -413,9 +413,9 @@ for idx, file in enumerate(directory) :
 	
 	plt.figure()
 	for i in I :
-	    plt.plot(i, c = colours[2], linewidth=1, alpha=0.05)
+	    plt.plot(i, c = colours[2], linewidth=1, alpha=0.01)
 	#plt.plot(np.mean(I, axis=0), c=colours[2], linewidth=2)
-	plt.plot(C*rho, c = colours[0], linewidth=4, alpha=0.5)
+	plt.plot(C*rho, c = colours[0], linewidth=4, alpha=0.6)
 
 	plt.tight_layout()
 	plt.savefig(prefix + "results/%s_3_predictions.pdf" % names[idx])
