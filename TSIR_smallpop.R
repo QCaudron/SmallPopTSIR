@@ -11,11 +11,12 @@ library(matrixcalc)
 library(stats)
 library(e1071)
 
+# Set up parameters
 periodicity <- 24
 vaccine <- 1965
 delay <- 8
 sensitivity <- 0
-numsim <- 100
+numsim <- 1000
 
 # Import data
 setwd("~/Documents/Grenfell Research/Measles")
@@ -36,11 +37,9 @@ C <- data$reported_cases
 plot(time, C, type = "l")
 
 
-## Notation
+## Notation from paper
 X <- cumsum(C) # cumulative cases
 Y <- cumsum(B) # cumulative births
-
-
 
 plot(Y, type = "l", ylab = "Cumulative Births", xlab = "Time")
 plot(X, type = "l", ylab = "Cumulative Cases", xlab = "Time")
@@ -182,7 +181,7 @@ plot(exp(lIold), exp(lSold), cex = 0.6)
 
 ######################################################
 
-#### Check other method
+#### Check other method: Taylor expansion
 lmfit2 <- lm(lInew ~ -1 + as.factor(seas) + lIold + Zold)
 sum2 <- summary(lmfit2)
 plot(1:periodicity, exp(lmfit2$coef[1:periodicity]), type = "l", col = "red", 
@@ -215,7 +214,7 @@ lines(1:periodicity, upper, type = "l", lty = 2)
 lines(1:periodicity, lower, type = "l", lty = 2)
 
 
-##### Plotting the predicted I vs actual I (corrected for underreporting)
+##### Plotting the predicted I (from fitted model) vs actual I (corrected for underreporting)
 keep2 <- Ic[1:lengthdata - 1] > 0 & Ic[2:lengthdata] > 0
 keep <- which(Ic[2:lengthdata] > 0 & keep2 == TRUE)
 lInew.pred <- rep(0, length(2:lengthdata))
@@ -228,10 +227,9 @@ lines(time[2:lengthdata], exp(lInew.pred), type = "l") # Predicted cases
 plot(exp(predict(lmfit)), exp(lInew), cex = 0.5, xlab = "Predicted Incidence", ylab = "Actual Incidence")
 abline(a=0, b=1, col = "red")
 
-############### Simulation #######################################
+################## Simulation #######################################
+
 ### Identify epidemics
-
-
 # identify the starting index for each epidemic
 if (sum(C <= sensitivity) / lengthdata > 0.2 ) {
   start.index <- ifelse(keep.index[2:length.pos] - keep.index[1:length.pos - 1] > 1, keep.index[2:length.pos], NA)
@@ -309,7 +307,7 @@ plot(I, type = "l", col = "red")
 lines(Ic, type = "l", col = "blue")
 
 
-plot(predI[,1], type = "l", col = "red")
+plot(predI[,1], type = "l", col = "red", ylim = c(0, 3500))
 for (i in 2:ncol(predI)) {
   lines(predI[,i], type = "l", col = "red")
 }
@@ -318,7 +316,7 @@ lines(Ic, type = "l", col = "blue")
 
 
 
-### keep all simulations for the next plots
+### Real vs predicted duration
 pred.dur <- matrix(NA, length(epi$start.index), numsim)
 pred.endindex <- matrix(NA, length(epi$start.index), numsim)
 
@@ -355,16 +353,19 @@ duration <- reshape(pred.dur,
                direction = "long")
 
 
-
+# Real duration versus predicted duration
 fit.dur <- lm(duration$pred.dur ~ -1 + duration$real.dur)
 summary(fit.dur)
+slope.dur <- round(fit.dur$coeff[1], 5)
 
-plot(duration$real.dur, duration$pred.dur)
+plot(duration$real.dur, duration$pred.dur, pch = 1, cex = 0.5, 
+     xlab = "Real Duration", ylab = "Predicted Duration", 
+     main = paste("Slope = ", slope.dur, sep = ""), cex.main = 0.9)
 abline(fit.dur, col = "blue")
 
 
 
-#### Calculate real and predicted size of each epidemic
+### Real vs predicted size of each epidemic
 # real size
 for (e in 1:length(epi$start.index)) {
   epi$size[e] <- sum(Ic[epi$start.index[e]: epi$end.index[e]])
@@ -386,6 +387,7 @@ pred.size <- as.data.frame(pred.size)
 pred.size$real.size <- epi$size
 pred.size$id <- c(1:length(epi$start.index))
 
+
 epi$S0 <- exp(logS[epi$start.index])
 pred.size$realS0 <- epi$S0
 
@@ -395,21 +397,30 @@ size <- reshape(pred.size,
                 idvar = c("real.size", "id", "realS0"),      
                 direction = "long")
 
-
+# Real size versus predicted size
 fit.size <- lm(size$pred.size ~ -1 + size$real.size)
 summary(fit.size)
+slope.size <- round(fit.size$coeff[1], 5)
 
-plot(size$real.size, size$pred.size)
+plot(size$real.size, size$pred.size, pch = 1, cex = 0.5,
+     xlab = "Real Size", ylab = "Predicted Size", 
+     main = paste("Slope = ", slope.size, sep = ""), cex.main = 0.9)
 abline(fit.size, col = "blue")
 
+# S0 versus real size
+fitS0 <- lm(epi$S0 ~ epi$size)
+slope.S0.realsize <- round(fitS0$coeff[2], 5)
+plot(epi$size, epi$S0, pch = 1, cex = 0.5,
+     xlab = "Real Size", ylab = "S0", 
+     main = paste("Slope = ", slope.S0.realsize, sep = ""), cex.main = 0.9)
+abline(fitS0, col = "blue")
 
-
-# S0 versus size
+#S0 versus predicted size
 fitS0.pred <- lm(size$realS0 ~ size$pred.size)
-plot(size$pred.size, size$realS0)
+slope.S0.predsize <- round(fitS0.pred$coeff[2], 5)
+plot(size$pred.size, size$realS0, pch = 1, cex = 0.5,
+     xlab = "Predicted Size", ylab = "S0", 
+     main = paste("Slope = ", slope.S0.predsize, sep = ""), cex.main = 0.9)
 abline(fitS0.pred, col = "blue")
 
-fitS0 <- lm(epi$S0 ~ epi$size)
-plot(epi$size, epi$S0)
-abline(fitS0, col = "blue")
 
