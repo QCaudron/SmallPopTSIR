@@ -246,7 +246,7 @@ for idx, file in enumerate(directory) :
 
 	# Define our parameters
 	params = lmfit.Parameters()
-	params.add("alpha", min=0.5, max=1., value=0.95) # Alpha
+	params.add("alpha", min=0.5, max=.9999, value=0.95) # Alpha
 	for i in range(periodicity) : # Seasonalities
 	    params.add("r%d" % i, value=0.)
 	rstr = ["r%d" % (i % periodicity) for i in list(itertools.chain.from_iterable(epi))][:-1]
