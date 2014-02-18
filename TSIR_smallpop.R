@@ -20,8 +20,8 @@ numsim <- 1000
 
 # Import data
 setwd("~/Documents/Grenfell Research/Measles")
-data <- read.csv("SmallPopTSIR/data/iceland/reykjavik.csv")
-#data <- read.csv("SmallPopTSIR/data/faroe/faroe.csv")
+#data <- read.csv("SmallPopTSIR/data/iceland/reykjavik.csv")
+data <- read.csv("SmallPopTSIR/data/uk/birmingham.csv")
 plot(data$reported_cases, type = "l")
 data <- data[data$time <= vaccine, ]
 
@@ -185,9 +185,9 @@ plot(exp(lIold), exp(lSold), cex = 0.6)
 lmfit2 <- lm(lInew ~ -1 + as.factor(seas) + lIold + Zold)
 sum2 <- summary(lmfit2)
 plot(1:periodicity, exp(lmfit2$coef[1:periodicity]), type = "l", col = "red", 
-     ylab = "Seasonal Coeff", xlab = "Week Number", main = "Iceland Seasonality")
+     ylab = "Seasonal Coeff", xlab = "Week Number", main = "Seasonality")
 lines(1:periodicity, exp(lmfit$coef[1:periodicity]) * Sbar, type = "l", lty = 2, col = "blue")
-legend("bottomleft", legend = c("Using Sbar", "Using Z"), col = c("blue", "red"), lty = c(2,1), cex = 0.5)
+legend("bottomleft", legend = c("Using ML", "Using Taylor Exp"), col = c("blue", "red"), lty = c(2,1), cex = 0.5)
 
 # Estimates from this method (lmfit2)
 alpha2 <- lmfit2$coef[periodicity + 1] #alfa
