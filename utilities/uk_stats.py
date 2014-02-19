@@ -33,7 +33,7 @@ names = [i.split(".")[0].capitalize() for i in directory]
 
 
 # Params
-sensitivity = 2
+sensitivity = 0
 periodicity = 24
 penalty = 1e-3
 delay = 8
@@ -413,9 +413,9 @@ for idx, file in enumerate(directory) :
 	
 	plt.figure()
 	plt.fill_between(t, np.min(I, axis=0), np.max(I, axis=0), color = colours[2], linewidth=1, alpha=0.4)
-	plt.plot(t, np.mean(I, axis=0), color = colours[2], linewidth=2)
+	plt.plot(t, np.mean(I, axis=0), color = colours[2], linewidth=3)
 	#plt.plot(np.mean(I, axis=0), c=colours[2], linewidth=2)
-	plt.plot(t, C*rho, c = colours[0], linewidth=2, alpha = 0.8)
+	plt.plot(t, C*rho, c = colours[0], linewidth=3, alpha = 0.7)
 
 	plt.tight_layout()
 	plt.savefig(prefix + "results/%s_3_predictions.pdf" % names[idx])
