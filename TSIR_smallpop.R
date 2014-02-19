@@ -151,7 +151,7 @@ plot(seas, type = "l")
 ######### This is from Bjornstadt (2007): Susceptible Reconstruction #######################
 #Smean = seq(-0.015, 0.2, by=0.001)*.2E5  
 min(Zold)
-Smean = seq(abs(min(Zold)) + 1, abs(min(Zold))*3, by = 100) ## Reasonable range of candidate values
+Smean = seq(abs(min(Zold)) + 1, abs(min(Zold))*4, by = 100) ## Reasonable range of candidate values
 llik = rep(NA, length(Smean))
 summary(Smean)
 
@@ -235,6 +235,30 @@ if (sum(C <= sensitivity) / lengthdata > 0.2 ) {
   start.index <- ifelse(keep.index[2:length.pos] - keep.index[1:length.pos - 1] > 1, keep.index[2:length.pos], NA)
   start.index[1] <- keep.index[1]
   start.index <- start.index[is.na(start.index) == FALSE]
+  end.index <- ifelse(keep.index[2:length.pos] - keep.index[1:length.pos - 1] > 1, keep.index[1:length.pos - 1], NA)
+  end.index <- end.index[is.na(end.index) == FALSE]
+  end.index <- append(end.index, keep.index[length(keep.index)])
+  duration <- end.index - start.index
+} else {
+  
+  win <- hanning.window(29)
+  plot(win, type = "l")
+  
+  conv <- convolve(Ic, win, type = "filter") / max(convolve(Ic, win, type = "filter"))
+  conv2 <- append(rep(0,15), conv)
+  plot(conv, type = "l")
+  
+  plot(Ic / max(Ic), type = "l")
+  lines(conv2, type = "l", col = "red")
+  
+  d <- diff(conv2)
+  plot(d, type = "l")
+  
+  d1 <- d[1:(length(d) - 1)] < 0
+  d2 <- d[2:length(d)] > 0
+  d3 <- d1 * d2
+  plot(d3)
+  start.index <- which(d3 == 1)  
   end.index <- ifelse(keep.index[2:length.pos] - keep.index[1:length.pos - 1] > 1, keep.index[1:length.pos - 1], NA)
   end.index <- end.index[is.na(end.index) == FALSE]
   end.index <- append(end.index, keep.index[length(keep.index)])
