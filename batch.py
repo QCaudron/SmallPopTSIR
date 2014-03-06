@@ -33,7 +33,7 @@ names = [i.split(".")[0].capitalize() for i in directory]
 
 
 # Params
-sensitivity = 2
+sensitivity = 1
 periodicity = 24
 penalty = 1e-3
 delay = 8
@@ -47,6 +47,30 @@ if not os.path.isdir(prefix + "results") :
 
 
 
+
+
+
+
+"""
+
+# Bootstrapping
+def bootstrap(data, M, statistic) :
+
+	# M times, sample with replacement
+	means = np.zeros((M, data.shape[1]))
+
+	for i in range(M) :
+		means[i, :] = statistic(data[np.random.randint(0, data.shape[0], 100), :], axis=0)
+
+	stat = np.sort(means, axis=0)
+
+    return (stat[int((alpha/2.0)*M)], stat[int((1-alpha/2.0)*M)])
+
+	#num_samples, statistic, alpha) :
+    #n = len(data)
+    #idx = np.random.randint(0, n, (num_samples, n))
+    #samples = data[idx]
+"""
 
 
 
@@ -82,22 +106,48 @@ for idx, file in enumerate(directory) :
 	# Find epidemics
 	epi = []
 
+	# Determine epidemic peaks
+	C[C < sensitivity] = 0
+
+	# Derivative. We're going to look for zero non-strict-crossings
+	z = np.diff(np.convolve(C, np.hanning(41), "same"))
+	z2 = np.diff(np.convolve(C, np.hanning(9), "same"))
+
+	"""
+	# Find local maxima - these are epi peaks
+	localpeaks = np.where( (z[:-1] > 0) * (z[1:] <= 0) == True)[0]
+
+	for p in localpeaks :
+		# Rewind to find start
+		epistart = p
+		while C[epistart] != 0 :
+			epistart -= 1
+
+		# Go forwards to find the end
+		epiend = p
+		while C[epiend] != 0 :
+			epiend += 1
+
+		epi.append(range(epistart, epiend+1))
+
+	"""
+
 	# If there are more than 20% zeros
-	if (np.sum(C <= sensitivity).astype(float) / len(C)) > 0.2 :
-	    z = np.where(C > sensitivity)[0] # Find epidemics over sensitivity threshold
-	    dz = np.where(np.append(np.insert(np.diff(z), 0, 0), -1) != 1)[0]
-	    for i in range(len(dz)-1) :
-	        epi.append(z[dz[i]:dz[i+1]])
-	      
+	#if (np.sum(C <= sensitivity).astype(float) / len(C)) > 0.2 :
+	z = np.where(C > sensitivity)[0] # Find epidemics over sensitivity threshold
+	dz = np.where(np.append(np.insert(np.diff(z), 0, 0), -1) != 1)[0]
+	for i in range(len(dz)-1) :
+	    epi.append(z[dz[i]:dz[i+1]])
+	"""      
 	else : # Otherwise, slice at local minima using smoothed zero-crossings in the derivative
 	    z = range(len(C))
 	    z2 = np.diff(np.convolve(C, np.hanning(19), "same"))
 	    dz = np.append(np.insert((np.where((z2[:-1] < 0) * (z2[1:] > 0) == True)[0]), 0, 0), len(C))
 	    for i in range(len(dz)-1) :
 	        epi.append(range(dz[i], dz[i+1]))
-
+	"""
 	epi = np.array(epi)
-
+	
 
 
 
@@ -109,6 +159,8 @@ for idx, file in enumerate(directory) :
 	plt.subplot(211)
 	plt.plot(t, C, linewidth=2)
 	plt.title("Reported Cases, %s" % names[idx])
+	for e in epi :
+		plt.axvspan(t[e[0]], t[e[-1]], color = seaborn.color_palette("deep", 3)[2], alpha=0.3)
 	plt.xlabel("Time")
 	plt.ylabel("Cases")
 
@@ -119,7 +171,7 @@ for idx, file in enumerate(directory) :
 	plt.ylabel("Births")
 
 	plt.tight_layout()
-	plt.savefig(prefix + "results/%s_0_timeseries.pdf" % names[idx])
+	plt.savefig(prefix + "results/%s_0_timeseries.png" % names[idx])
 	print "%s Time-Series done." % names[idx]
 
 	plt.close()
@@ -145,9 +197,9 @@ for idx, file in enumerate(directory) :
 
 
 
-	"""
+	
 	# Rho
-	Yhat = lowess.lowess(Y, X, 0.7)[:, 1]
+	Yhat = lowess.lowess(Y, X, 0.5)[:, 1]
 
 	# Now sample it with indices
 	yhat = interp.interp1d(X, Yhat)
@@ -159,19 +211,22 @@ for idx, file in enumerate(directory) :
 
 	# Rho : put some splines through Yhat and take the derivative
 	rho = interp.UnivariateSpline(x, yhat).derivative()(x)
+
+
+
 	
 	"""
 	reg = linear_model.BayesianRidge(fit_intercept=False, compute_score=True)
 
 	# Compute the R^2 for a range of polynomials from degree-1 to degree-7
 	# The fit score has a penalty proportional to the square of the degree of the polynomial
-	"""
+	
 	Ns = range(2, 8)
 	#scores = []
 	for n in Ns :
 	    reg.fit(np.vander(X, n), Y)
 	    scores.append(reg.score(np.vander(X, n), Y) - penalty * n**2)
-	"""    
+	    
 	# Use the polynomial that maximised R^2 to compute Yhat
 	Yhat = reg.fit(np.vander(X, 4), Y).predict(np.vander(X, 4))
 	
@@ -179,6 +234,8 @@ for idx, file in enumerate(directory) :
 	# Compute rho as the derivative of the splines that are fit between X and the estimated Y
 	rho = interp.UnivariateSpline(X, Yhat).derivative()(X)
 	
+	"""
+
 	# Compute Z as the residuals of regression
 	Z = Y - Yhat
 
@@ -216,7 +273,7 @@ for idx, file in enumerate(directory) :
 	plt.ylabel("Penalised Goodness of Fit")
 	"""
 	plt.tight_layout()
-	plt.savefig(prefix + "results/%s_1_susceptible_reconstruction.pdf" % names[idx])
+	plt.savefig(prefix + "results/%s_1_susceptible_reconstruction.png" % names[idx])
 	print "%s Susceptible Reconstruction done." % names[idx]
 	
 	plt.close()
@@ -224,7 +281,10 @@ for idx, file in enumerate(directory) :
 
 
 
-
+	# If rho is greater than one at any point, move onto the next place
+	if np.any(1./rho > 1) :
+		print "Rho has >1 values; moving onto next geography."
+		continue
 
 
 
@@ -312,10 +372,24 @@ for idx, file in enumerate(directory) :
 	plt.xlabel("Period")
 	
 	plt.tight_layout()
-	plt.savefig(prefix + "results/%s_2_meanS_periodicity.pdf" % names[idx])
+	plt.savefig(prefix + "results/%s_2_meanS_periodicity.png" % names[idx])
 	print "%s Mean S and Periodicity done." % names[idx]
 
 	plt.close()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -379,6 +453,8 @@ for idx, file in enumerate(directory) :
 	    I.append(predI)
 	    
 
+	pbar.finish()
+
 	    
 	s0plotx2 = []
 	s0ploty2 = []
@@ -408,17 +484,32 @@ for idx, file in enumerate(directory) :
 
 	I = np.array(I)    
 	    
+
+
+	# Boostrap confidence intervals
+	low = np.zeros(I.shape[1])
+	high = np.zeros(I.shape[1])
+
+	pbar = progressbar.ProgressBar(widgets = \
+			[progressbar.Percentage(), progressbar.Bar(), progressbar.ETA()], \
+			maxval = int(I.shape[1]))
+	pbar.start()
+
+#	for i in range(I.shape[1]) :
+#		low[i], high[i] = bootstrap(I[:, i], 1000, np.mean, 0.95)
+#		pbar.update(i)
+
 	    
 	# Plot   
 	
 	plt.figure()
-	plt.fill_between(t, np.min(I, axis=0), np.max(I, axis=0), color = colours[2], linewidth=1, alpha=0.4)
+#	plt.fill_between(t, low, high, color = colours[2], linewidth=1, alpha=0.4)
 	plt.plot(t, np.mean(I, axis=0), color = colours[2], linewidth=2)
 	#plt.plot(np.mean(I, axis=0), c=colours[2], linewidth=2)
 	plt.plot(t, C*rho, c = colours[0], linewidth=2, alpha = 0.8)
 
 	plt.tight_layout()
-	plt.savefig(prefix + "results/%s_3_predictions.pdf" % names[idx])
+	plt.savefig(prefix + "results/%s_3_predictions.png" % names[idx])
 	print "%s Predictions done." % names[idx]
 
 	plt.close()
@@ -461,7 +552,7 @@ for idx, file in enumerate(directory) :
 	plt.plot(realduration, dfit.predict(np.array(realduration).reshape(len(realduration), 1)), linewidth=2)
 
 	plt.tight_layout()
-	plt.savefig(prefix + "results/%s_4_sizes_durations.pdf" % names[idx])
+	plt.savefig(prefix + "results/%s_4_sizes_durations.png" % names[idx])
 	print "%s Sizes and Durations done." % names[idx]
 
 	plt.close()
@@ -516,7 +607,7 @@ for idx, file in enumerate(directory) :
 	plt.title("S0 vs Simulated Epidemic Size, Gradient = %f, Intercept = %f" % (s1.coef_[0], s1.predict(0)))
 
 	plt.tight_layout()
-	plt.savefig(prefix + "results/%s_5_s0_vs_size.pdf" % names[idx])
+	plt.savefig(prefix + "results/%s_5_s0_vs_size.png" % names[idx])
 	print "%s S0 vs Sizes done." % names[idx]
 
 	plt.close()
