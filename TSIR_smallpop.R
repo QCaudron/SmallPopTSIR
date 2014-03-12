@@ -11,12 +11,9 @@ library(matrixcalc)
 library(stats)
 library(e1071)
 
-place <- c("reykjavik", "hafnafjordur", "bornholm", "faroe")
-folder <- c("iceland", "iceland","bornholm", "faroe")
-#reykjavik: 1
-#bornholm: 2
-#faroe: 3
-name <- 2
+place <- c("reykjavik", "hafnafjordur", "akureyri","bornholm", "faroe")
+folder <- c("iceland", "iceland","iceland","bornholm", "faroe")
+name <- 3
 
 # Set up parameters
 periodicity <- 24
@@ -214,11 +211,11 @@ end.index <- end.index[is.na(end.index) == FALSE]
 end.index <- append(end.index, keep.index[length(keep.index)])
 
 #merge two sequences if the end of last sequence and beginning of next sequence differ by less than 3
-diff <- which(start.index[2:length(start.index)] - end.index[1:length(end.index) - 1] <= 3)
+diff <- which(start.index[2:length(start.index)] - end.index[1:length(end.index) - 1] <= sensitivity.length)
 for (i in 1:length(diff)){
   j <- diff[i]
   start.index[j + 1] <- NA
-  end.index[j] <- end.index[j + 1]
+  end.index[j] <- ifelse(is.na(end.index[j]) == FALSE, end.index[j + 1], NA)
   end.index[j + 1] <- NA
 }
 start.index <- start.index[is.na(start.index) == FALSE]
@@ -230,6 +227,7 @@ for (i in 1:length(start.index)) {
   abline(v = end.index[i], col = "blue")
   abline(v = start.index[i], col = "green")
 }
+
 
 
 # real duration 
