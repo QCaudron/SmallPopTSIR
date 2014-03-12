@@ -1,0 +1,4 @@
+/Users/qcaudron/anaconda/lib/python2.7/site-packages/scipy/stats/distributions.py:2395: DeprecationWarning: using a non-integer number instead of an integer will result in an error in the future
+  return mtrand.beta(a,b,self._size)
+/Users/qcaudron/anaconda/lib/python2.7/site-packages/numpy/core/fromnumeric.py:218: DeprecationWarning: using a non-integer number instead of an integer will result in an error in the future
+  return reshape(newshape, order=order)
