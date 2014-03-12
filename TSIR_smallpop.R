@@ -13,13 +13,13 @@ library(e1071)
 
 place <- c("reykjavik", "hafnafjordur", "akureyri","bornholm", "faroe")
 folder <- c("iceland", "iceland","iceland","bornholm", "faroe")
-name <- 3
+name <- 4
 
 # Set up parameters
 periodicity <- 24
 vaccine <- 1965
 delay <- 8
-sensitivity <- 1
+sensitivity <- 5
 sensitivity.length <- 3
 numsim <- 1000
 
