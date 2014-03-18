@@ -26,18 +26,24 @@ import progressbar
 
 
 
+
+
+
 # Import what ?
 prefix = "./data/" + sys.argv[1] + "/"
 directory = [f for f in os.listdir(prefix) if f.endswith(".csv")]
 names = [i.split(".")[0].capitalize() for i in directory]
 
-
 # Params
-sensitivity = 1
+sensitivity = 2
 periodicity = 24
 penalty = 1e-3
 delay = 8
 vaccine = 1965
+numSvals = 500
+
+
+
 
 
 
@@ -48,15 +54,19 @@ vaccine = 1965
 # This function is for the original time-series
 def breakepis(x, sensitivity) :
 
-	z = np.where(x > sensitivity)[0] # Find epidemics over sensitivity threshold
+	x2 = x.copy()
+	x2[x2 < sensitivity] = 0
+	x2 = np.convolve(x2, np.hanning(9), "same")
+
+	z = np.where(x2 > 0)[0]#(np.where(x > sensitivity) and np.where(x2 > sensitivity))[0]  # Find epidemics over sensitivity threshold
 	dz = np.where(np.append(np.insert(np.diff(z), 0, 0), -1) != 1)[0]
 	
 	epi = []
 	s = []
 	d = []
 
-	for i in range(len(dz)-1) :
-	    epi.append(z[dz[i]:dz[i+1]])
+	for i in range(len(dz) - 1) :
+	    epi.append(z[dz[i]+3:dz[i+1]-3])
 	
 	for i, e in enumerate(epi) :
 		s.append(np.sum(x[e]))
@@ -202,20 +212,30 @@ def derivative(X, Y) :
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # Results directory
 if not os.path.isdir(prefix + "results") :
 	os.mkdir(prefix + "results")
 
 
-
-
-
-
-
 # Now, for each file in the directory
 for idx, file in enumerate(directory) :
-
-
 
 	# Import data
 	data = pd.read_csv(prefix + file)
@@ -236,7 +256,7 @@ for idx, file in enumerate(directory) :
 
 
 	# Plot
-	plt.figure()
+	plt.figure(figsize=(16, 9), dpi=600)
 
 	plt.subplot(211)
 	plt.plot(t, C, linewidth=2)
@@ -302,11 +322,8 @@ for idx, file in enumerate(directory) :
 	Z = Y - Yhat#.predict(X.reshape(len(X),1))
 
 
-
-
-
 	# Plots
-	plt.figure()
+	plt.figure(figsize=(16, 9), dpi=600)
 
 	plt.subplot(221)
 	plt.plot(t, X, linewidth=2)
@@ -358,22 +375,19 @@ for idx, file in enumerate(directory) :
 
 
 
+
+
+
+
 	if np.any(1./rho > 1) :
 		print "Rho has >1 values; moving onto next geography."
 		continue
 
 
-
-
-
-
-
-
-
 	# Fit Sbar
 
 	# All possible values of Sbar
-	Svals = np.linspace(1, np.abs(np.min(Z))*10, 500)
+	Svals = np.linspace(1, np.abs(np.min(Z))*10, numSvals)
 
 	# Likelihood of fit
 	l = np.zeros(len(Svals))
@@ -390,11 +404,13 @@ for idx, file in enumerate(directory) :
 	    
 	# Objective function
 	def profile_residuals(params, rho, C, Z, z, Sestimate) :
+	    c = C.copy()
+	    c[np.intersect1d(np.where(C == 0)[0], z).astype(int)] = 1
 	    alphafit = params["alpha"].value
 	    r = [params[i].value for i in rstr]
 	    if np.isnan(Sestimate) :
 	        Sestimate = params["Sest"].value
-	    return alphafit * np.log(rho[z[:-1]]*C[z[:-1]]) + r + np.log(Sestimate + Z[z[:-1]]) - np.log(rho[z[1:]]*C[z[1:]])
+	    return alphafit * np.log(rho[z[:-1]]*c[z[:-1]]) + r + np.log(Sestimate + Z[z[:-1]]) - np.log(rho[z[1:]]*c[z[1:]])
 	    
 
 	    
@@ -402,7 +418,7 @@ for idx, file in enumerate(directory) :
 	    
 	pbar = progressbar.ProgressBar(widgets = \
 			[progressbar.FormatLabel("Evaluating Sbar Likelihoods"), progressbar.Percentage(), progressbar.Bar(), progressbar.ETA()], \
-			maxval = 500)
+			maxval = numSvals)
 	pbar.start()
 	    
 	# Compute best fit for each possible Sbar
@@ -434,11 +450,8 @@ for idx, file in enumerate(directory) :
 	errdn = np.exp(np.log(r) - [2*L.params["r" + str(i)].stderr for i in range(periodicity)])
 	    
 	    
-
-
-
 	# Plot
-	plt.figure()
+	plt.figure(figsize=(16, 9), dpi=600)
 
 	plt.subplot(121)
 	plt.axvline(x=Sbar, color="red", linewidth=2)
@@ -542,19 +555,7 @@ for idx, file in enumerate(directory) :
 
 	pbar.finish()
 
-
-	"""    
-	s0plotx2 = []
-	s0ploty2 = []
-	for j in allss :
-	    for i, e in enumerate(starts) :
-	        if j[i] > 250 :
-	            s0plotx2.append(Sbar + Z[e])
-	            s0ploty2.append(j[i])
-	"""    
-
 	    
-	#]newshape = np.array(allss).shape[0] * np.array(allss).shape[1]
 	allieisize = np.array([s[1:] for s in allss]).ravel()
 	allieidur = np.array([d[1:] for d in allsd]).ravel()
 	allss = np.array(allss).ravel()
@@ -600,7 +601,7 @@ for idx, file in enumerate(directory) :
 	    
 	# Plot   
 	
-	plt.figure()
+	plt.figure(figsize=(16, 9), dpi=600)
 #	plt.fill_between(t, low, high, color = colours[2], linewidth=1, alpha=0.4)
 	plt.plot(t, np.mean(I, axis=0), color = colours[2], linewidth=2)
 	plt.plot(t, C*rho, c = colours[0], linewidth=2, alpha = 0.8)
@@ -613,24 +614,8 @@ for idx, file in enumerate(directory) :
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 	# Size and Duration of Epidemics : Real vs Predicted
-	plt.figure()
+	plt.figure(figsize=(16, 9), dpi=600)
 
 	plt.subplot(211)
 	plt.title("%s, Sizes : Slope = %.3f, Intercept = %.1f, R^2 = %.3f, p = %e" % (names[idx], sslope, sintercept, sr, sp))
@@ -676,7 +661,7 @@ for idx, file in enumerate(directory) :
 
 	allss = np.array(allss).ravel()
 
-	s0 = np.array([np.mean(Sbar + Z[e]) for e in epi])
+	s0 = np.array([Sbar + Z[e[0]] for e in epi])#np.array([np.mean(Sbar + Z[e]) for e in epi])
 	slopes0, intercepts0, rs0, ps0, _ = st.linregress(s0[reals > 50], reals[reals > 50])
 
 	s1 = np.array([np.mean(Sbar + Z[e]) for e in np.array(allepi).ravel()])
@@ -691,7 +676,7 @@ for idx, file in enumerate(directory) :
 	
 
 	# Plot
-	plt.figure()
+	plt.figure(figsize=(16, 9), dpi=600)
 
 	plt.subplot(211)
 	plt.scatter(s0, reals, c = colours[0])
@@ -717,8 +702,22 @@ for idx, file in enumerate(directory) :
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	# Inter-epidemic intervals
-	plt.figure()
+	plt.figure(figsize=(16, 9), dpi=600)
 
 	ieix = np.linspace(alliei.min(), alliei.max(), 500)
 	rieiss, rieisi, rieisr, rieisp, _ = st.linregress(np.diff(starts), reals[1:])
@@ -746,24 +745,64 @@ for idx, file in enumerate(directory) :
 	plt.ylabel("Duration of Epidemic")
 	plt.legend(["Real Fit", "Sim Fit", "Simulated", "Real"])
 
-	"""
-	plt.subplot(211)
-	plt.scatter(alliei, allieisize, alpha=0.2)
-	plt.scatter(np.diff(starts) - reald[:-1], reals[1:], s=100, c=seaborn.color_palette("deep", 3)[2])
-	plt.title("%s : Interepidemic Interval vs Size" % names[idx])
-	plt.xlabel("Interepidemic Interval (biweeks)")
-	plt.ylabel("Size of Epidemic")
-	plt.legend(["Simulated", "Real"])
-
-	plt.subplot(212)
-	plt.scatter(alliei, allieidur, alpha=0.2)
-	plt.scatter(np.diff(starts) - reald[:-1], reald[1:], s=100, c=seaborn.color_palette("deep", 3)[2])
-	plt.title("%s : Interepidemic Interval vs Duration" % names[idx])
-	plt.xlabel("Interepidemic Interval (biweeks)")
-	plt.ylabel("Duration of Epidemic")
-	plt.legend(["Simulated", "Real"])
-	"""
-
 	plt.tight_layout()
 	plt.savefig(prefix + "results/%s_6_iei.png" % names[idx])
 	print "IEI done."
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	# R estimates
+	plt.figure(figsize=(16,9), dpi=600)
+
+	# Starting points of each epidemic
+	L = []
+	for e in epi[:-1] :
+		L.append(len(e))
+	L = np.cumsum(L)
+
+	# R vs t
+	Reff = C[1:].astype(float) / C[:-1]
+
+	# S0 at beginning of each epi, and max R for each of those epis
+	S0 = [Sbar + Z[e[0]] for e in epi]
+	Rm = [Reff[e].max() for e in epi]
+
+
+
+	plt.subplot2grid((2,2), (0,0))
+	plt.plot(C[z], linewidth=2)
+	for e in L :
+		plt.axvline(e, c=colours[2])
+	plt.title("%s, Incidence" % names[idx])
+	plt.ylabel("Cases")
+
+	plt.subplot2grid((2, 2), (1, 0))
+	plt.plot(Reff[z], linewidth=2)
+	plt.axhline(1, c=colours[1])
+	for e in L :
+		plt.axvline(e, c=colours[2])
+	plt.title("Effection Reproduction Ratio")
+	plt.ylabel("$R_{eff}$")
+
+	plt.subplot2grid((2,2), (0, 1), rowspan=2)
+	plt.scatter(S0, Rm)
+	plt.title("$R_0$ as Max $R_{eff}$ vs $S_0$")
+	plt.xlabel("$S_0$")
+	plt.ylabel("max[$R_eff$]")
+
+	plt.tight_layout()
+	plt.savefig(prefix + "results/%s_7_r0.png" % names[idx])
+	print "R0 done."
+
+
