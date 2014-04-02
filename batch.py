@@ -35,12 +35,13 @@ directory = [f for f in os.listdir(prefix) if f.endswith(".csv")]
 names = [i.split(".")[0].capitalize() for i in directory]
 
 # Params
-sensitivity = 2
+sensitivity = 5
 periodicity = 24
 penalty = 1e-3
 delay = 8
 vaccine = 1965
 numSvals = 500
+Alpha = 0.97 # fix alpha - set to None otherwise
 
 
 
@@ -379,7 +380,7 @@ for idx, file in enumerate(directory) :
 
 
 
-	if np.any(1./rho > 1) :
+	if np.any(1./rho > 1) and np.mean(rho) < 1 :
 		print "Rho has >1 values; moving onto next geography."
 		continue
 
@@ -396,9 +397,12 @@ for idx, file in enumerate(directory) :
 
 	# Define our parameters
 	params = lmfit.Parameters()
-	params.add("alpha", min=0.5, max=.9999, value=0.95) # Alpha
+	if Alpha is None :
+		params.add("alpha", min=0.5, max=.9999, value=0.95) # Alpha
+
 	for i in range(periodicity) : # Seasonalities
 	    params.add("r%d" % i, value=0.)
+
 	rstr = ["r%d" % (i % periodicity) for i in z[1:]]
 
 	    
@@ -406,12 +410,20 @@ for idx, file in enumerate(directory) :
 	def profile_residuals(params, rho, C, Z, z, Sestimate) :
 	    c = C.copy()
 	    c[np.intersect1d(np.where(C == 0)[0], z).astype(int)] = 1
-	    alphafit = params["alpha"].value
+	    
+	    if Alpha is None : 
+	    	alphafit = params["alpha"].value
+
 	    r = [params[i].value for i in rstr]
+	    
 	    if np.isnan(Sestimate) :
 	        Sestimate = params["Sest"].value
-	    return alphafit * np.log(rho[z[:-1]]*c[z[:-1]]) + r + np.log(Sestimate + Z[z[:-1]]) - np.log(rho[z[1:]]*c[z[1:]])
 	    
+	    if Alpha is None :
+	    	return alphafit * np.log(rho[z[:-1]]*c[z[:-1]]) + r + np.log(Sestimate + Z[z[:-1]]) - np.log(rho[z[1:]]*c[z[1:]])
+	    
+	    else :
+	    	return Alpha * np.log(rho[z[:-1]]*c[z[:-1]]) + r + np.log(Sestimate + Z[z[:-1]]) - np.log(rho[z[1:]]*c[z[1:]])
 
 	    
 	    
@@ -445,7 +457,7 @@ for idx, file in enumerate(directory) :
 	# Extract parameters and errors
 	Sbar = L.params["Sest"].value
 	r = np.exp([L.params["r" + str(i)].value for i in range(periodicity)])
-	alphaSbar = L.params["alpha"].value
+	alphaSbar = L.params["alpha"].value if Alpha is None else Alpha
 	errup = np.exp(np.log(r) + [2*L.params["r" + str(i)].stderr for i in range(periodicity)])
 	errdn = np.exp(np.log(r) - [2*L.params["r" + str(i)].stderr for i in range(periodicity)])
 	    
