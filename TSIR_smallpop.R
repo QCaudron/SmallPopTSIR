@@ -13,7 +13,7 @@ library(e1071)
 
 place <- c("reykjavik", "hafnafjordur", "akureyri","bornholm", "faroe")
 folder <- c("iceland", "iceland","iceland","bornholm", "faroe")
-name <- 4
+name <- 1
 
 # Set up parameters
 periodicity <- 24
@@ -260,7 +260,7 @@ predS <- matrix(NA, lengthdata, numsim)
 predI <- matrix(NA, lengthdata, numsim)
 lambda <- matrix(NA, lengthdata, numsim)
 rstar <- exp(lrstar)
-
+alpha <- 0.97
 
 
 for (n in 1:numsim) {
