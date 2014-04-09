@@ -13,7 +13,7 @@ library(e1071)
 
 place <- c("reykjavik", "hafnafjordur", "akureyri","bornholm", "faroe")
 folder <- c("iceland", "iceland","iceland","bornholm", "faroe")
-name <- 1
+name <- 5
 
 # Set up parameters
 periodicity <- 24
@@ -22,6 +22,7 @@ delay <- 8
 sensitivity <- 5
 sensitivity.length <- 3
 numsim <- 1000
+alpha.set <- 0.97
 
 # Import data
 setwd("~/Documents/Grenfell Research/Measles")
@@ -59,19 +60,19 @@ plot(X, type = "l", ylab = "Cumulative Cases", xlab = "Time")
 ##################### Susceptible reconstruction ###########################################
 
 ### Lowess regression
-lowess.fit <- lowess(X, Y, f = 2/3, iter = 0)
-plot(time, Y, type = "l", ylab = "Cumulative Births/Cases")
-lines(time, lowess.fit$y, type = "l", col = "blue") #predicted cumulative births (blue)
-lines(time, cumsum(C), col = "red")
+#lowess.fit <- lowess(X, Y, f = 2/3, iter = 0)
+#plot(time, Y, type = "l", ylab = "Cumulative Births/Cases")
+#lines(time, lowess.fit$y, type = "l", col = "blue") #predicted cumulative births (blue)
+#lines(time, cumsum(C), col = "red")
 
-plot(X, Y, type = "l")
-lines(lowess.fit$x, lowess.fit$y, type = "l")
+#plot(X, Y, type = "l")
+#lines(lowess.fit$x, lowess.fit$y, type = "l")
 
-spline <- smooth.spline(lowess.fit$x,  lowess.fit$y, df = 2.5)
+#spline <- smooth.spline(lowess.fit$x,  lowess.fit$y, df = 2.5)
 
-Yhat <- lowess.fit$y
-rho <- (predict(spline, deriv=1)$y)
-Z <- -(Yhat - Y)
+#Yhat <- lowess.fit$y
+#rho <- (predict(spline, deriv=1)$y)
+#Z <- -(Yhat - Y)
 
 
 ############################
@@ -126,7 +127,7 @@ Zold = Z[1:lengthdata - 1] [keep.index]
 ######### This is from Bjornstadt (2007): Susceptible Reconstruction #######################
 #Smean = seq(-0.015, 0.2, by=0.001)*.2E5  
 min(Zold)
-Smean = seq(abs(min(Zold)) + 1, abs(min(Zold))*4, by = 100) ## Reasonable range of candidate values
+Smean = seq(abs(min(Zold)) + 1, abs(min(Zold))*4, by = 10) ## Reasonable range of candidate values
 llik = rep(NA, length(Smean))
 summary(Smean)
 
@@ -135,7 +136,7 @@ summary(Smean)
 
 for (i in 1:length(Smean)) {
   lSold = log(Smean[i] + Zold)
-  glmfit = glm(lInew ~ -1 + as.factor(seas) + lIold + offset(lSold)) 
+  glmfit = glm(lInew ~ -1 + as.factor(seas) + offset(alpha.set*lIold) + offset(lSold)) 
   # -1 removes intercept, offset = known coeff of 1
   #llik[i] = glmfit$deviance # -2*loglikelihood
   llik[i] = logLik(glmfit)
@@ -151,15 +152,15 @@ dev.off()
 
 lSold = log(Sbar + Zold) ## This is the best estimate (maximizes log likelihood)
 # best estimates
-lmfit <- lm(lInew ~ -1 + as.factor(seas) + lIold + offset(lSold))
+lmfit <- lm(lInew ~ -1 + as.factor(seas) + offset(alpha.set*lIold) + offset(lSold))
 sum <- summary(lmfit)
-alpha <- lmfit$coef[periodicity + 1]
+#alpha <- lmfit$coef[periodicity + 1] #We are setting alpha to 0.97
 
 
 ######################################################
 
 #### Check other method: Taylor expansion
-lmfit2 <- lm(lInew ~ -1 + as.factor(seas) + lIold + Zold)
+lmfit2 <- lm(lInew ~ -1 + as.factor(seas) + lIold + Zold) #Not setting alpha or zeta here
 sum2 <- summary(lmfit2)
 
 png(file=paste("~/Documents/Grenfell Research/Measles/SmallPopTSIR/data/", folder[name], "/results/", place[name],"_2_Seasonality_compare.png", sep = "")
@@ -221,15 +222,6 @@ for (i in 1:length(diff)){
 start.index <- start.index[is.na(start.index) == FALSE]
 end.index <- end.index[is.na(end.index) == FALSE]
 
-
-plot(Ic, type = "l")
-for (i in 1:length(start.index)) {
-  abline(v = end.index[i], col = "blue")
-  abline(v = start.index[i], col = "green")
-}
-
-
-
 # real duration 
 duration <- end.index - start.index
 
@@ -244,6 +236,14 @@ for (e in 1:length(epi$start.index)) {
   epi$size[e] <- sum(Ic[epi$start.index[e]: epi$end.index[e]])
 }
 
+png(file=paste("~/Documents/Grenfell Research/Measles/SmallPopTSIR/data/", folder[name], "/results/", place[name],"_0_timeseries_R.png", sep = "")
+    ,width=800,height=700)
+plot(Ic, type = "l")
+for (i in 1:length(epi$start.index)) {
+  abline(v = epi$end.index[i], col = "blue")
+  abline(v = epi$start.index[i], col = "green")
+}
+dev.off()
 
 # logI and logS are the full time series vectors
 logI <- rep(0, lengthdata)
@@ -260,7 +260,7 @@ predS <- matrix(NA, lengthdata, numsim)
 predI <- matrix(NA, lengthdata, numsim)
 lambda <- matrix(NA, lengthdata, numsim)
 rstar <- exp(lrstar)
-alpha <- 0.97
+
 
 
 for (n in 1:numsim) {
@@ -278,7 +278,7 @@ for (n in 1:numsim) {
       t <- start + j
       
       
-      lambda[t, n] <- rstar[t] * (predI[(t-1), n]^alpha) * predS[(t-1), n]
+      lambda[t, n] <- rstar[t] * (predI[(t-1), n]^alpha.set) * predS[(t-1), n]
       if(lambda[t, n] > 0 & t != lengthdata) {
         predI[t, n] <- rnegbin(1, lambda[t,n], max(round(predI[(t - 1), n]), 1))
       }
@@ -331,7 +331,7 @@ upper.bound <- apply(matrix.boot, 2, function(x) quantile(x, 0.975, na.rm = TRUE
 
 png(file=paste("~/Documents/Grenfell Research/Measles/SmallPopTSIR/data/", folder[name], "/results/", place[name],"_3_predictions_CI_R.png", sep = "")
     ,width=800,height=700)
-plot(time, I, type = "l", col = "red", ylim = c(0, max(Ic) + 100), ylab = "Cases",
+plot(time, I, type = "l", col = "red", ylim = c(0, max(Ic) + 500), ylab = "Cases",
      main = paste("Predicted cases from ", numsim, " simulations (red) 
         Actual cases corrected for underreporting (blue)", sep = ""), 
      cex.main = 0.7)
@@ -386,8 +386,10 @@ duration <- reshape(pred.dur,
 
 
 # Real duration versus predicted duration
-fit.dur <- lm(duration$pred.dur ~ -1 + duration$real.dur)
-slope.dur <- round(fit.dur$coeff[1], 5)
+#fit.dur <- lm(duration$pred.dur ~ -1 + duration$real.dur)
+fit.dur <- lm(duration$pred.dur ~ duration$real.dur)
+slope.dur <- round(fit.dur$coeff[2], 5)
+intercept.dur <- round(fit.dur$coeff[1], 5)
 rsq.dur <- round(summary(fit.dur)$r.squared, 5)
 ci.dur <- predict(fit.dur, interval = "confidence", level = 0.95, newdata = duration)
 
@@ -395,10 +397,11 @@ png(file=paste("~/Documents/Grenfell Research/Measles/SmallPopTSIR/data/", folde
     ,width=800,height=700)
 plot(duration$real.dur, duration$pred.dur, pch = 1, cex = 0.5, 
      xlab = "Real Duration", ylab = "Predicted Duration", 
-     main = paste("Slope = ", slope.dur, " R-squared = ", rsq.dur, sep = ""), cex.main = 0.9)
+     main = paste("Slope = ", slope.dur, " Intercept = ", intercept.dur, "
+                  R-squared = ", rsq.dur, sep = ""), cex.main = 0.9)
 abline(fit.dur, col = "blue")
-lines(duration$real.dur, ci.dur[ ,2], col = "red", lty = 3)
-lines(duration$real.dur, ci.dur[ ,3], col = "red", lty = 3)
+#lines(duration$real.dur, ci.dur[ ,2], col = "red", lty = 3)
+#lines(duration$real.dur, ci.dur[ ,3], col = "red", lty = 3)
 dev.off()
 
 
@@ -444,9 +447,11 @@ size <- reshape(pred.size,
                 direction = "long")
 
 # Real size versus predicted size
-fit.size <- lm(size$pred.size ~ -1 + size$real.size)
+#fit.size <- lm(size$pred.size ~ -1 + size$real.size)
+fit.size <- lm(size$pred.size ~ size$real.size)
 summary(fit.size)
-slope.size <- round(fit.size$coeff[1], 5)
+slope.size <- round(fit.size$coeff[2], 5)
+intercept.size <- round(fit.size$coeff[1], 5)
 rsq.size <- round(summary(fit.size)$r.squared, 5)
 ci.size <- predict(fit.size, interval = "confidence", level = 0.95, newdata = size)
 
@@ -455,10 +460,11 @@ png(file=paste("~/Documents/Grenfell Research/Measles/SmallPopTSIR/data/", folde
     ,width=800,height=700)
 plot(size$real.size, size$pred.size, pch = 1, cex = 0.5,
      xlab = "Real Size", ylab = "Predicted Size", 
-     main = paste("Slope = ", slope.size, " R-squared = ", rsq.size, sep = ""), cex.main = 0.9)
+     main = paste("Slope = ", slope.size, " Intercept = ", intercept.size, "
+                  R-squared = ", rsq.size, sep = ""), cex.main = 0.9)
 abline(fit.size, col = "blue")
-lines(size$real.size, ci.size[ ,2], col = "red", lty = 3)
-lines(size$real.size, ci.size[ ,3], col = "red", lty = 3)
+#lines(size$real.size, ci.size[ ,2], col = "red", lty = 3)
+#lines(size$real.size, ci.size[ ,3], col = "red", lty = 3)
 dev.off()
 
 # S0 versus real size
