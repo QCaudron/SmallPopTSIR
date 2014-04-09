@@ -303,7 +303,7 @@ plot(I, type = "l")
 
 png(file=paste("~/Documents/Grenfell Research/Measles/SmallPopTSIR/data/", folder[name], "/results/", place[name],"_3_predictions_R.png", sep = "")
     ,width=800,height=700)
-plot(time, predI[1,], type = "l", col = "pink", ylim = c(0, max(Ic) + 1500), ylab = "Cases",
+plot(time, predI[1,], type = "l", col = "pink", ylim = c(0, 1.5*max(Ic)), ylab = "Cases",
      main = paste("Predicted cases from ", numsim, " simulations (red) 
         Actual cases corrected for underreporting (blue)", sep = ""), 
      cex.main = 0.7)
@@ -331,7 +331,7 @@ upper.bound <- apply(matrix.boot, 2, function(x) quantile(x, 0.975, na.rm = TRUE
 
 png(file=paste("~/Documents/Grenfell Research/Measles/SmallPopTSIR/data/", folder[name], "/results/", place[name],"_3_predictions_CI_R.png", sep = "")
     ,width=800,height=700)
-plot(time, I, type = "l", col = "red", ylim = c(0, max(Ic) + 500), ylab = "Cases",
+plot(time, I, type = "l", col = "red", ylim = c(0, 1.3*max(Ic)), ylab = "Cases",
      main = paste("Predicted cases from ", numsim, " simulations (red) 
         Actual cases corrected for underreporting (blue)", sep = ""), 
      cex.main = 0.7)
