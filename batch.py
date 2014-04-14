@@ -536,7 +536,7 @@ for idx, file in enumerate(directory) :
             maxval = int(sys.argv[2]))
     pbar.start()
 
-    for q in range(int(sys.argv[2])) :
+    for q in range(500) :
         
         predI = np.zeros_like(C)
         predS = np.zeros_like(C)
@@ -551,16 +551,24 @@ for idx, file in enumerate(directory) :
         
             for i in range(e+1, len(C)) :
                 
+                # Old Negative Binomial
                 """
                 predI[i] = np.random.negative_binomial(max(np.round(predI[i-1])**alphaSbar, 1), \
                                                        max(np.round(predI[i-1])**alphaSbar, 1) / ( max(np.round(predI[i-1]), 1) + \
                                                                    r[i % periodicity] * ( predI[i-1] ** alphaSbar ) * predS[i-1] / (Nt[i-1]**gamma)))
                 """
+
+                # New Negative Binomial
+                """
                 bsi = r[i % periodicity] * predS[i-1] * (predI[i-1] ** (alphaSbar-1)) if np.isfinite(predI[i-1] ** (alphaSbar-1)) else 0
 
                 predI[i] = np.random.negative_binomial(max(np.round(predI[i-1]), 1), \
                                                        1. / ( 1. + bsi ))
+                """
 
+
+                # BINOMIAL now
+                predI[i] = np.random.binomial(predS[i-1], 1. - np.exp(- r[i % periodicity] * (predI[i-1] ** alphaSbar)))
                 predS[i] = max(B[max(i - delay, 0)] + predS[i-1] - predI[i], 0)
 
             
@@ -583,6 +591,29 @@ for idx, file in enumerate(directory) :
         pbar.update(q)
 
     pbar.finish()
+
+
+
+
+
+    # Clearing out failed epidemics
+    fs = []
+    fd = []
+
+    means = np.mean(allss, axis=0)
+    meand = np.mean(allsd, axis=0)
+
+    for i, m in enumerate(means) :
+        fs.append(allss[:, i] < 0.2 * m)
+        fd.append(allsd[:, i] < 0.2 * meand[i])
+        allss[:, i] = np.ma.masked_array(allss[:, i], mask = fs[i])
+        allrs[:, i] = np.ma.masked_array(allrs[:, i], mask = fs[i])
+        allsd[:, i] = np.ma.masked_array(allsd[:, i], mask = fd[i])
+        allrd[:, i] = np.ma.masked_array(allrd[:, i], mask = fd[i])
+
+
+
+
 
         
     allieisize = np.array([s[1:] for s in allss]).ravel()
@@ -640,6 +671,8 @@ for idx, file in enumerate(directory) :
     print "%s Predictions done." % names[idx]
 
     plt.close()
+
+
 
 
 
