@@ -1,7 +1,6 @@
 ### TSIR for small populations
 
 library(plotrix)
-library(Rwave)
 library(MASS)
 library(signal)
 library(stats)
@@ -10,18 +9,24 @@ library(quantchem)
 library(matrixcalc)
 library(stats)
 library(e1071)
+library(ggplot2)
+library(vioplot)
+library(reshape)
 
-place <- c("reykjavik", "hafnafjordur", "akureyri","bornholm", "faroe")
-folder <- c("iceland", "iceland","iceland","bornholm", "faroe")
-name <- 5
+directory <- "~/Documents/Grenfell Research/Measles/SmallPopTSIR/data/"
+#directory <- "~/Documents/Grenfell Research/Measles/Plots/"
+place <- c("reykjavik", "hafnafjordur", "akureyri","vestmannaeyjar" ,"bornholm", "faroe")
+folder <- c("iceland", "iceland","iceland","iceland","bornholm", "faroe")
+name <- 4
 
 # Set up parameters
+num.seas <- 2 # 2 = monthly, 1 = biweekly
 periodicity <- 24
 vaccine <- 1965
 delay <- 8
 sensitivity <- 5
 sensitivity.length <- 3
-numsim <- 1000
+numsim <- 5000
 alpha.set <- 0.97
 
 # Import data
@@ -39,12 +44,12 @@ lengthdata <- length(time)
 B <- data$births
 C <- data$reported_cases
 
-png(file=paste("~/Documents/Grenfell Research/Measles/SmallPopTSIR/data/", folder[name], "/results/", place[name],"_0_timeseries_cases.png", sep = ""),
+png(file=paste(directory, folder[name], "/results/", place[name],"_0_timeseries_cases.png", sep = ""),
     width=800,height=700)
 plot(time, C, type = "l")
 dev.off()
 
-png(file=paste("~/Documents/Grenfell Research/Measles/SmallPopTSIR/data/", folder[name], "/results/", place[name],"_0_timeseries_births.png", sep = ""),
+png(file=paste(directory, folder[name], "/results/", place[name],"_0_timeseries_births.png", sep = ""),
     width=800,height=700)
 plot(time, B, type = "l")
 dev.off()
@@ -85,7 +90,7 @@ rho <- derivative(cum.reg, X)
 m.rho <- round(mean(1/rho), 2)
 Z <- -(Yhat - Y)
 
-png(file=paste("~/Documents/Grenfell Research/Measles/SmallPopTSIR/data/", folder[name], "/results/", place[name],"_1_Yhat.png", sep = ""),
+png(file=paste(directory, folder[name], "/results/", place[name],"_1_Yhat.png", sep = ""),
     width=800,height=700)
 plot(time, Y, type = "l", ylab = "Cumulative Births/Cases", col = "green",
      main = "Cumulative Births (green), Inferred Cumulative Births (red), 
@@ -96,13 +101,13 @@ lines(time, cumsum(C), col = "blue")
 dev.off()
 
 
-png(file=paste("~/Documents/Grenfell Research/Measles/SmallPopTSIR/data/", folder[name], "/results/", place[name],"_1_rho.png", sep = "")
+png(file=paste(directory, folder[name], "/results/", place[name],"_1_rho.png", sep = "")
     ,width=800,height=700)
 plot(time, 1/rho, type = "l", 
      main = paste("Inferred Reporting Rate, mean 1/rho = ", m.rho, sep = ""), cex.main = 1)
 dev.off()
 
-png(file=paste("~/Documents/Grenfell Research/Measles/SmallPopTSIR/data/", folder[name], "/results/", place[name],"_1_Z.png", sep = "")
+png(file=paste(directory, folder[name], "/results/", place[name],"_1_Z.png", sep = "")
     ,width=800,height=700)
 plot(time, Z , type = "l", xlab = "Time", ylab = "Residual", main = "Susceptible Dynamics, Z(t)", 
      cex.main = 1) #plot Z
@@ -110,15 +115,29 @@ dev.off()
 
 # Ic are actual cases: reported cases multiplied by rho
 Ic <- C*rho 
-plot(Ic, type = "l")
+
+png(file=paste(directory, folder[name], "/results/", place[name],"_0_timeseries_underreporting.png", sep = ""),
+    width=800,height=700)
+plot(Ic, type = "l", main = "Timeseries corrected for underreporting (actual cases in red)")
 lines(C, type = "l", col = "red")
+dev.off()
 
 ## Keep only positive values
 keep.index <- which(Ic[1:lengthdata - 1] > sensitivity & Ic[2:lengthdata] > sensitivity)
 length.pos <- length(keep.index)
 
 ## Set up the parameters
-seas = rep(1:periodicity, lengthdata/periodicity)[1:lengthdata - 1][keep.index]
+if (num.seas == 1) {
+  seas = rep(1:periodicity, lengthdata/periodicity)[1:lengthdata - 1][keep.index]
+}
+
+if (num.seas == 2) {
+  seasonality <- c(1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10,11,11,12,12)
+  seas <- rep(seasonality, lengthdata/periodicity)[1:lengthdata - 1][keep.index]
+}
+
+
+
 lInew <- log(Ic[2:lengthdata]) [keep.index]
 lIold <- log(Ic[1:lengthdata -1]) [keep.index]
 Zold = Z[1:lengthdata - 1] [keep.index]
@@ -144,7 +163,7 @@ for (i in 1:length(Smean)) {
 Sbar <- Smean[which(llik == max(llik))] #we want to maximize the log likelihood
 Sbar
 
-png(file=paste("~/Documents/Grenfell Research/Measles/SmallPopTSIR/data/", folder[name], "/results/", place[name],"_2_Sbar.png", sep = "")
+png(file=paste(directory, folder[name], "/results/", place[name],"_2_Sbar.png", sep = "")
     ,width=800,height=700)
 plot(Smean, -llik, type = "l", log = "y", main = paste("Sbar = ", round(Sbar, 2), sep = ""))
 abline(v=Sbar)
@@ -156,46 +175,58 @@ lmfit <- lm(lInew ~ -1 + as.factor(seas) + offset(alpha.set*lIold) + offset(lSol
 sum <- summary(lmfit)
 #alpha <- lmfit$coef[periodicity + 1] #We are setting alpha to 0.97
 
-
 ######################################################
 
 #### Check other method: Taylor expansion
 lmfit2 <- lm(lInew ~ -1 + as.factor(seas) + lIold + Zold) #Not setting alpha or zeta here
 sum2 <- summary(lmfit2)
 
-png(file=paste("~/Documents/Grenfell Research/Measles/SmallPopTSIR/data/", folder[name], "/results/", place[name],"_2_Seasonality_compare.png", sep = "")
+png(file=paste(directory, folder[name], "/results/", place[name],"_2_Seasonality_compare.png", sep = "")
     ,width=800,height=700)
-plot(1:periodicity, exp(lmfit2$coef[1:periodicity]), type = "l", col = "red", 
-     ylab = "Seasonal Coeff", xlab = "Week Number", main = "Seasonality")
-lines(1:periodicity, exp(lmfit$coef[1:periodicity]) * Sbar, type = "l", lty = 2, col = "blue")
-legend("bottomleft", legend = c("Using ML", "Using Taylor Exp"), col = c("blue", "red"), lty = c(2,1), cex = 0.5)
+plot(1:(periodicity/num.seas), exp(lmfit2$coef[1:(periodicity/num.seas)]), 
+     type = "l", col = "red", 
+     ylab = "Seasonal Coeff", xlab = "Week Number", main = paste("Seasonality ",num.seas,sep = ""))
+lines(1:(periodicity/num.seas), exp(lmfit$coef[1:(periodicity/num.seas)]) * Sbar, 
+      type = "l", lty = 2, col = "blue")
+legend("bottomleft", legend = c("Using ML", "Using Taylor Exp"), 
+       col = c("blue", "red"), lty = c(2,1), cex = 0.5)
 dev.off()
 
 # Estimates from this method (lmfit2)
-alpha2 <- lmfit2$coef[periodicity + 1] #alfa
-zeta <- lmfit2$coef[periodicity + 2] #zeta
-mean(lmfit2$coef[1:periodicity])
+alpha2 <- lmfit2$coef[(periodicity/num.seas) + 1] #alfa
+zeta <- lmfit2$coef[(periodicity/num.seas) + 2] #zeta
+mean(lmfit2$coef[1:(periodicity/num.seas)])
 Sbar2 <- 1/zeta
 #####################
 
-lrstar <- rep(lmfit$coef[1:periodicity], lengthdata/periodicity)
-length(lrstar)
+if (num.seas == 1){
+  #lrstar <- rep(lmfit$coef[1:periodicity], lengthdata/periodicity)
+  lrstar <- rep(lmfit$coef[1:periodicity], length.out = lengthdata)
+  length(lrstar)
+}
+
+if (num.seas == 2){
+  lrstar <- rep(lmfit$coef[1:(periodicity/num.seas)], length.out = lengthdata, each = 2)
+  length(lrstar)
+}
+
 
 
 # Confidence intervals
 se <- sum$coefficients[ ,2]
-upper <- lmfit$coef[1:periodicity] - mean(lmfit$coef[1:periodicity]) + qnorm(0.975) * se[1:periodicity]
-lower <- lmfit$coef[1:periodicity] - mean(lmfit$coef[1:periodicity]) - qnorm(0.975) * se[1:periodicity]
+upper <- lmfit$coef[1:(periodicity/num.seas)] - mean(lmfit$coef[1:(periodicity/num.seas)]) + qnorm(0.975) * se[1:(periodicity/num.seas)]
+lower <- lmfit$coef[1:(periodicity/num.seas)] - mean(lmfit$coef[1:(periodicity/num.seas)]) - qnorm(0.975) * se[1:(periodicity/num.seas)]
 
 # Plotting mean-centered seasonality
-png(file=paste("~/Documents/Grenfell Research/Measles/SmallPopTSIR/data/", folder[name], "/results/", place[name],"_2_Seasonality.png", sep = "")
+png(file=paste(directory, folder[name], "/results/", place[name],"_2_Seasonality.png", sep = "")
     ,width=800,height=700)
-plot(1:periodicity, lmfit$coef[1:periodicity] - mean(lmfit$coef[1:periodicity]), 
+plot(1:(periodicity/num.seas), lmfit$coef[1:(periodicity/num.seas)] 
+     - mean(lmfit$coef[1:(periodicity/num.seas)]), 
      type = "l", ylab = "Seasonality", ylim = c(min(lower), max(upper)), 
-     xaxp = c(0, periodicity+2, (periodicity+2)/2), xlab = "Period")
+     xaxp = c(0, (periodicity/num.seas)+2, ((periodicity/num.seas)+2)/2), xlab = "Period")
 abline(h = 0)
-lines(1:periodicity, upper, type = "l", lty = 2)
-lines(1:periodicity, lower, type = "l", lty = 2)
+lines(1:(periodicity/num.seas), upper, type = "l", lty = 2)
+lines(1:(periodicity/num.seas), lower, type = "l", lty = 2)
 dev.off()
 
 
@@ -236,7 +267,7 @@ for (e in 1:length(epi$start.index)) {
   epi$size[e] <- sum(Ic[epi$start.index[e]: epi$end.index[e]])
 }
 
-png(file=paste("~/Documents/Grenfell Research/Measles/SmallPopTSIR/data/", folder[name], "/results/", place[name],"_0_timeseries_R.png", sep = "")
+png(file=paste(directory, folder[name], "/results/", place[name],"_0_timeseries_R.png", sep = "")
     ,width=800,height=700)
 plot(Ic, type = "l")
 for (i in 1:length(epi$start.index)) {
@@ -252,13 +283,18 @@ logS <- rep(0, lengthdata)
 logS[keep.index] = log(Sbar + Z[keep.index])
 
 #S0
-epi$S0 <- exp(logS[epi$start.index])
+for (i in 1:length(epi$start.index)) {
+  epi$sumB[i] <- sum(B[epi$start.index[i]:epi$end.index[i]])
+}
+
+epi$S0 <- exp(logS[epi$start.index]) + epi$sumB
 
 
 # Set up parameters
 predS <- matrix(NA, lengthdata, numsim)
 predI <- matrix(NA, lengthdata, numsim)
 lambda <- matrix(NA, lengthdata, numsim)
+prob <- matrix(NA, lengthdata, numsim)
 rstar <- exp(lrstar)
 
 
@@ -277,14 +313,25 @@ for (n in 1:numsim) {
     for (j in 1:(end - start)) {
       t <- start + j
       
+      #negative binomial
+      #lambda[t, n] <- rstar[t] * (predI[(t-1), n]^alpha.set) * predS[(t-1), n]
+      #if(lambda[t, n] > 0 & t != lengthdata) {
+        #predI[t, n] <- rnegbin(1, lambda[t,n], max(round(predI[(t - 1), n]), 1))
+      #}
+      #else {
+        #predI[t, n] <- 0
+      #}
       
-      lambda[t, n] <- rstar[t] * (predI[(t-1), n]^alpha.set) * predS[(t-1), n]
-      if(lambda[t, n] > 0 & t != lengthdata) {
-        predI[t, n] <- rnegbin(1, lambda[t,n], max(round(predI[(t - 1), n]), 1))
+      #Binomial
+      prob[t, n] <- 1 - exp((-rstar[t]) * (predI[(t-1), n])^alpha.set) 
+      if(prob[t, n] > 0 & t != lengthdata) {
+        predI[t, n] <- rbinom(1,max(round(predS[(t-1),n]), 1),prob[t,n])
       }
       else {
         predI[t, n] <- 0
       }
+      
+      
       
       predS[t,n] <- round(B[t - delay] + predS[t-1, n] - predI[t, n]) 
     }
@@ -301,7 +348,7 @@ S <- colMeans(predS)
 I <- ifelse(is.na(I) == TRUE, 0, I)
 plot(I, type = "l")
 
-png(file=paste("~/Documents/Grenfell Research/Measles/SmallPopTSIR/data/", folder[name], "/results/", place[name],"_3_predictions_R.png", sep = "")
+png(file=paste(directory, folder[name], "/results/", place[name],"_3_predictions_R.png", sep = "")
     ,width=800,height=700)
 plot(time, predI[1,], type = "l", col = "pink", ylim = c(0, 1.5*max(Ic)), ylab = "Cases",
      main = paste("Predicted cases from ", numsim, " simulations (red) 
@@ -329,7 +376,7 @@ lower.bound <- apply(matrix.boot, 2, function(x) quantile(x, 0.025, na.rm = TRUE
 upper.bound <- apply(matrix.boot, 2, function(x) quantile(x, 0.975, na.rm = TRUE))
 
 
-png(file=paste("~/Documents/Grenfell Research/Measles/SmallPopTSIR/data/", folder[name], "/results/", place[name],"_3_predictions_CI_R.png", sep = "")
+png(file=paste(directory, folder[name], "/results/", place[name],"_3_predictions_CI_R.png", sep = "")
     ,width=800,height=700)
 plot(time, I, type = "l", col = "red", ylim = c(0, 1.3*max(Ic)), ylab = "Cases",
      main = paste("Predicted cases from ", numsim, " simulations (red) 
@@ -393,12 +440,17 @@ intercept.dur <- round(fit.dur$coeff[1], 5)
 rsq.dur <- round(summary(fit.dur)$r.squared, 5)
 ci.dur <- predict(fit.dur, interval = "confidence", level = 0.95, newdata = duration)
 
-png(file=paste("~/Documents/Grenfell Research/Measles/SmallPopTSIR/data/", folder[name], "/results/", place[name],"_4_Duration.png", sep = "")
+png(file=paste(directory, folder[name], "/results/", place[name],"_4_Duration.png", sep = "")
     ,width=800,height=700)
 plot(duration$real.dur, duration$pred.dur, pch = 1, cex = 0.5, 
      xlab = "Real Duration", ylab = "Predicted Duration", 
      main = paste("Slope = ", slope.dur, " Intercept = ", intercept.dur, "
-                  R-squared = ", rsq.dur, sep = ""), cex.main = 0.9)
+                  R-squared = ", rsq.dur, sep = ""), cex.main = 0.9, col = "red")
+#for (i in 1:length(epi$start.index)) {
+  #dur <- duration[duration$id == i, ]
+  #vioplot(dur$pred.dur, at = dur$real.dur[i], horizontal=FALSE, col="white", add = T, 
+          #colMed="red")
+#}
 abline(fit.dur, col = "blue")
 #lines(duration$real.dur, ci.dur[ ,2], col = "red", lty = 3)
 #lines(duration$real.dur, ci.dur[ ,3], col = "red", lty = 3)
@@ -411,7 +463,7 @@ slope.S0.realdur <- round(fitS0$coeff[2], 5)
 ci.S0.realdur <- predict(fitS0, interval = "confidence", level = 0.95, newdata = epi)
 
 
-png(file=paste("~/Documents/Grenfell Research/Measles/SmallPopTSIR/data/", folder[name], "/results/", place[name],"_5_S0_real_dur.png", sep = "")
+png(file=paste(directory, folder[name], "/results/", place[name],"_5_S0_real_dur.png", sep = "")
     ,width=800,height=700)
 plot(epi$duration, epi$S0, pch = 1, cex = 0.5,
      xlab = "Real Duration", ylab = "S0", 
@@ -425,7 +477,7 @@ slope.S0.preddur <- round(fitS0.pred$coeff[2], 5)
 ci.S0.preddur <- predict(fitS0.pred, interval = "confidence", level = 0.95, newdata = duration)
 
 
-png(file=paste("~/Documents/Grenfell Research/Measles/SmallPopTSIR/data/", folder[name], "/results/", place[name],"_5_S0_pred_dur.png", sep = "")
+png(file=paste(directory, folder[name], "/results/", place[name],"_5_S0_pred_dur.png", sep = "")
     ,width=800,height=700)
 plot(duration$pred.dur, duration$realS0, pch = 1, cex = 0.5,
      xlab = "Predicted Duration", ylab = "S0", 
@@ -446,23 +498,34 @@ size <- reshape(pred.size,
                 idvar = c("real.size", "id", "realS0"),      
                 direction = "long")
 
+mean.pred.size <- rep(NA, length(unique(size$id)))
+for (i in 1:length(unique(size$id))){
+  mean.pred.size[i] <- mean(size$pred.size[size$id == i])
+}
+
+mean.pred.size <- as.data.frame(cbind(1:length(unique(size$id)), mean.pred.size))
+mean.pred.size <- rename(mean.pred.size, c("V1" = "id"))
+size <- merge(x = size, y = mean.pred.size, by = "id")
+size.plot <- size[size$pred.size > 0.1*size$mean.pred.size, ]
+
 # Real size versus predicted size
 #fit.size <- lm(size$pred.size ~ -1 + size$real.size)
-fit.size <- lm(size$pred.size ~ size$real.size)
+fit.size <- lm(size.plot$pred.size ~ size.plot$real.size)
 summary(fit.size)
 slope.size <- round(fit.size$coeff[2], 5)
 intercept.size <- round(fit.size$coeff[1], 5)
 rsq.size <- round(summary(fit.size)$r.squared, 5)
-ci.size <- predict(fit.size, interval = "confidence", level = 0.95, newdata = size)
+ci.size <- predict(fit.size, interval = "confidence", level = 0.95, newdata = size.plot)
 
 
-png(file=paste("~/Documents/Grenfell Research/Measles/SmallPopTSIR/data/", folder[name], "/results/", place[name],"_4_Size.png", sep = "")
+png(file=paste(directory, folder[name], "/results/", place[name],"_4_Size.png", sep = "")
     ,width=800,height=700)
-plot(size$real.size, size$pred.size, pch = 1, cex = 0.5,
+plot(size.plot$real.size, size.plot$pred.size, pch = 1, cex = 0.5,
      xlab = "Real Size", ylab = "Predicted Size", 
      main = paste("Slope = ", slope.size, " Intercept = ", intercept.size, "
                   R-squared = ", rsq.size, sep = ""), cex.main = 0.9)
 abline(fit.size, col = "blue")
+points(size.plot$real.size, size.plot$mean.pred.size, col = "red")
 #lines(size$real.size, ci.size[ ,2], col = "red", lty = 3)
 #lines(size$real.size, ci.size[ ,3], col = "red", lty = 3)
 dev.off()
@@ -472,7 +535,7 @@ fitS0 <- lm(epi$S0 ~ epi$size)
 summary(fitS0)
 slope.S0.realsize <- round(fitS0$coeff[2], 5)
 
-png(file=paste("~/Documents/Grenfell Research/Measles/SmallPopTSIR/data/", folder[name], "/results/", place[name],"_5_S0_real.png", sep = "")
+png(file=paste(directory, folder[name], "/results/", place[name],"_5_S0_real.png", sep = "")
     ,width=800,height=700)
 plot(epi$size, epi$S0, pch = 1, cex = 0.5,
      xlab = "Real Size", ylab = "S0", 
@@ -486,13 +549,13 @@ summary(fitS0.pred)
 slope.S0.predsize <- round(fitS0.pred$coeff[2], 5)
 ci.S0.pred <- predict(fitS0.pred, interval = "confidence", level = 0.95, newdata = size)
 
-png(file=paste("~/Documents/Grenfell Research/Measles/SmallPopTSIR/data/", folder[name], "/results/", place[name],"_5_S0_pred.png", sep = "")
+png(file=paste(directory, folder[name], "/results/", place[name],"_5_S0_pred.png", sep = "")
     ,width=800,height=700)
 plot(size$pred.size, size$realS0, pch = 1, cex = 0.5,
      xlab = "Predicted Size", ylab = "S0", 
      main = paste("Slope = ", slope.S0.predsize, sep = ""), cex.main = 0.9)
 abline(fitS0.pred, col = "blue")
-lines(size$pred.size, ci.S0.pred[ ,2], col = "red", lty = 3)
-lines(size$pred.size, ci.S0.pred[ ,3], col = "red", lty = 3)
+#lines(size$pred.size, ci.S0.pred[ ,2], col = "red", lty = 3)
+#lines(size$pred.size, ci.S0.pred[ ,3], col = "red", lty = 3)
 dev.off()
 
