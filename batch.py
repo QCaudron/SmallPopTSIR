@@ -23,6 +23,7 @@ import itertools
 import os
 import sys
 import progressbar
+import collections
 
 
 
@@ -219,6 +220,13 @@ def derivative(X, Y) :
 
 
 
+def qflatten(x) :
+    if isinstance(x, collections.Iterable):
+        return [a for i in x for a in qflatten(i)]
+    else:
+        return [x]
+
+
 
 
 
@@ -259,7 +267,7 @@ for idx, file in enumerate(directory) :
 
 
     # Plot
-    plt.figure(figsize=(16, 9), dpi=600)
+    plt.figure()
 
     plt.subplot(211)
     plt.plot(t, C, linewidth=2)
@@ -276,7 +284,7 @@ for idx, file in enumerate(directory) :
     plt.ylabel("Births")
 
     plt.tight_layout()
-    plt.savefig(prefix + "results/%s_0_timeseries.png" % names[idx])
+    plt.savefig(prefix + "results/%s_0_timeseries.pdf" % names[idx])
     print "%s Time-Series done." % names[idx]
 
     plt.close()
@@ -326,7 +334,7 @@ for idx, file in enumerate(directory) :
 
 
     # Plots
-    plt.figure(figsize=(16, 9), dpi=600)
+    plt.figure()
 
     plt.subplot(221)
     plt.plot(t, X, linewidth=2)
@@ -348,7 +356,7 @@ for idx, file in enumerate(directory) :
     plt.xlabel("Time (years)")
 
     plt.tight_layout()
-    plt.savefig(prefix + "results/%s_1_susceptible_reconstruction.png" % names[idx])
+    plt.savefig(prefix + "results/%s_1_susceptible_reconstruction.pdf" % names[idx])
     print "%s Susceptible Reconstruction done." % names[idx]
     
     plt.close()
@@ -473,7 +481,7 @@ for idx, file in enumerate(directory) :
         
         
     # Plot
-    plt.figure(figsize=(16, 9), dpi=600)
+    plt.figure()
 
     plt.subplot(121)
     plt.axvline(x=Sbar, color="red", linewidth=2)
@@ -492,7 +500,7 @@ for idx, file in enumerate(directory) :
     plt.xlabel("Period")
     
     plt.tight_layout()
-    plt.savefig(prefix + "results/%s_2_meanS_periodicity.png" % names[idx])
+    plt.savefig(prefix + "results/%s_2_meanS_periodicity.pdf" % names[idx])
     print "%s Mean S and Periodicity done." % names[idx]
 
     plt.close()
@@ -536,7 +544,7 @@ for idx, file in enumerate(directory) :
             maxval = int(sys.argv[2]))
     pbar.start()
 
-    for q in range(500) :
+    for q in range(int(sys.argv[2])) :
         
         predI = np.zeros_like(C)
         predS = np.zeros_like(C)
@@ -597,33 +605,53 @@ for idx, file in enumerate(directory) :
 
 
     # Clearing out failed epidemics
+    allss = np.array(allss)
+    allrs = np.array(allrs)
+    allsd = np.array(allsd)
+    allrd = np.array(allrd)
+    allepi = np.array(allepi)
+
+    allss2 = []
+    allrs2 = []
+    allsd2 = []
+    allrd2 = []
+    allepi2 = []
+
     fs = []
-    fd = []
 
     means = np.mean(allss, axis=0)
     meand = np.mean(allsd, axis=0)
 
     for i, m in enumerate(means) :
-        fs.append(allss[:, i] < 0.2 * m)
-        fd.append(allsd[:, i] < 0.2 * meand[i])
-        allss[:, i] = np.ma.masked_array(allss[:, i], mask = fs[i])
-        allrs[:, i] = np.ma.masked_array(allrs[:, i], mask = fs[i])
-        allsd[:, i] = np.ma.masked_array(allsd[:, i], mask = fd[i])
-        allrd[:, i] = np.ma.masked_array(allrd[:, i], mask = fd[i])
+        if sum(allss[:, i] > 0.1 * m) > 0 :
+            fs.append(allss[:, i] > 0.1 * m)
+            allss2.append(allss[allss[:, i] > 0.1 * m, i]) 
+            allrs2.append(allrs[allss[:, i] > 0.1 * m, i])
+            allepi2.append(allepi[allss[:, i] > 0.1 * m, i])
+
+        if sum(allsd[:, i] > 0.1 * meand[i]) > 0 :
+            allsd2.append(allsd[allsd[:, i] > 0.1 * meand[i], i])
+            allrd2.append(allrd[allsd[:, i] > 0.1 * meand[i], i])
+        
+        
+
+
+
 
 
 
 
 
         
-    allieisize = np.array([s[1:] for s in allss]).ravel()
-    allieidur = np.array([d[1:] for d in allsd]).ravel()
-    allss = np.array(allss).ravel()
-    allrs = np.array(allrs).ravel()
-    allsd = np.array(allsd).ravel()
-    allrd = np.array(allrd).ravel()
-    allepi = np.array(allepi).ravel()
-    alliei = np.array(alliei).ravel()
+    #allieisize = np.array([s[1:] for s in allss2]).ravel()
+    #allieidur = np.array([d[1:] for d in allsd2]).ravel()
+    allss = np.array(qflatten(allss2))
+    allrs = np.array(qflatten(allrs2))
+    allsd = np.array(qflatten(allsd2))
+    allrd = np.array(qflatten(allrd2))
+    allepi = allepi2
+    #allepi = np.array(qflatten(allepi))
+    #alliei = np.array(qflatten(alliei))
         
     #idx = allrs > 500
     #allss = allss[idx].reshape(np.sum(idx), 1)
@@ -661,13 +689,13 @@ for idx, file in enumerate(directory) :
         
     # Plot   
     
-    plt.figure(figsize=(16, 9), dpi=600)
+    plt.figure()
 #   plt.fill_between(t, low, high, color = colours[2], linewidth=1, alpha=0.4)
     plt.plot(t, np.mean(I, axis=0), color = colours[2], linewidth=2)
     plt.plot(t, C*rho, c = colours[0], linewidth=2, alpha = 0.8)
 
     plt.tight_layout()
-    plt.savefig(prefix + "results/%s_3_predictions.png" % names[idx])
+    plt.savefig(prefix + "results/%s_3_predictions.pdf" % names[idx])
     print "%s Predictions done." % names[idx]
 
     plt.close()
@@ -676,30 +704,38 @@ for idx, file in enumerate(directory) :
 
 
 
+
+
+    errsx = [i[0] for i in allrs2]
+    errsy = [np.mean(i) for i in allss2]
+    errse = [2*np.std(i) for i in allss2]
+    errdx = [i[0] for i in allrd2]
+    errdy = [np.mean(i) for i in allsd2]
+    errde = [2*np.std(i) for i in allsd2]
+
+
     # Size and Duration of Epidemics : Real vs Predicted
-    plt.figure(figsize=(16, 9), dpi=600)
+    plt.figure()
 
     plt.subplot(211)
-    plt.title("%s, Sizes : Slope = %.3f, Intercept = %.1f, R^2 = %.3f, p = %e" % (names[idx], sslope, sintercept, sr, sp))
+    plt.title("%s, Sizes : Slope = %.3f, Intercept = %.1f, R^2 = %.3f, p = %.02e" % (names[idx], sslope, sintercept, sr**2, sp))
     plt.xlabel("Real Size")
     plt.ylabel("Simulated Size")
-    nepi = len(allrs) / (q+1)
-    plt.errorbar(allrs[:nepi], np.mean(allss.reshape(q+1, nepi), axis=0), 2*np.std(allss.reshape(q+1, nepi), axis=0), fmt="o", ms=15, c=colours[2])
-    for i in range(q) :
-        plt.scatter(allrs[i], allss[i], alpha=0.3, c=colours[2], s=35)
+    #nepi = len(allrs) / (q+1)
+    plt.errorbar(errsx, errsy, yerr = errse, fmt="o", ms=10, c=colours[2])
+    #plt.scatter(allrs, allss, alpha=0.3, c=colours[2], s=35)
     plt.plot(xs, ys, linewidth=2, c=colours[0])
         
     plt.subplot(212)
-    plt.title("Durations : Slope = %.3f, Intercept = %.1f, R^2 = %.3f, p = %e" % (dslope, dintercept, dr, dp))
+    plt.title("Durations : Slope = %.3f, Intercept = %.1f, R^2 = %.3f, p = %.02e" % (dslope, dintercept, dr**2, dp))
     plt.xlabel("Real Duration")
     plt.ylabel("Simulated Duration")
-    plt.errorbar(allrd[:nepi], np.mean(allsd.reshape(q+1, nepi), axis=0), 2*np.std(allsd.reshape(q+1, nepi), axis=0), fmt="o", ms=15, c=colours[2])
-    for i in range(q) :
-        plt.scatter(allrd[i], allsd[i], alpha=0.3, c=colours[2], s=35)
-    plt.plot(xd, yd, linewidth=2)
+    plt.errorbar(errdx, errdy, yerr = errde, fmt="o", ms=10, c=colours[2])
+    #plt.scatter(allrd, allsd, alpha=0.3, c=colours[2], s=35)
+    plt.plot(xd, yd, linewidth=2, c=colours[0])
 
     plt.tight_layout()
-    plt.savefig(prefix + "results/%s_4_sizes_durations.png" % names[idx])
+    plt.savefig(prefix + "results/%s_4_sizes_durations.pdf" % names[idx])
     print "%s Sizes and Durations done." % names[idx]
 
     plt.close()
@@ -724,38 +760,40 @@ for idx, file in enumerate(directory) :
 
     # Susceptibles vs Sizes 
 
-    allss = np.array(allss).ravel()
-
     s0 = np.array([Sbar + Z[e[0]] for e in epi])#np.array([np.mean(Sbar + Z[e]) for e in epi])
     slopes0, intercepts0, rs0, ps0, _ = st.linregress(s0[reals > 20], reals[reals > 20])
 
-    s1 = np.array([np.mean(Sbar + Z[e]) for e in np.array(allepi).ravel()])
-    slopes1, intercepts1, rs1, ps1, _ = st.linregress(s1[allss > 20], allss[allss > 20])
+    s1 = []
+    for e in allepi :
+        for i in e :
+            s1.append(np.mean(Sbar + Z[i]))
+
+    slopes1, intercepts1, rs1, ps1, _ = st.linregress(s1, allss)
 
     s0x = np.linspace(0, s0.max(), 500)
     s0y = s0x * slopes0 + intercepts0
 
-    s1x = np.linspace(0, s1.max(), 500)
+    s1x = np.linspace(0, np.max(s1), 500)
     s1y = s1x * slopes1 + intercepts1
 
     
 
     # Plot
-    plt.figure(figsize=(16, 9), dpi=600)
+    plt.figure()
 
     plt.subplot(211)
     plt.scatter(s0, reals, c = colours[0])
     plt.plot(s0x, s0y, linewidth=2)
-    plt.title("%s S0 vs Real Size, Slope = %.3f, Intercept = %.1f, R^2 = %.3f, p = %e" % (names[idx], slopes0, intercepts0, rs0, ps0))
+    plt.title("%s S0 vs Real Size, Slope = %.3f, Intercept = %.1f, R^2 = %.3f, p = %.02e" % (names[idx], slopes0, intercepts0, rs0**2, ps0))
 
 
     plt.subplot(212)
     plt.scatter(s1, allss, c = colours[0], alpha=0.3)
     plt.plot(s1x, s1y, linewidth=2)
-    plt.title("S0 vs Simulated Size, Slope = %.3f, Intercept = %.1f, R^2 = %.3f, p = %e" % (slopes1, intercepts1, rs1, ps1))
+    plt.title("S0 vs Simulated Size, Slope = %.3f, Intercept = %.1f, R^2 = %.3f, p = %.02e" % (slopes1, intercepts1, rs1**2, ps1))
 
     plt.tight_layout()
-    plt.savefig(prefix + "results/%s_5_s0_vs_size.png" % names[idx])
+    plt.savefig(prefix + "results/%s_5_s0_vs_size.pdf" % names[idx])
     print "%s S0 vs Sizes done." % names[idx]
 
     plt.close()
@@ -780,9 +818,9 @@ for idx, file in enumerate(directory) :
 
 
 
-
+    """
     # Inter-epidemic intervals
-    plt.figure(figsize=(16, 9), dpi=600)
+    plt.figure()
 
     ieix = np.linspace(alliei.min(), alliei.max(), 500)
     rieiss, rieisi, rieisr, rieisp, _ = st.linregress(np.diff(starts), reals[1:])
@@ -795,7 +833,7 @@ for idx, file in enumerate(directory) :
     plt.scatter(np.diff(starts), reals[1:], s=100, c=colours[2])
     plt.plot(ieix, rieiss * ieix + rieisi, linewidth=2)
     plt.plot(ieix, ieiss * ieix + ieisi, linewidth=2)
-    plt.title("%s, IEI vs Size : Slope = %.3f, Intercept = %.1f, R^2 = %.3f, p = %e" % (names[idx], ieiss, ieisi, ieisr, ieisp))
+    plt.title("%s, IEI vs Size : Slope = %.3f, Intercept = %.1f, R^2 = %.3f, p = %.02e" % (names[idx], ieiss, ieisi, ieisr, ieisp))
     plt.xlabel("Interepidemic Interval (biweeks)")
     plt.ylabel("Size of Epidemic")
     plt.legend(["Real Fit", "Sim Fit", "Simulated", "Real"])
@@ -805,15 +843,15 @@ for idx, file in enumerate(directory) :
     plt.scatter(np.diff(starts), reald[1:], s=100, c=colours[2])
     plt.plot(ieix, rieids * ieix + rieidi, linewidth=2)
     plt.plot(ieix, ieids * ieix + ieidi, linewidth=2)
-    plt.title("IEI vs Duration : Slope = %.3f, Intercept = %.1f, R^2 = %.3f, p = %e" % (ieids, ieidi, ieidr, ieidp))
+    plt.title("IEI vs Duration : Slope = %.3f, Intercept = %.1f, R^2 = %.3f, p = %.02e" % (ieids, ieidi, ieidr, ieidp))
     plt.xlabel("Interepidemic Interval (biweeks)")
     plt.ylabel("Duration of Epidemic")
     plt.legend(["Real Fit", "Sim Fit", "Simulated", "Real"])
 
     plt.tight_layout()
-    plt.savefig(prefix + "results/%s_6_iei.png" % names[idx])
+    plt.savefig(prefix + "results/%s_6_iei.pdf" % names[idx])
     print "IEI done."
-
+    """
 
 
 
@@ -867,7 +905,7 @@ for idx, file in enumerate(directory) :
     plt.ylabel("max[$R_eff$]")
 
     plt.tight_layout()
-    plt.savefig(prefix + "results/%s_7_r0.png" % names[idx])
+    plt.savefig(prefix + "results/%s_7_r0.pdf" % names[idx])
     print "R0 done."
 
 
