@@ -239,6 +239,8 @@ def qflatten(x) :
 
 
 
+
+
 # Results directory
 if not os.path.isdir(prefix + "results") :
     os.mkdir(prefix + "results")
@@ -246,6 +248,26 @@ if not os.path.isdir(prefix + "results") :
 
 # Now, for each file in the directory
 for idx, file in enumerate(directory) :
+
+
+    export_t = []
+    export_ts = []
+    export_pred = []
+    export_rho = []
+    export_r = []
+    export_rup = []
+    export_rdn = []
+    export_sizex = []
+    export_sizey = []
+    export_sizeerrx = []
+    export_sizeerry = []
+    export_sizeerre = []
+    export_r2 = []
+    export_p = []
+    export_pearson = []
+
+
+    
 
     # Import data
     data = pd.read_csv(prefix + file)
@@ -395,6 +417,17 @@ for idx, file in enumerate(directory) :
         continue
 
 
+
+
+    export_t.append(t)
+    export_ts.append(C)
+    export_rho.append(1./rho)
+
+
+
+
+
+
     # Fit Sbar
 
     # All possible values of Sbar
@@ -478,6 +511,11 @@ for idx, file in enumerate(directory) :
     gamma = L.params["gamma"].value if gam is None else gam
     errup = np.exp(np.log(r) + [2*L.params["r" + str(i)].stderr for i in range(periodicity)])
     errdn = np.exp(np.log(r) - [2*L.params["r" + str(i)].stderr for i in range(periodicity)])
+
+
+    export_r.append(r)
+    export_rup.append(errup)
+    export_rdn.append(errdn)
         
         
     # Plot
@@ -687,10 +725,20 @@ for idx, file in enumerate(directory) :
 #       pbar.update(i)
 
         
+
+    export_pred.append(np.mean(I, axis=0))
+    zerocorrect = np.where(np.mean(I, axis=0) > 1) or np.where(rho*C != 0)
+    export_pearson.append(np.corrcoef(np.mean(I, axis=0)[zerocorrect], predI[zerocorrect])[1,0])
+
+
+
+
+
+
     # Plot   
     
     plt.figure()
-#   plt.fill_between(t, low, high, color = colours[2], linewidth=1, alpha=0.4)
+    #plt.fill_between(t, low, high, color = colours[2], linewidth=1, alpha=0.4)
     plt.plot(t, np.mean(I, axis=0), color = colours[2], linewidth=2)
     plt.plot(t, C*rho, c = colours[0], linewidth=2, alpha = 0.8)
 
@@ -712,6 +760,16 @@ for idx, file in enumerate(directory) :
     errdx = [i[0] for i in allrd2]
     errdy = [np.mean(i) for i in allsd2]
     errde = [2*np.std(i) for i in allsd2]
+
+
+
+    export_sizex.append(xs)
+    export_sizey.append(ys)
+    export_sizeerrx.append(errsx)
+    export_sizeerry.append(errsy)
+    export_sizeerre.append(errse)
+    export_r2.append(sr**2)
+    export_p.append(sp)
 
 
     # Size and Duration of Epidemics : Real vs Predicted
@@ -907,5 +965,33 @@ for idx, file in enumerate(directory) :
     plt.tight_layout()
     plt.savefig(prefix + "results/%s_7_r0.pdf" % names[idx])
     print "R0 done."
+
+
+
+
+
+
+
+
+    pd.DataFrame({  "t" : export_t, 
+                    "ts" : export_ts, 
+                    "pred" : export_pred,
+                    "rho" : export_rho,
+                    "r" : export_r,
+                    "rup" : export_rup,
+                    "rdn" : export_rdn,
+                    "sizex" : export_sizex, 
+                    "sizey" : export_sizey, 
+                    "sizeerrx" : export_sizeerrx, 
+                    "sizeerry" : export_sizeerry, 
+                    "sizeerre" : export_sizeerre,
+                    "r2" : export_r2,
+                    "p" : export_p,
+                    "pearson" : export_pearson
+        }).to_json("paper/figures/%s.json" % names[idx])
+
+
+
+
 
 
