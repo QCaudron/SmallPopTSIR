@@ -18,7 +18,7 @@ directory <- "~/Documents/Grenfell Research/Measles/SmallPopTSIR/data/"
 #directory <- "~/Documents/Grenfell Research/Measles/Plots/"
 place <- c("reykjavik", "hafnafjordur", "akureyri","vestmannaeyjar" ,"bornholm", "faroe")
 folder <- c("iceland", "iceland","iceland","iceland","bornholm", "faroe")
-name <- 6
+name <- 1
 
 # Set up parameters
 num.seas <- 1 # 2 = monthly, 1 = biweekly
@@ -27,7 +27,7 @@ vaccine <- 1965
 delay <- 8
 sensitivity <- 5
 sensitivity.length <- 3
-numsim <- 5000
+numsim <- 100
 alpha.set <- 0.97
 
 # Import data
@@ -382,9 +382,9 @@ plot(I, type = "l")
 
 ##Calculate correlation
 meanI <- as.data.frame(cbind(I, Ic))
-cor.all <- cor(meanI, method="pearson")[1,2]
-meanI <- meanI[meanI$Ic > 0.5 & meanI$I > 0.5, ]
-correlation <- cor(meanI, use="complete.obs", method="pearson")[1,2]
+cor.all <- cor(meanI$I, meanI$Ic, method="pearson")
+meanI <- meanI[meanI$Ic >= 0.5 | meanI$I >= 0.5, ]
+correlation <- cor(meanI$I, meanI$Ic, use="complete.obs", method="pearson")
 
 png(file=paste(directory, folder[name], "/results/", place[name],"_3_predictions_R.png", sep = "")
     ,width=800,height=700)
