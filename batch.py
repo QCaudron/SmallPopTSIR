@@ -264,7 +264,12 @@ for idx, file in enumerate(directory) :
     export_sizeerre = []
     export_r2 = []
     export_p = []
+    export_sn = []
+    export_grad = []
+    export_pearsonzero = []
     export_pearson = []
+    export_sbar = []
+    export_Z = []
 
 
     
@@ -514,6 +519,9 @@ for idx, file in enumerate(directory) :
 
 
     export_r.append(r)
+    export_sn.append((Sbar) / Nt)
+    export_sbar.append(Sbar)
+    export_Z.append(Z)
     export_rup.append(errup)
     export_rdn.append(errdn)
         
@@ -727,9 +735,9 @@ for idx, file in enumerate(directory) :
         
 
     export_pred.append(np.mean(I, axis=0))
-    zerocorrect = np.where(np.mean(I, axis=0) > 1) or np.where(rho*C != 0)
-    export_pearson.append(np.corrcoef(np.mean(I, axis=0)[zerocorrect], predI[zerocorrect])[1,0])
-
+    zerocorrect = np.where(np.mean(I, axis=0) >= 0.5) or np.where(rho*C >= 0.5)
+    export_pearsonzero.append(np.corrcoef(np.mean(I, axis=0)[zerocorrect], predI[zerocorrect])[1,0])
+    export_pearson.append(np.corrcoef(np.mean(I, axis=0), predI)[1,0])
 
 
 
@@ -769,6 +777,7 @@ for idx, file in enumerate(directory) :
     export_sizeerry.append(errsy)
     export_sizeerre.append(errse)
     export_r2.append(sr**2)
+    export_grad.append(sslope)
     export_p.append(sp)
 
 
@@ -987,7 +996,12 @@ for idx, file in enumerate(directory) :
                     "sizeerre" : export_sizeerre,
                     "r2" : export_r2,
                     "p" : export_p,
-                    "pearson" : export_pearson
+                    "pearson" : export_pearson,
+                    "pearsonzero" : export_pearsonzero,
+                    "sn" : export_sn,
+                    "grad" : export_grad,
+                    "sbar" : export_sbar,
+                    "Z" : export_Z
         }).to_json("paper/figures/%s.json" % names[idx])
 
 

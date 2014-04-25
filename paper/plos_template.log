@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012) (format=pdflatex 2013.10.7)  23 APR 2014 11:44
+This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012) (format=pdflatex 2013.10.7)  24 APR 2014 14:49
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -374,7 +374,21 @@ Package babel Info: Making " an active character on input line 70.
 \pl@down=\dimen116
 \pl@right=\dimen117
 \pl@temp=\dimen118
+)
+(/usr/local/texlive/2012/texmf-dist/tex/generic/babel/english.ldf
+Language: english 2005/03/30 v3.3o English support from the babel system
+\l@canadian = a dialect from \language\l@american 
+\l@australian = a dialect from \language\l@british 
+\l@newzealand = a dialect from \language\l@british 
 ))
+(/usr/local/texlive/2012/texmf-dist/tex/latex/float/float.sty
+Package: float 2001/11/08 v1.3d Float enhancements (AL)
+\c@float@type=\count101
+\float@exts=\toks22
+\float@box=\box28
+\@float@everytoks=\toks23
+\@floatcapt=\box29
+)
 (/usr/local/texlive/2012/texmf-dist/tex/latex/cite/cite.sty
 LaTeX Info: Redefining \cite on input line 302.
 LaTeX Info: Redefining \nocite on input line 373.
@@ -400,37 +414,38 @@ Package: caption3 2012/01/12 v1.4b caption3 kernel (AR)
 \caption@parindent=\dimen123
 \caption@hangindent=\dimen124
 )
-\c@ContinuedFloat=\count101
+\c@ContinuedFloat=\count102
+Package caption Info: float package is loaded.
 )
 (./plos_template.aux)
 \openout1 = `plos_template.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 67.
-LaTeX Font Info:    ... okay on input line 67.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 67.
-LaTeX Font Info:    ... okay on input line 67.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 67.
-LaTeX Font Info:    ... okay on input line 67.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 67.
-LaTeX Font Info:    ... okay on input line 67.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 67.
-LaTeX Font Info:    ... okay on input line 67.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 67.
-LaTeX Font Info:    ... okay on input line 67.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 68.
+LaTeX Font Info:    ... okay on input line 68.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 68.
+LaTeX Font Info:    ... okay on input line 68.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 68.
+LaTeX Font Info:    ... okay on input line 68.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 68.
+LaTeX Font Info:    ... okay on input line 68.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 68.
+LaTeX Font Info:    ... okay on input line 68.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 68.
+LaTeX Font Info:    ... okay on input line 68.
 
 (/usr/local/texlive/2012/texmf-dist/tex/context/base/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count102
+\scratchcounter=\count103
 \scratchdimen=\dimen125
-\scratchbox=\box28
-\nofMPsegments=\count103
-\nofMParguments=\count104
-\everyMPshowfont=\toks22
-\MPscratchCnt=\count105
+\scratchbox=\box30
+\nofMPsegments=\count104
+\nofMParguments=\count105
+\everyMPshowfont=\toks24
+\MPscratchCnt=\count106
 \MPscratchDim=\dimen126
-\MPnumerator=\count106
-\makeMPintoPDFobject=\count107
-\everyMPtoPDFconversion=\toks23
+\MPnumerator=\count107
+\makeMPintoPDFobject=\count108
+\everyMPtoPDFconversion=\toks25
 ) (/usr/local/texlive/2012/texmf-dist/tex/generic/oberdiek/pdftexcmds.sty
 Package: pdftexcmds 2011/11/29 v0.20 Utility functions of pdfTeX for LuaTeX (HO
 )
@@ -481,43 +496,89 @@ e
 ))
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: End \AtBeginDocument code.
-LaTeX Font Info:    Try loading font information for U+msa on input line 76.
+LaTeX Font Info:    Try loading font information for U+msa on input line 77.
 
 (/usr/local/texlive/2012/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2009/06/22 v3.00 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 76.
+LaTeX Font Info:    Try loading font information for U+msb on input line 77.
 
 (/usr/local/texlive/2012/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2009/06/22 v3.00 AMS symbols B
 )
-No file plos_template.bbl.
-[1{/usr/local/texlive/2012/texmf-var/fonts/map/pdftex/updmap/pdftex.map}
+<figures/0_incidence.pdf, id=1, 758.835pt x 1073.20946pt>
+File: figures/0_incidence.pdf Graphic file (type pdf)
+
+<use figures/0_incidence.pdf>
+Package pdftex.def Info: figures/0_incidence.pdf used on input line 165.
+(pdftex.def)             Requested size: 409.71689pt x 579.45897pt.
+ [1{/usr/local/texlive/2012/texmf-var/fonts/map/pdftex/updmap/pdftex.map}
 
 ]
-[2] (./plos_template.aux) ) 
+Overfull \vbox (70.85146pt too high) has occurred while \output is active []
+
+
+[2 <./figures/0_incidence.pdf>]
+<figures/1_seasonality.pdf, id=34, 758.835pt x 1073.20946pt>
+File: figures/1_seasonality.pdf Graphic file (type pdf)
+
+<use figures/1_seasonality.pdf>
+Package pdftex.def Info: figures/1_seasonality.pdf used on input line 174.
+(pdftex.def)             Requested size: 409.71689pt x 579.45897pt.
+
+Overfull \vbox (15.9511pt too high) has occurred while \output is active []
+
+
+[3 <./figures/1_seasonality.pdf>]
+<figures/2_predictions.pdf, id=56, 758.835pt x 1073.20946pt>
+File: figures/2_predictions.pdf Graphic file (type pdf)
+
+<use figures/2_predictions.pdf>
+Package pdftex.def Info: figures/2_predictions.pdf used on input line 185.
+(pdftex.def)             Requested size: 409.71689pt x 579.45897pt.
+
+Overfull \vbox (27.9511pt too high) has occurred while \output is active []
+
+
+[4 <./figures/2_predictions.pdf>]
+<figures/3_sizes.pdf, id=76, 758.835pt x 1073.20946pt>
+File: figures/3_sizes.pdf Graphic file (type pdf)
+
+<use figures/3_sizes.pdf>
+Package pdftex.def Info: figures/3_sizes.pdf used on input line 197.
+(pdftex.def)             Requested size: 409.71689pt x 579.45897pt.
+
+Overfull \vbox (63.9511pt too high) has occurred while \output is active []
+
+
+[5 <./figures/3_sizes.pdf>]
+No file plos_template.bbl.
+[6] (./plos_template.aux) ) 
 Here is how much of TeX's memory you used:
- 4280 strings out of 493488
- 59054 string characters out of 3141326
- 118768 words of memory out of 3000000
- 7521 multiletter control sequences out of 15000+200000
- 10780 words of font info for 29 fonts, out of 3000000 for 9000
+ 4365 strings out of 493488
+ 60546 string characters out of 3141326
+ 121621 words of memory out of 3000000
+ 7596 multiletter control sequences out of 15000+200000
+ 9240 words of font info for 27 fonts, out of 3000000 for 9000
  957 hyphenation exceptions out of 8191
- 38i,5n,38p,709b,158s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 38i,6n,38p,709b,290s stack positions out of 5000i,500n,10000p,200000b,50000s
 {/usr/local/texlive/2012/texmf-dist/fonts/enc/dvips/
 cm-super/cm-super-t1.enc}</usr/local/texlive/2012/texmf-dist/fonts/type1/public
-/amsfonts/cm/cmmi7.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/public/a
-msfonts/cm/cmr7.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsf
-onts/cm/cmsy10.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfo
-nts/cm/cmsy7.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/public/cm-supe
-r/sfbx1000.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/public/cm-super/
-sfbx1200.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/public/cm-super/sf
-bx1440.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/public/cm-super/sfrm
-1000.pfb>
-Output written on plos_template.pdf (2 pages, 105838 bytes).
+/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/public/
+amsfonts/cm/cmmi12.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/public/a
+msfonts/cm/cmmi7.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/public/ams
+fonts/cm/cmr10.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfo
+nts/cm/cmr12.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfont
+s/cm/cmr7.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/c
+m/cmsy10.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm
+/cmsy7.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/public/cm-super/sfbx
+1000.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/public/cm-super/sfbx14
+40.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/public/cm-super/sfrm1000
+.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/urw/ncntrsbk/uncr8a.pfb>
+Output written on plos_template.pdf (6 pages, 395766 bytes).
 PDF statistics:
- 44 PDF objects out of 1000 (max. 8388607)
- 31 compressed objects within 1 object stream
+ 209 PDF objects out of 1000 (max. 8388607)
+ 101 compressed objects within 2 object streams
  0 named destinations out of 1000 (max. 500000)
- 1 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 21 words of extra memory for PDF output out of 10000 (max. 10000000)
 
