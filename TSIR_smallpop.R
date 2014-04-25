@@ -12,15 +12,16 @@ library(e1071)
 library(ggplot2)
 library(vioplot)
 library(reshape)
+library(msm)
 
 directory <- "~/Documents/Grenfell Research/Measles/SmallPopTSIR/data/"
 #directory <- "~/Documents/Grenfell Research/Measles/Plots/"
 place <- c("reykjavik", "hafnafjordur", "akureyri","vestmannaeyjar" ,"bornholm", "faroe")
 folder <- c("iceland", "iceland","iceland","iceland","bornholm", "faroe")
-name <- 4
+name <- 6
 
 # Set up parameters
-num.seas <- 2 # 2 = monthly, 1 = biweekly
+num.seas <- 1 # 2 = monthly, 1 = biweekly
 periodicity <- 24
 vaccine <- 1965
 delay <- 8
@@ -163,6 +164,12 @@ for (i in 1:length(Smean)) {
 Sbar <- Smean[which(llik == max(llik))] #we want to maximize the log likelihood
 Sbar
 
+png(file=paste(directory, folder[name], "/results/", place[name],"_2_Sbar_N.png", sep = "")
+    ,width=800,height=700)
+plot(data$time, Sbar/data$population, type = "l", main = "Sbar / N")
+abline(h = mean(Sbar/data$population))
+dev.off()
+
 png(file=paste(directory, folder[name], "/results/", place[name],"_2_Sbar.png", sep = "")
     ,width=800,height=700)
 plot(Smean, -llik, type = "l", log = "y", main = paste("Sbar = ", round(Sbar, 2), sep = ""))
@@ -211,7 +218,6 @@ if (num.seas == 2){
 }
 
 
-
 # Confidence intervals
 se <- sum$coefficients[ ,2]
 upper <- lmfit$coef[1:(periodicity/num.seas)] - mean(lmfit$coef[1:(periodicity/num.seas)]) + qnorm(0.975) * se[1:(periodicity/num.seas)]
@@ -229,6 +235,30 @@ lines(1:(periodicity/num.seas), upper, type = "l", lty = 2)
 lines(1:(periodicity/num.seas), lower, type = "l", lty = 2)
 dev.off()
 
+# Plotting r*Sbar
+
+#use delta method to calculate standard errors
+v <- vcov(lmfit)
+se <- deltamethod(list(~exp(x1)*Sbar, ~exp(x2)*Sbar, ~exp(x3)*Sbar, ~exp(x4)*Sbar, ~exp(x5)*Sbar,
+                        ~exp(x6)*Sbar, ~exp(x7)*Sbar,~exp(x8)*Sbar, ~exp(x9)*Sbar, ~exp(x10)*Sbar, 
+                        ~exp(x11)*Sbar, ~exp(x12)*Sbar, ~exp(x13)*Sbar,
+                        ~exp(x14)*Sbar, ~exp(x15)*Sbar, ~exp(x16)*Sbar, ~exp(x17)*Sbar, ~exp(x18)*Sbar, 
+                        ~exp(x19)*Sbar, ~exp(x20)*Sbar, ~exp(x21)*Sbar, ~exp(x22)*Sbar, 
+                        ~exp(x23)*Sbar, ~exp(x24)*Sbar),
+                   lmfit$coef[1:(periodicity/num.seas)], v)
+
+upper <- (exp(lmfit$coef[1:(periodicity/num.seas)])*Sbar)  + qnorm(0.975) * se[1:(periodicity/num.seas)]
+lower <- (exp(lmfit$coef[1:(periodicity/num.seas)])*Sbar)  - qnorm(0.975) * se[1:(periodicity/num.seas)]
+
+png(file=paste(directory, folder[name], "/results/", place[name],"_2_Seasonality_rSbar.png", sep = "")
+    ,width=800,height=700)
+plot(1:(periodicity/num.seas), exp(lmfit$coef[1:(periodicity/num.seas)]) * Sbar, 
+     type = "l", ylab = "Seasonality", ylim = c(min(lower), max(upper)), 
+     xaxp = c(0, (periodicity/num.seas)+2, ((periodicity/num.seas)+2)/2), xlab = "Period")
+abline(h = 1)
+lines(1:(periodicity/num.seas), upper, type = "l", lty = 2)
+lines(1:(periodicity/num.seas), lower, type = "l", lty = 2)
+dev.off()
 
 ################## Simulation #######################################
 
@@ -348,6 +378,14 @@ S <- colMeans(predS)
 I <- ifelse(is.na(I) == TRUE, 0, I)
 plot(I, type = "l")
 
+
+
+##Calculate correlation
+meanI <- as.data.frame(cbind(I, Ic))
+cor.all <- cor(meanI, method="pearson")[1,2]
+meanI <- meanI[meanI$Ic > 0.5 & meanI$I > 0.5, ]
+correlation <- cor(meanI, use="complete.obs", method="pearson")[1,2]
+
 png(file=paste(directory, folder[name], "/results/", place[name],"_3_predictions_R.png", sep = "")
     ,width=800,height=700)
 plot(time, predI[1,], type = "l", col = "pink", ylim = c(0, 1.5*max(Ic)), ylab = "Cases",
@@ -380,7 +418,9 @@ png(file=paste(directory, folder[name], "/results/", place[name],"_3_predictions
     ,width=800,height=700)
 plot(time, I, type = "l", col = "red", ylim = c(0, 1.3*max(Ic)), ylab = "Cases",
      main = paste("Predicted cases from ", numsim, " simulations (red) 
-        Actual cases corrected for underreporting (blue)", sep = ""), 
+        Actual cases corrected for underreporting (blue)  
+        Zero-corrected correlation = ", round(correlation,3), "
+        Correlation = ", round(cor.all,3), sep = ""), 
      cex.main = 0.7)
 lines(time, lower.bound, type = "l", lty = 2)
 lines(time, upper.bound, type = "l", lty = 2)
