@@ -735,9 +735,12 @@ for idx, file in enumerate(directory) :
         
 
     export_pred.append(np.mean(I, axis=0))
+    
     zerocorrect = np.where(np.mean(I, axis=0) >= 0.5) or np.where(rho*C >= 0.5)
-    export_pearsonzero.append(np.corrcoef(np.mean(I, axis=0)[zerocorrect], predI[zerocorrect])[1,0])
-    export_pearson.append(np.corrcoef(np.mean(I, axis=0), predI)[1,0])
+    
+    export_pearsonzero.append(st.pearsonr(np.mean(I, axis=0)[zerocorrect], rho[zerocorrect]*C[zerocorrect])[0])
+    
+    export_pearson.append(st.pearsonr(np.mean(I, axis=0), rho*C)[0])
 
 
 
