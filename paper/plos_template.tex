@@ -104,15 +104,9 @@ $\ast$ E-mail: qcaudron@princeton.edu
 % Please keep the abstract between 250 and 300 words
 \section*{Abstract}
 
-Blah
+A standard assumption in the modelling of epidemic dynamics is that of a certain level of homogeneity. In childhood infections, such as measles, populations are typically assumed to be large and well-mixed, and the data assumed to contain a high signal-to-noise ratio. This allows the use of differential equations as a model for disease dynamics, generally with positive results, both in terms of explaining the underlying mechanisms for infection, and for the prediction of future time series data on disease incidence. Here, we consider a setting where populations are small and heterogeneous, and where the dynamics of infection are driven by extinction-recolonisation events. Using a TSIR model, we fit prevaccination measles incidence and demographic data in Bornholm, the Faroe Islands, and four districts in Iceland, between 1901 and 1965. We explore the potential for prediction in this model : given historical incidence data and up-to-date demographic information, and knowing that a new epidemic has just begun, can we predict how large it will be ? We show that, despite a lack of significant seasonality in the incidence of measles cases, we are able to estimate the size of upcoming epidemics, conditioned on the first time step, to within reasonable confidence. Reporting rates are estimated to vary widely over time
 
-
-% Please keep the Author Summary between 150 and 200 words
-% Use first person. PLoS ONE authors please skip this step. 
-% Author Summary not valid for PLoS ONE submissions.   
-%\section*{Author Summary}
-
-
+Each of these countries are characterised by a different level of data heterogeneity
 
 
 
@@ -129,7 +123,7 @@ Blah
 
 Needs padding and fixing...
 
-Measles is a highly contagious and strongly immunizing infection of the respiratory system. Due to its extreme transmissibility, its epidemiology is conditional on the birth of susceptible individuals. As such, the temporal dynamics of measles are typically strongly oscillatory, driven seasonally by the increased contact rate amongst children during school periods, assuming the population is large enough to sustain the disease (Black FL, 1966, JTB 11). These dynamics have been well studied (Grenfell papers, others), and many modelling efforts have successfully explained the biennial cycle exhibited in prevaccination records of measles incidence in Europe and elsewhere (papers ?). 
+Measles is a highly contagious and strongly immunising infection of the respiratory system. Due to its extreme transmissibility, its epidemiology is conditional on the birth of susceptible individuals. As such, the temporal dynamics of measles are typically strongly oscillatory, driven seasonally by the increased contact rate amongst children during school periods, assuming the population is large enough to sustain the disease (Black FL, 1966, JTB 11). These dynamics have been well studied (Grenfell papers, others), and many modelling efforts have successfully explained the biennial cycle exhibited in prevaccination records of measles incidence in Europe and elsewhere (papers ?). 
 
 In small populations, where the number of individuals is much smaller than the critical community size required to support an endemic infection, however, the dynamics of measles cases are vastly different. Susceptible individuals accumulate when measles is absent; then, driven by stochastic importation, an epidemic may sweep through a large fraction of the susceptible population very quickly, only to go extinct abruptly as susceptibles become depleted. This results in very sharp, spiky epidemics, the timing of which may be impossible to predict, but the size and duration of which may be a function of historical data. 
 
@@ -151,50 +145,31 @@ Any seasonality ?
 
 \section*{Methods}
 
-Measles incidence data were obtained for Bornholm (cite), the Faroe Islands (cite), and four districts of Iceland (cite). Monthly reports were available from 1901 for Iceland, from 1925 for Bornholm, and 1912 for the Faroe Islands. All time-series were truncated in 1965, beyond which vaccination begins to be introduced. 
+\subsection*{Raw Data}
 
+Measles incidence data were obtained for Iceland, the Faroe Islands, and Bornholm (CONFIRM?), from 1900 to 1965, from \citet{Cliff1983A}. For Iceland, this dataset collects monthly figures for measles cases reported in 47 medical districts, originally sourced from Heilbrigdisskyrslur (Public Health in Iceland). Major revisions to the boundaries of medical districts took place twice during the study period : in 1907 and 1932. For the Faroe Islands and Bornholm, the data were originally published WHERE?. 
 
-ICELAND
+Demographic data for Iceland were obtained from two sources. Annual data on population and number of live births for the entire country were taken from \citet{Cliff1983B}. Decadal population data from 1901 to 1965, for 262 municipalities, were obtained from online publication in \citet{StatisticsIceland}. Municipality boundaries changed from three to five times during the study period. In addition, many municipalities had missing data. Medical districts and municipalities were matched based on names, and confirmed using latitude and longitudes. Using this procedure, we were able to confidently match four medical districts with municipalities. Several matched districts were discarded either due to missing population data, or lack of confidence in the matching of the geographical boundaries. It is also worth noting that matched medical district - municipality pairs may not encompass the exact same area, but one may be a (potentially partial) subset of the other.
 
-Demographics : Statistics Iceland 
+Data on the demographics of the Faroe Islands were taken from the Statistical Yearbooks of Denmark published by \citet{StatisticsDenmark}. Annuak data on population and births from 1901-1965 were obtained in aggregated form for all of the islands in the Faroe archipelago. 
 
-262 municipalities; boundary changes three to five times during study period. Many municipalities missing data. Resolution : decade.
+Demographic data for Bornholm was collected from several publications from \citet{StatisticsDenmark}. Annual population data for Bornholm were obtained from \citet{StatBankDenmark}, which contains detailed statistical information collected by Statistics Denmark. Pre-1930 annual birth data were obtained from the “\UTF{00C6}gteskaber, F\UTF{00F8}dte og D\UTF{00F8}de” (Marriages, Births and Death) publications of Statistics Denmark. Post-1930 annual birth data were obtained from “Befolkningsudvikling og sundhedsforhold 1901-60” (Population, Development and Health 1901 \UTF{2013} 1960). CITE URLs.
 
-Disease data : 47 districts; boundary changes N times, see Cliff + Haggett. All districts have complete data. Resolution : monthly.
-
-Reconciliation : no time changes taken into account; locations matched based on name and confirmed by latitude / longitude, leaving a grand total of four regions with both high confidence of geographic matching and sufficient populations.
-
-
-
-
-
-FAROE
-
-Demographics : 
+All locations experienced a slight decline in birth rates just prior to 1940, followed by a sharp increase in births after 1940. In Bornholm, births declined steadily from around 1945 onwards. In Iceland and the Faroe Islands, aggregate births increased steadily from 1940s onwards, with a slight decline in Iceland around 1960.
 
 
 
 
 
 
-BORNHOLM :
+\subsection*{Data Preparation}
 
-Demographics collected from various census records
-
+In order to 
 
 
 
 
 Interpolation
-
-Demographics data : births, populations
-
-Iceland : matching done by latitude / longitude, 
-
-
-
-
-
 
 
 Demo description : 
@@ -317,7 +292,7 @@ Intercept on size plot - we should be seeing zero intercept, gradient one. We're
 
 %\section*{References}
 % The bibtex filename
-\bibliography{template}
+\bibliography{qbib}
 
 \section*{Figure Legends}
 %\begin{figure}[!ht]

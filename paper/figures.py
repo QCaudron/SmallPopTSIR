@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 # Generate figures for paper
 
 # Plots to generate :
@@ -44,6 +46,8 @@ sbar = []
 sn = []
 Z = []
 grad = []
+ciu = []
+cid = []
 
 
 
@@ -54,7 +58,7 @@ grad = []
 for file in os.listdir("figures/") :
 	if file.endswith(".json") :
 		data = pd.read_json("figures/%s" % file)
-		name.append(file.split(".json")[0])
+		name.append(u" %s" % file.split(".json")[0].decode("utf-8"))
 		t.append(data["t"].values[0])
 		ts.append(data["ts"].values[0])
 		pred.append(data["pred"].values[0])
@@ -74,9 +78,8 @@ for file in os.listdir("figures/") :
 		sbar.append(data["sbar"].values[0])
 		grad.append(data["grad"].values[0])
 		sn.append(data["sn"].values[0])
-
-
-
+		ciu.append(data["predciu"].values[0])
+		cid.append(data["predcid"].values[0])
 
 
 
@@ -89,7 +92,7 @@ for i in range(len(name)) :
 	ax1.plot(t[i], ts[i], lw=2)
 	ax1.plot(t[i], ts[i], lw=2, c=colours[2], alpha=0.6)
 	ax1.plot(t[i], ts[i], lw=2, c=colours[0])
-	ax1.set_title(name[i], fontsize=16, loc="left")
+	ax1.set_title(u"%s" % name[i], fontsize=16, loc="left")
 	ax1.tick_params(labelsize=16)
 	ax1.locator_params(nbins=5, axis="y")
 	
@@ -121,16 +124,16 @@ plt.close()
 
 
 
-fig, axs = plt.subplots(len(name), 1, sharex=True, figsize=(xdim*210/scalefactor, ydim*297/scalefactor))
+fig, axs = plt.subplots(3, 2, sharex=True, figsize=(xdim*210/scalefactor, ydim*297/scalefactor))
 ##plt.suptitle("Seasonality", fontsize=20, y=.999)
 for i in range(len(name)) :
-	axs[i].plot(r[i] * sbar[i], lw=2)
-	axs[i].fill_between(range(24), rup[i] * sbar[i], rdn[i] * sbar[i], color=colours[0], alpha=0.3)
-	axs[i].set_title(name[i], fontsize=16, loc="left")
-	axs[i].set_xlim([0, 23])
-	axs[i].set_xticks(range(0, 23, 4))
-	axs[i].tick_params(labelsize=16)
-	axs[i].locator_params(nbins=5, axis="y")
+	axs[i % 3][np.floor(i/3)].plot(r[i] * sbar[i], lw=2)
+	axs[i % 3][np.floor(i/3)].fill_between(range(24), rup[i] * sbar[i], rdn[i] * sbar[i], color=colours[0], alpha=0.3)
+	axs[i % 3][np.floor(i/3)].set_title(name[i], fontsize=16, loc="left")
+	axs[i % 3][np.floor(i/3)].set_xlim([0, 23])
+	axs[i % 3][np.floor(i/3)].set_xticks(range(0, 23, 4))
+	axs[i % 3][np.floor(i/3)].tick_params(labelsize=16)
+	axs[i % 3][np.floor(i/3)].locator_params(nbins=5, axis="y")
 plt.figtext(.5, 0.01, "Period", ha="center", va="center", fontsize=16)
 plt.figtext(.01, 0.5, r"Seasonality, $r \bar{S}$", ha="center", va="center", rotation="vertical", fontsize=16)
 plt.tight_layout(rect=(0.015, 0.015, .99, 1)) # (left, bottom, right, top) 
@@ -147,14 +150,16 @@ fig, axs = plt.subplots(len(name), 1, figsize=(xdim*210/scalefactor, ydim*297/sc
 ##plt.suptitle("Predicted Cases", fontsize=20, y=.999)
 for i in range(len(name)) :
 	axs[i].plot(t[i], ts[i], lw=2, c=colours[0])
-	axs[i].plot(t[i], pred[i], lw=2, c=colours[2], alpha=0.6)
+	axs[i].plot(t[i], pred[i], lw=1, c=colours[2], alpha=1)
+	axs[i].fill_between(t[i], cid[i], ciu[i], color=colours[2], alpha=0.3)
 	axs[i].tick_params(labelsize=16)
 	axs[i].locator_params(nbins=5, axis="y")
-	axs[i].set_title(r"%s. $R^2$ = %.03f, zero-corrected $R^2$ = %.03f" % (name[i], pearson[i], pearsonzero[i]), fontsize=16, loc="left")
+	axs[i].set_title(u"%s. $R^2$ = %.03f, zero-corrected $R^2$ = %.03f" % (name[i].decode("utf-8"), pearson[i], pearsonzero[i]), fontsize=16, loc="left")
+	axs[i].set_xlim([np.min(t[i]), np.max(t[i])])
 	if i == 0 :
 		axs[i].legend([r"Observed Incidence", "Predicted Incidence"], loc=2)
 
-plt.figtext(.01, 0.5, r"Incidence, $\rho C$", ha="center", va="center", rotation="vertical", fontsize=16)
+plt.figtext(.01, 0.5, r"Incidence, $\rho\,C$", ha="center", va="center", rotation="vertical", fontsize=16)
 plt.figtext(.5, 0.01, "Time", ha="center", va="center", fontsize=16)
 plt.tight_layout(rect=(0.01, 0.015, .99, 1))
 plt.savefig("figures/2_predictions.pdf")
@@ -174,7 +179,8 @@ for i in range(len(name)) :
 	axs[i].plot(sizex[i], sizey[i], lw=2, c=colours[2])
 	axs[i].tick_params(labelsize=16)
 	axs[i].locator_params(nbins=5, axis="y")
-	axs[i].set_title(r"%s. $R^2$ = %.2f, slope = %.02f" % (name[i], r2[i], grad[i]), fontsize=16, loc="left")
+	axs[i].set_xlim([0, np.max(sizex[i])*1.02])
+	axs[i].set_title(u"%s. $R^2$ = %.2f, slope = %.02f" % (name[i].decode("utf-8"), r2[i], grad[i]), fontsize=16, loc="left")
 
 plt.figtext(.01, 0.5, "Simulated Epidemic Size", ha="center", va="center", rotation="vertical", fontsize=16)
 plt.figtext(.5, 0.01, "Actual Epidemic Size", ha="center", va="center", fontsize=16)

@@ -36,7 +36,7 @@ directory = [f for f in os.listdir(prefix) if f.endswith(".csv")]
 names = [i.split(".")[0].capitalize() for i in directory]
 
 # Params
-sensitivity = 5
+sensitivity = 8#int(sys.argv[3])
 periodicity = 24
 penalty = 1e-3
 delay = 8
@@ -253,6 +253,8 @@ for idx, file in enumerate(directory) :
     export_t = []
     export_ts = []
     export_pred = []
+    export_ciu = []
+    export_cid = []
     export_rho = []
     export_r = []
     export_rup = []
@@ -298,7 +300,7 @@ for idx, file in enumerate(directory) :
 
     plt.subplot(211)
     plt.plot(t, C, linewidth=2)
-    plt.title("Reported Cases, %s" % names[idx])
+    plt.title(u"Reported Cases, %s" % names[idx].decode("utf-8"))
     for e in epi :
         plt.axvspan(t[e[0]], t[e[-1]], color = seaborn.color_palette("deep", 3)[2], alpha=0.3)
     plt.xlabel("Time")
@@ -306,13 +308,13 @@ for idx, file in enumerate(directory) :
 
     plt.subplot(212)
     plt.plot(t, B, linewidth=2)
-    plt.title("Live Births, %s" % names[idx])
+    plt.title(u"Live Births, %s" % names[idx].decode("utf-8"))
     plt.xlabel("Time")
     plt.ylabel("Births")
 
     plt.tight_layout()
-    plt.savefig(prefix + "results/%s_0_timeseries.pdf" % names[idx])
-    print "%s Time-Series done." % names[idx]
+    plt.savefig(prefix + u"results/%s_0_timeseries.pdf" % names[idx].decode("utf-8"))
+    print u"%s Time-Series done." % names[idx].decode("utf-8")
 
     plt.close()
 
@@ -367,7 +369,7 @@ for idx, file in enumerate(directory) :
     plt.plot(t, X, linewidth=2)
     plt.plot(t, Y, linewidth=2)
     plt.plot(t, Yhat, linewidth=2)#.predict(X.reshape(len(X), 1)), linewidth=2)
-    plt.title("Reported and Inferred Cases, %s" % names[idx])
+    plt.title(u"Reported and Inferred Cases, %s" % names[idx].decode("utf-8"))
     plt.legend(["Reported Cases", "Cumulative Births", "Inferred Cases"], loc=2)
 
     plt.subplot(222)
@@ -383,8 +385,8 @@ for idx, file in enumerate(directory) :
     plt.xlabel("Time (years)")
 
     plt.tight_layout()
-    plt.savefig(prefix + "results/%s_1_susceptible_reconstruction.pdf" % names[idx])
-    print "%s Susceptible Reconstruction done." % names[idx]
+    plt.savefig(prefix + u"results/%s_1_susceptible_reconstruction.pdf" % names[idx].decode("utf-8"))
+    print u"%s Susceptible Reconstruction done." % names[idx].decode("utf-8")
     
     plt.close()
 
@@ -532,7 +534,7 @@ for idx, file in enumerate(directory) :
     plt.subplot(121)
     plt.axvline(x=Sbar, color="red", linewidth=2)
     plt.loglog(Svals, l, linewidth=2)
-    plt.title("Goodness of Fit, %s" % names[idx])
+    plt.title(u"Goodness of Fit, %s" % names[idx].decode("utf-8"))
     plt.xlabel(r"$\bar{S}$")
     plt.ylabel(r"$\chi^2$")
     plt.legend([r"$\bar{S}$ = %d, $\alpha$ = %.03f, $\gamma$ = %.03f" % (Sbar, alphaSbar, gamma)])
@@ -546,8 +548,8 @@ for idx, file in enumerate(directory) :
     plt.xlabel("Period")
     
     plt.tight_layout()
-    plt.savefig(prefix + "results/%s_2_meanS_periodicity.pdf" % names[idx])
-    print "%s Mean S and Periodicity done." % names[idx]
+    plt.savefig(prefix + u"results/%s_2_meanS_periodicity.pdf" % names[idx].decode("utf-8"))
+    print "%s Mean S and Periodicity done." % names[idx].decode("utf-8")
 
     plt.close()
 
@@ -735,12 +737,30 @@ for idx, file in enumerate(directory) :
         
 
     export_pred.append(np.mean(I, axis=0))
+
+
+    cid = []
+    ciu = []
+    for i in range(I.shape[1]) :
+        ff, xx = np.histogram(I[:, i], q/2)
+        integral = np.sum(ff)
+        normed = np.cumsum(ff).astype(float) / integral
+        down = np.where(normed >= 0.025)[0][0]
+        up = np.where(normed >= 0.975)[0][0]
+        cid.append(xx[down])
+        ciu.append(xx[up])
+
+    export_ciu.append(ciu)
+    export_cid.append(cid)
+
+
+
     
     zerocorrect = np.where(np.mean(I, axis=0) >= 0.5) or np.where(rho*C >= 0.5)
     
-    export_pearsonzero.append(st.pearsonr(np.mean(I, axis=0)[zerocorrect], rho[zerocorrect]*C[zerocorrect])[0])
+    export_pearsonzero.append(st.pearsonr(np.mean(I, axis=0)[zerocorrect], rho[zerocorrect]*C[zerocorrect])[0] **2)
     
-    export_pearson.append(st.pearsonr(np.mean(I, axis=0), rho*C)[0])
+    export_pearson.append(st.pearsonr(np.mean(I, axis=0), rho*C)[0] **2)
 
 
 
@@ -754,8 +774,8 @@ for idx, file in enumerate(directory) :
     plt.plot(t, C*rho, c = colours[0], linewidth=2, alpha = 0.8)
 
     plt.tight_layout()
-    plt.savefig(prefix + "results/%s_3_predictions.pdf" % names[idx])
-    print "%s Predictions done." % names[idx]
+    plt.savefig(prefix + u"results/%s_3_predictions.pdf" % names[idx].decode("utf-8"))
+    print u"%s Predictions done." % names[idx].decode("utf-8")
 
     plt.close()
 
@@ -788,7 +808,7 @@ for idx, file in enumerate(directory) :
     plt.figure()
 
     plt.subplot(211)
-    plt.title("%s, Sizes : Slope = %.3f, Intercept = %.1f, R^2 = %.3f, p = %.02e" % (names[idx], sslope, sintercept, sr**2, sp))
+    plt.title(u"%s, Sizes : Slope = %.3f, Intercept = %.1f, R^2 = %.3f, p = %.02e" % (names[idx].decode("utf-8"), sslope, sintercept, sr**2, sp))
     plt.xlabel("Real Size")
     plt.ylabel("Simulated Size")
     #nepi = len(allrs) / (q+1)
@@ -805,8 +825,8 @@ for idx, file in enumerate(directory) :
     plt.plot(xd, yd, linewidth=2, c=colours[0])
 
     plt.tight_layout()
-    plt.savefig(prefix + "results/%s_4_sizes_durations.pdf" % names[idx])
-    print "%s Sizes and Durations done." % names[idx]
+    plt.savefig(prefix + u"results/%s_4_sizes_durations.pdf" % names[idx].decode("utf-8"))
+    print u"%s Sizes and Durations done." % names[idx].decode("utf-8")
 
     plt.close()
 
@@ -854,7 +874,7 @@ for idx, file in enumerate(directory) :
     plt.subplot(211)
     plt.scatter(s0, reals, c = colours[0])
     plt.plot(s0x, s0y, linewidth=2)
-    plt.title("%s S0 vs Real Size, Slope = %.3f, Intercept = %.1f, R^2 = %.3f, p = %.02e" % (names[idx], slopes0, intercepts0, rs0**2, ps0))
+    plt.title(u"%s S0 vs Real Size, Slope = %.3f, Intercept = %.1f, R^2 = %.3f, p = %.02e" % (names[idx].decode("utf-8"), slopes0, intercepts0, rs0**2, ps0))
 
 
     plt.subplot(212)
@@ -863,8 +883,8 @@ for idx, file in enumerate(directory) :
     plt.title("S0 vs Simulated Size, Slope = %.3f, Intercept = %.1f, R^2 = %.3f, p = %.02e" % (slopes1, intercepts1, rs1**2, ps1))
 
     plt.tight_layout()
-    plt.savefig(prefix + "results/%s_5_s0_vs_size.pdf" % names[idx])
-    print "%s S0 vs Sizes done." % names[idx]
+    plt.savefig(prefix + u"results/%s_5_s0_vs_size.pdf" % names[idx].decode("utf-8"))
+    print u"%s S0 vs Sizes done." % names[idx].decode("utf-8")
 
     plt.close()
 
@@ -919,7 +939,7 @@ for idx, file in enumerate(directory) :
     plt.legend(["Real Fit", "Sim Fit", "Simulated", "Real"])
 
     plt.tight_layout()
-    plt.savefig(prefix + "results/%s_6_iei.pdf" % names[idx])
+    plt.savefig(prefix + "results/%s_6_iei.pdf" % names[idx].decode("utf-8"))
     print "IEI done."
     """
 
@@ -957,7 +977,7 @@ for idx, file in enumerate(directory) :
     plt.plot(C[z], linewidth=2)
     for e in L :
         plt.axvline(e, c=colours[2])
-    plt.title("%s, Incidence" % names[idx])
+    plt.title(u"%s, Incidence" % names[idx].decode("utf-8"))
     plt.ylabel("Cases")
 
     plt.subplot2grid((2, 2), (1, 0))
@@ -975,7 +995,7 @@ for idx, file in enumerate(directory) :
     plt.ylabel("max[$R_eff$]")
 
     plt.tight_layout()
-    plt.savefig(prefix + "results/%s_7_r0.pdf" % names[idx])
+    plt.savefig(prefix + u"results/%s_7_r0.pdf" % names[idx].decode("utf-8"))
     print "R0 done."
 
 
@@ -988,6 +1008,8 @@ for idx, file in enumerate(directory) :
     pd.DataFrame({  "t" : export_t, 
                     "ts" : export_ts, 
                     "pred" : export_pred,
+                    "predciu" : export_ciu,
+                    "predcid" : export_cid,
                     "rho" : export_rho,
                     "r" : export_r,
                     "rup" : export_rup,
@@ -1005,7 +1027,7 @@ for idx, file in enumerate(directory) :
                     "grad" : export_grad,
                     "sbar" : export_sbar,
                     "Z" : export_Z
-        }).to_json("paper/figures/%s.json" % names[idx])
+        }).to_json(u"paper/figures/%s.json" % names[idx].decode("utf-8"))
 
 
 
