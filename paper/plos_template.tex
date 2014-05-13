@@ -153,7 +153,7 @@ Demographic data for Iceland were obtained from two sources. Annual data on popu
 
 Data on the demographics of the Faroe Islands were taken from the Statistical Yearbooks of Denmark published by \citet{StatisticsDenmark}. Annuak data on population and births from 1901-1965 were obtained in aggregated form for all of the islands in the Faroe archipelago. 
 
-Demographic data for Bornholm was collected from several publications from \citet{StatisticsDenmark}. Annual population data for Bornholm were obtained from \citet{StatBankDenmark}, which contains detailed statistical information collected by Statistics Denmark. Pre-1930 annual birth data were obtained from the “\UTF{00C6}gteskaber, F\UTF{00F8}dte og D\UTF{00F8}de” (Marriages, Births and Death) publications of Statistics Denmark. Post-1930 annual birth data were obtained from “Befolkningsudvikling og sundhedsforhold 1901-60” (Population, Development and Health 1901 \UTF{2013} 1960). CITE URLs.
+Demographic data for Bornholm was collected from several publications from \citet{StatisticsDenmark}. Annual population data for Bornholm were obtained from \citet{StatBankDenmark}, which contains detailed statistical information collected by Statistics Denmark. Pre-1930 annual birth data were obtained from the “\UTF{00C6}gteskaber, F\UTF{00F8}dte og D\UTF{00F8}de” (Marriages, Births and Death) publications of Statistics Denmark. POS930 annual birth data were obtained from “Befolkningsudvikling og sundhedsforhold 1901-60” (Population, Development and Health 1901 \UTF{2013} 1960). CITE URLs.
 
 All locations experienced a slight decline in birth rates just prior to 1940, followed by a sharp increase in births after 1940. In Bornholm, births declined steadily from around 1945 onwards. In Iceland and the Faroe Islands, aggregate births increased steadily from 1940s onwards, with a slight decline in Iceland around 1960.
 
@@ -182,6 +182,27 @@ How births were calculated; all births in Iceland drop from 1930 - 1940 then bab
 Data very spiky, monthly. Interpolated two points per point ( not quite biweekly, 24 periods ). Qualitatively : Iceland spiky, Bornholm smoother, Faroe lots of small epis. 
 
 
+
+
+
+
+
+
+\section*{Model}
+
+\begin{align}
+I_{t} &= r_{t} \, I_{t-1}^\alpha \, S_{t-1} \, \varepsilon_t \\
+S_{t} &= B_{t-d} + S_{t-1} - I_{t-1}
+\end{align}
+
+\begin{equation}
+I_t = \rho_t \, C_t
+\end{equation}
+
+
+\begin{align}
+S_t = \bar{S} + Z_t
+\end{align}
 
 % Results and Discussion can be combined.
 \section*{Results}

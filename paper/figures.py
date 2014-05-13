@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Generate figures for paper
 
 # Plots to generate :
@@ -15,9 +13,11 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gs
-from matplotlib import rc
+import matplotlib as mpl
 import seaborn
-rc("text", usetex=True)
+#mpl.rcParams['text.latex.preamble'] = [r'\usepackage[utf8]{fontenc}'] 
+mpl.rcParams['text.latex.unicode'] = True 
+mpl.rcParams['text.usetex'] = True   
 
 colours = seaborn.color_palette("deep", 8)
 scalefactor = 20.
@@ -58,7 +58,7 @@ cid = []
 for file in os.listdir("figures/") :
 	if file.endswith(".json") :
 		data = pd.read_json("figures/%s" % file)
-		name.append(u" %s" % file.split(".json")[0].decode("utf-8"))
+		name.append(" %s" % file.split(".json")[0])
 		t.append(data["t"].values[0])
 		ts.append(data["ts"].values[0])
 		pred.append(data["pred"].values[0])
@@ -83,16 +83,16 @@ for file in os.listdir("figures/") :
 
 
 
-
+"""
 plt.figure(figsize=(xdim*210/scalefactor, ydim*297/scalefactor))
 ##plt.suptitle("Reported Incidence and Inferred Reporting Rate", fontsize=20, y=.999)
 for i in range(len(name)) :
 
 	ax1 = plt.subplot(len(name), 1, i+1)
-	ax1.plot(t[i], ts[i], lw=2)
-	ax1.plot(t[i], ts[i], lw=2, c=colours[2], alpha=0.6)
+	#ax1.plot(t[i], ts[i], lw=2)
+	#ax1.plot(t[i], ts[i], lw=2, c=colours[2], alpha=0.6)
 	ax1.plot(t[i], ts[i], lw=2, c=colours[0])
-	ax1.set_title(u"%s" % name[i], fontsize=16, loc="left")
+	ax1.set_title(u"%s" % name[i].decode("utf-8"), fontsize=16, loc="left")
 	ax1.tick_params(labelsize=16)
 	ax1.locator_params(nbins=5, axis="y")
 	
@@ -194,15 +194,7 @@ plt.close()
 
 
 
-"""
-plt.figure(figsize=(xdim*210/scalefactor, ydim*297/scalefactor))
-for i in range(len(name)) :
-	plt.subplot(len(name), 1, i+1)
-	plt.plot(t[i], sn[i], lw=2)
-plt.tight_layout(rect=(0.01, 0.015, .99, 1))
-plt.savefig("figures/4_susceptiblefraction.pdf")
-plt.close()
-"""
+
 
 
 
@@ -231,6 +223,7 @@ plt.tight_layout(rect=(0.02, 0.015, .99, 1))
 plt.savefig("figures/5_infectiontiming.pdf")
 plt.close()
 
+"""
 
 
 
@@ -238,10 +231,112 @@ plt.close()
 
 
 
-for i in t :
-	print i[0]
 
 
 
+
+
+
+fig, axs = plt.subplots(3, 2, sharex=True, figsize=(xdim*210/scalefactor, ydim*115/scalefactor))
+##plt.suptitle("Seasonality", fontsize=20, y=.999)
+for i in range(len(name)) :
+	axs[i % 3][np.floor(i/3)].plot(t[i], ts[i], lw=2)
+	axs[i % 3][np.floor(i/3)].set_title(u"%s" % name[i].decode("utf-8"), fontsize=16, loc="left")
+	axs[i % 3][np.floor(i/3)].set_xlim([1900, 1965])
+	#axs[i % 3][np.floor(i/3)].set_xticks(range(0, 23, 4))
+	axs[i % 3][np.floor(i/3)].tick_params(labelsize=14)
+	axs[i % 3][np.floor(i/3)].locator_params(nbins=5, axis="y")
+
+	a = axs[i%3][np.floor(i/3)].twinx()
+	a.plot(t[i], rho[i], lw=3, c=colours[2], alpha=0.6)
+	a.grid(False)
+	a.tick_params(labelsize=14)
+	a.locator_params(nbins=5, axis="y")
+	a.set_xlim([1900, 1965])
+
+plt.figtext(.015, 0.5, r"Reported Incidence", ha="center", va="center", rotation="vertical", fontsize=16)
+plt.figtext(.5, 0.05, "Time", ha="center", va="center", fontsize=16)
+plt.tight_layout(rect=(0.02, 0.05, .99, 1)) # (left, bottom, right, top) 
+plt.savefig("figures/6_fortalk.pdf")
+plt.close()
+
+
+
+
+
+
+
+
+fig, axs = plt.subplots(3, 2, sharex=True, figsize=(xdim*210/scalefactor, ydim*115/scalefactor))
+##plt.suptitle("Seasonality", fontsize=20, y=.999)
+for i in range(len(name)) :
+	axs[i % 3][np.floor(i/3)].plot(r[i] * sbar[i], lw=2)
+	axs[i % 3][np.floor(i/3)].fill_between(range(24), rup[i] * sbar[i], rdn[i] * sbar[i], color=colours[0], alpha=0.3)
+	axs[i % 3][np.floor(i/3)].set_title(name[i], fontsize=16, loc="left")
+	axs[i % 3][np.floor(i/3)].set_xlim([0, 23])
+	axs[i % 3][np.floor(i/3)].set_xticks(range(0, 23, 4))
+	axs[i % 3][np.floor(i/3)].tick_params(labelsize=16)
+	axs[i % 3][np.floor(i/3)].locator_params(nbins=5, axis="y")
+plt.figtext(.5, 0.05, "Period", ha="center", va="center", fontsize=16)
+plt.figtext(.01, 0.5, r"Seasonality, $r \bar{S}$", ha="center", va="center", rotation="vertical", fontsize=16)
+plt.tight_layout(rect=(0.02, 0.05, .99, 1)) # (left, bottom, right, top) 
+plt.savefig("figures/7_fortalk.pdf")
+plt.close()
+
+
+
+
+
+
+
+
+
+
+fig, axs = plt.subplots(3, 2, sharex=True, figsize=(xdim*210/scalefactor, ydim*115/scalefactor))
+##plt.suptitle("Predicted Cases", fontsize=20, y=.999)
+for i in range(len(name)) :
+	axs[i % 3][np.floor(i/3)].plot(t[i], ts[i], lw=2, c=colours[0])
+	axs[i % 3][np.floor(i/3)].plot(t[i], pred[i], lw=1, c=colours[2], alpha=1)
+	axs[i % 3][np.floor(i/3)].fill_between(t[i], cid[i], ciu[i], color=colours[2], alpha=0.3)
+	axs[i % 3][np.floor(i/3)].tick_params(labelsize=16)
+	axs[i % 3][np.floor(i/3)].locator_params(nbins=5, axis="y")
+	axs[i % 3][np.floor(i/3)].set_title(u"%s. $R^2$ = %.03f" % (name[i].decode("utf-8"), pearson[i]), fontsize=16, loc="left")
+	axs[i % 3][np.floor(i/3)].set_xlim([1900, 1965])
+	axs[i % 3][np.floor(i/3)].set_ylim([0, max(np.max(ts[i]), np.max(pred[i]))])
+	if i == 0 and np.floor(i/3) == 0 :
+		axs[i % 3][np.floor(i/3)].legend([r"Observed Incidence", "Predicted Incidence"], loc=2)
+
+plt.figtext(.015, 0.5, r"Incidence, $\rho_t\,C_t$", ha="center", va="center", rotation="vertical", fontsize=16)
+plt.figtext(.5, 0.02, "Time", ha="center", va="center", fontsize=16)
+plt.tight_layout(rect=(0.015, 0.05, .99, 1))
+plt.savefig("figures/8_fortalk.pdf")
+plt.close()
+
+
+
+
+
+
+
+
+
+
+
+fig, axs = plt.subplots(3, 2, figsize=(xdim*210/scalefactor, ydim*115/scalefactor))
+#fig.suptitle("Predicted Epidemic Sizes", fontsize=20, y=.999)
+for i in range(len(name)) :
+	axs[i % 3][np.floor(i/3)].errorbar(sizeerrx[i], sizeerry[i], yerr = sizeerre[i], fmt="o", ms=8, c=colours[0])
+	axs[i % 3][np.floor(i/3)].plot(sizex[i], sizey[i], lw=2, c=colours[2])
+	axs[i % 3][np.floor(i/3)].tick_params(labelsize=16)
+	axs[i % 3][np.floor(i/3)].locator_params(nbins=5, axis="y")
+	axs[i % 3][np.floor(i/3)].set_xlim([0, np.max(sizex[i])*1.02])
+	axs[i % 3][np.floor(i/3)].set_ylim([0, max(np.max(sizey[i]), np.max(sizeerry[i]))*1.1])
+	axs[i % 3][np.floor(i/3)].set_title(u"%s. $R^2$ = %.2f, slope = %.02f" % (name[i].decode("utf-8"), r2[i], grad[i]), fontsize=16, loc="left")
+
+plt.figtext(.015, 0.5, "Simulated Epidemic Size", ha="center", va="center", rotation="vertical", fontsize=16)
+plt.figtext(.5, 0.02, "Actual Epidemic Size", ha="center", va="center", fontsize=16)
+plt.tight_layout(rect=(0.02, 0.035, .99, 1))
+plt.savefig("figures/9_fortalk.pdf")
+plt.close()
 
 
