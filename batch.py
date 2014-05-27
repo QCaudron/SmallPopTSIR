@@ -30,13 +30,20 @@ import collections
 
 
 
+
+
+
+
+
+
+
 # Import what ?
 prefix = "./data/" + sys.argv[1] + "/"
 directory = [f for f in os.listdir(prefix) if f.endswith(".csv")]
 names = [i.split(".")[0].capitalize() for i in directory]
 
 # Params
-sensitivity = 8#int(sys.argv[3])
+#sensitivity = int(sys.argv[3])
 periodicity = 24
 penalty = 1e-3
 delay = 8
@@ -250,6 +257,24 @@ if not os.path.isdir(prefix + "results") :
 for idx, file in enumerate(directory) :
 
 
+    # Sensitivities
+    if sys.argv[1] == "bornholm" :
+        sensitivity = 15 # 13
+    elif sys.argv[1] == "faroe" :
+        sensitivity = 15#21
+    else :
+        if idx == 0 :
+            sensitivity = 19#14
+        elif idx == 1 :
+            sensitivity = 8#19
+        elif idx == 2 :
+            sensitivity = 18#15
+        else :
+            sensitivity = 7#17
+
+
+
+
     export_t = []
     export_ts = []
     export_pred = []
@@ -272,6 +297,7 @@ for idx, file in enumerate(directory) :
     export_pearson = []
     export_sbar = []
     export_Z = []
+    export_alpha = []
 
 
     
@@ -393,8 +419,7 @@ for idx, file in enumerate(directory) :
 
 
 
-
-
+   
 
 
 
@@ -526,6 +551,7 @@ for idx, file in enumerate(directory) :
     export_Z.append(Z)
     export_rup.append(errup)
     export_rdn.append(errdn)
+    export_alpha.append(alphaSbar)
         
         
     # Plot
@@ -635,7 +661,7 @@ for idx, file in enumerate(directory) :
 
 
 
-        sepi, simsize, simdur = breaksims(predI, sensitivity, epi)
+        sepi, simsize, simdur = breaksims(predI / rho, sensitivity, epi)
 
         allss.append(simsize)
         allrs.append(reals)
@@ -1026,7 +1052,8 @@ for idx, file in enumerate(directory) :
                     "sn" : export_sn,
                     "grad" : export_grad,
                     "sbar" : export_sbar,
-                    "Z" : export_Z
+                    "Z" : export_Z,
+                    "alpha": export_alpha
         }).to_json(u"paper/figures/%s.json" % names[idx].decode("utf-8"))
 
 

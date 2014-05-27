@@ -1,0 +1,63 @@
+\begin{thebibliography}{1}
+\providecommand{\url}[1]{\texttt{#1}}
+\providecommand{\urlprefix}{URL }
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi:\discretionary{}{}{}#1}\else
+  \providecommand{\doi}{doi:\discretionary{}{}{}\begingroup
+  \urlstyle{rm}\Url}\fi
+\providecommand{\bibAnnoteFile}[1]{%
+  \IfFileExists{#1}{\begin{quotation}\noindent\textsc{Key:} #1\\
+  \textsc{Annotation:}\ \input{#1}\end{quotation}}{}}
+\providecommand{\bibAnnote}[2]{%
+  \begin{quotation}\noindent\textsc{Key:} #1\\
+  \textsc{Annotation:}\ #2\end{quotation}}
+\providecommand{\eprint}[2][]{\url{#2}}
+
+\bibitem{Black1966}
+Black FL (1966) {Measles endemicity in insular populations: critical community
+  size and its evolutionary implication.}
+\newblock Journal of Theoretical Biology 11: 207--11.
+\bibAnnoteFile{Black1966}
+
+\bibitem{Finkenstadt2000}
+Finkenst\"{a}dt BF, Grenfell BT (2000) {Time series modelling of childhood
+  diseases: a dynamical systems approach}.
+\newblock Journal of the Royal Statistical Society: Series C (Applied
+  Statistics) 49: 187--205.
+\bibAnnoteFile{Finkenstadt2000}
+
+\bibitem{Cliff1981}
+Cliff AD, Haggett P, Ord JK, Versey GR (1981) {Spatial Diffusion: An Historical
+  Geography of Epidemics in an Island Community}.
+\newblock Cambridge University Press.
+\bibAnnoteFile{Cliff1981}
+
+\bibitem{StatsIceland}
+Iceland. {Statistics Iceland}.
+\newblock \urlprefix\url{www.statice.is}.
+\bibAnnoteFile{StatsIceland}
+
+\bibitem{StatsDenmark}
+Denmark. {Danmarks Statistik}.
+\newblock \urlprefix\url{www.statistikbanken.dk}.
+\bibAnnoteFile{StatsDenmark}
+
+\bibitem{StatsFaroe}
+Faroe islands. {Hagstova F\o{}roy a}.
+\newblock \urlprefix\url{www.hagstova.fo}.
+\bibAnnoteFile{StatsFaroe}
+
+\bibitem{Anderson1991}
+Anderson RM, May RM (199wdwd1) {Infectious diseases of humans: dynamics and
+  control}.
+\newblock Oxford University Press.
+\bibAnnoteFile{Anderson1991}
+
+\bibitem{Metcalf2010}
+Metcalf CJE, Munayco CV, Chowwell G, Grenfell BT, Bj\o{}rnstad ON (2010)
+  {Rubella metapopulation dynamics and importance of spatial coupling to the
+  risk of congenital rubella syndrome in Peru}.
+\newblock Journal of the Royal Society Interface 8: 369--376.
+\bibAnnoteFile{Metcalf2010}
+
+\end{thebibliography}

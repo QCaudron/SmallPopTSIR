@@ -1,0 +1,49 @@
+This is BibTeX, Version 0.99d (TeX Live 2012)
+Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+The top-level auxiliary file: plos_template.aux
+The style file: plos2009.bst
+Database file #1: qbib.bib
+Warning--I didn't find a database entry for "Cliff1983B"
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+You've used 8 entries,
+            2441 wiz_defined-function locations,
+            589 strings with 5743 characters,
+and the built_in function-call counts, 4876 in all, are:
+= -- 427
+> -- 59
+< -- 0
++ -- 31
+- -- 14
+* -- 387
+:= -- 537
+add.period$ -- 16
+call.type$ -- 8
+change.case$ -- 6
+chr.to.int$ -- 0
+cite$ -- 16
+duplicate$ -- 506
+empty$ -- 551
+format.name$ -- 18
+if$ -- 1092
+int.to.chr$ -- 0
+int.to.str$ -- 8
+missing$ -- 68
+newline$ -- 55
+num.names$ -- 5
+pop$ -- 127
+preamble$ -- 1
+purify$ -- 0
+quote$ -- 0
+skip$ -- 73
+stack$ -- 0
+substring$ -- 633
+swap$ -- 113
+text.length$ -- 0
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 0
+warning$ -- 0
+while$ -- 25
+width$ -- 9
+write$ -- 91
+(There was 1 warning)

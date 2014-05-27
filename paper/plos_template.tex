@@ -104,9 +104,10 @@ $\ast$ E-mail: qcaudron@princeton.edu
 % Please keep the abstract between 250 and 300 words
 \section*{Abstract}
 
-A standard assumption in the modelling of epidemic dynamics is that of a certain level of homogeneity. In childhood infections, such as measles, populations are typically assumed to be large and well-mixed, and the data assumed to contain a high signal-to-noise ratio. This allows the use of differential equations as a model for disease dynamics, generally with positive results, both in terms of explaining the underlying mechanisms for infection, and for the prediction of future time series data on disease incidence. Here, we consider a setting where populations are small and heterogeneous, and where the dynamics of infection are driven by extinction-recolonisation events. Using a TSIR model, we fit prevaccination measles incidence and demographic data in Bornholm, the Faroe Islands, and four districts in Iceland, between 1901 and 1965. We explore the potential for prediction in this model : given historical incidence data and up-to-date demographic information, and knowing that a new epidemic has just begun, can we predict how large it will be ? We show that, despite a lack of significant seasonality in the incidence of measles cases, we are able to estimate the size of upcoming epidemics, conditioned on the first time step, to within reasonable confidence. Reporting rates are estimated to vary widely over time
+A standard assumption in the modelling of epidemic dynamics is that of a certain level of homogeneity. The well-known and oft-used SIR model, arguably the most important compartmental model in theoretical epidemiology, assumes that the disease being modelled is strongly immunising, directly transmitted, and has a well-defined period of infection, in addition to these homogeneity assumptions. Childhood infections, such as measles, are prime examples of diseases that fit the SIR-like mechanism, and these infections have been well studied for many systems. Populations are typically assumed to be large and well-mixed, and the data assumed to contain a high signal-to-noise ratio. Differential equations can then be used to model the disease's dynamics, generally with positive results, both in terms of explaining the underlying mechanisms for infection, and for the prediction of future time series data on disease incidence. Here, we consider a setting where populations are small and heterogeneous, and where the dynamics of infection are driven by extinction-recolonisation events. Using a TSIR model, we fit prevaccination measles incidence and demographic data in Bornholm, the Faroe Islands, and four districts of Iceland, between 1901 and 1965. The datasets for each of these countries suffers from different levels of data heterogeneity and sparsity. We explore the potential for prediction of this model~: given historical incidence data and up-to-date demographic information, and knowing that a new epidemic has just begun, can we predict how large it will be~? We show that, despite a lack of significant seasonality in the incidence of measles cases, and potentially severe heterogeneity at the population level, we are able to estimate the size of upcoming epidemics, conditioned on the first time step, to within reasonable confidence. Predictions are best in localities with low 
 
-Each of these countries are characterised by a different level of data heterogeneity
+
+
 
 
 
@@ -121,19 +122,19 @@ Each of these countries are characterised by a different level of data heterogen
 
 \section*{Introduction}
 
-Needs padding and fixing...
+\textcolor{red}{Rewrite, expand. General train of thought -- SIR is our go-to model, but it makes some assumptions. Many of those are taken care of in measles, but then our analysis is typically restricted to rich datasets in large, well-mixed populations. CITE anything done in small, heterogeneous populations. Insist on stochasticity in our data -- extinction-recolonisation. Good ideas in Metcalf, Bjornstad, Grenfell and Andreasen, Proc B, 2009}
 
-Measles is a highly contagious and strongly immunising infection of the respiratory system. Due to its extreme transmissibility, its epidemiology is conditional on the birth of susceptible individuals. As such, the temporal dynamics of measles are typically strongly oscillatory, driven seasonally by the increased contact rate amongst children during school periods, assuming the population is large enough to sustain the disease (Black FL, 1966, JTB 11). These dynamics have been well studied (Grenfell papers, others), and many modelling efforts have successfully explained the biennial cycle exhibited in prevaccination records of measles incidence in Europe and elsewhere (papers ?). 
+Measles is a highly contagious and strongly immunising infection of the respiratory system. Due to its extreme transmissibility, its epidemiology is conditional on the birth of susceptible individuals. As such, the temporal dynamics of measles are typically strongly oscillatory, driven seasonally by the increased contact rate amongst young children during school periods, assuming the population is large enough to sustain the disease \cite{Black1966}. These dynamics have been well studied (Grenfell papers, others), and many modelling efforts have successfully explained the biennial cycle exhibited in prevaccination records of measles incidence in Europe and elsewhere (papers ?). 
 
-In small populations, where the number of individuals is much smaller than the critical community size required to support an endemic infection, however, the dynamics of measles cases are vastly different. Susceptible individuals accumulate when measles is absent; then, driven by stochastic importation, an epidemic may sweep through a large fraction of the susceptible population very quickly, only to go extinct abruptly as susceptibles become depleted. This results in very sharp, spiky epidemics, the timing of which may be impossible to predict, but the size and duration of which may be a function of historical data. 
+In small populations, where the number of individuals is much smaller than the critical community size required to support an endemic infection, however, the dynamics of measles cases are vastly different. Susceptible individuals accumulate when measles is absent; then, driven by stochastic recolonisation, an epidemic may sweep through a large fraction of the susceptible population very quickly, only to go extinct abruptly as susceptibles become depleted. This results in very sharp, spiky epidemics, the timing of which may be impossible to predict, but the size and duration of which may be a function of historical data. 
 
 In this paper, we address the question of predictability of measles epidemics in small populations, based on records of past incidence and on demographic data. We present data on the demographics and disease incidence in prevaccination-era Bornholm, the Faroe Islands, and four districts in Iceland. 
 
-reconstruct the dynamics of susceptible individuals and infer the rate of reporting of cases using the TSIR model (Finkelstadt and Grenfell 2000) in prevaccination 
+reconstruct the dynamics of susceptible individuals and infer the rate of reporting of cases using the TSIR model\cite{Finkenstadt2000} in prevaccination 
  
 	
 
-sizes are, by training a model on records of past epidemics and demographic data. Using the TSIR model (Finkelstadt and Grenfell, 2000), we explore the dynamics of measles in prevacinnation Bornh
+sizes are, by training a model on records of past epidemics and demographic data. Using the TSIR model\cite{Finkenstadt2000}, we explore the dynamics of measles in prevacinnation Bornh
 
 
 Any seasonality ? 
@@ -143,43 +144,26 @@ Any seasonality ?
 
 
 
+
+
+
+
+
 \section*{Methods}
 
-\subsection*{Raw Data}
+\subsubsection*{Data}
 
-Measles incidence data were obtained for Iceland, the Faroe Islands, and Bornholm (CONFIRM?), from 1900 to 1965, from \citet{Cliff1983A}. For Iceland, this dataset collects monthly figures for measles cases reported in 47 medical districts, originally sourced from Heilbrigdisskyrslur (Public Health in Iceland). Major revisions to the boundaries of medical districts took place twice during the study period : in 1907 and 1932. For the Faroe Islands and Bornholm, the data were originally published WHERE?. 
+Measles incidence data were obtained for Iceland, the Faroe Islands, and Bornholm (CONFIRM?), from 1900 to 1965, from \cite{Cliff1981}. For Iceland, this dataset collects monthly figures for measles cases reported in 47 medical districts, originally sourced from \textit{Heilbrig\dh{}issk\'{y}rslur} (Public Health in Iceland). Major revisions to the boundaries of medical districts took place twice during the study period : in 1907 and 1932. For the Faroe Islands and Bornholm, the data were originally published WHERE?. 
 
-Demographic data for Iceland were obtained from two sources. Annual data on population and number of live births for the entire country were taken from \citet{Cliff1983B}. Decadal population data from 1901 to 1965, for 262 municipalities, were obtained from online publication in \citet{StatisticsIceland}. Municipality boundaries changed from three to five times during the study period. In addition, many municipalities had missing data. Medical districts and municipalities were matched based on names, and confirmed using latitude and longitudes. Using this procedure, we were able to confidently match four medical districts with municipalities. Several matched districts were discarded either due to missing population data, or lack of confidence in the matching of the geographical boundaries. It is also worth noting that matched medical district - municipality pairs may not encompass the exact same area, but one may be a (potentially partial) subset of the other.
+Demographic data for Iceland were obtained from two sources. Annual data on population and number of live births for the entire country were taken from \cite{Cliff1983B}. Decadal population data from 1901 to 1965, for 262 municipalities, were obtained from online publication in \cite{StatsIceland}. Municipality boundaries changed from three to five times during the study period. In addition, many municipalities had missing data. Medical districts and municipalities were matched based on names, and confirmed using latitude and longitudes. Using this procedure, we were able to confidently match four medical districts with municipalities. Several matched districts were discarded either due to missing population data, or lack of confidence in the matching of the geographical boundaries. It is also worth noting that matched medical district -- municipality pairs may not encompass the exact same area, but one may be a (potentially partial) subset of the other. With the data available, we were able to match four district -- municipality pairs~: Akureyri, Reykjav\'{i}k, Hafnarfj\"{o}r\dh{}ur, and Vestmannaeyjar.
 
-Data on the demographics of the Faroe Islands were taken from the Statistical Yearbooks of Denmark published by \citet{StatisticsDenmark}. Annuak data on population and births from 1901-1965 were obtained in aggregated form for all of the islands in the Faroe archipelago. 
+Data on the demographics of the Faroe Islands were taken from the Statistical Yearbooks of Denmark published by \cite{StatsDenmark}, and from Statistics Faroe Islands \cite{StatsFaroe}. Annual data on population and births from 1901-1965 were obtained in aggregated form for all of the islands in the Faroe archipelago. 
 
-Demographic data for Bornholm was collected from several publications from \citet{StatisticsDenmark}. Annual population data for Bornholm were obtained from \citet{StatBankDenmark}, which contains detailed statistical information collected by Statistics Denmark. Pre-1930 annual birth data were obtained from the “\UTF{00C6}gteskaber, F\UTF{00F8}dte og D\UTF{00F8}de” (Marriages, Births and Death) publications of Statistics Denmark. POS930 annual birth data were obtained from “Befolkningsudvikling og sundhedsforhold 1901-60” (Population, Development and Health 1901 \UTF{2013} 1960). CITE URLs.
+Demographic data for Bornholm was collected from several publications from \cite{StatsDenmark}. Annual population data for Bornholm were obtained from \cite{StatsDenmark}, which contains detailed statistical information collected by Statistics Denmark. Pre-1930 annual birth data were obtained from the \textit{\AE{}gteskaber, F\o{}dte og D\o{}de} (Marriages, Births and Death) publications of Statistics Denmark. Post-1930 annual birth data were obtained from \textit{Befolkningsudvikling og sundhedsforhold 1901-60} (Population, Development and Health 1901 - 1960), also from Danmarks Statistik.
 
 All locations experienced a slight decline in birth rates just prior to 1940, followed by a sharp increase in births after 1940. In Bornholm, births declined steadily from around 1945 onwards. In Iceland and the Faroe Islands, aggregate births increased steadily from 1940s onwards, with a slight decline in Iceland around 1960.
 
-
-
-
-
-
-\subsection*{Data Preparation}
-
-In order to 
-
-
-
-
-Interpolation
-
-
-Demo description : 
-How births were calculated; all births in Iceland drop from 1930 - 1940 then baby boom
-
-
-
-
-
-Data very spiky, monthly. Interpolated two points per point ( not quite biweekly, 24 periods ). Qualitatively : Iceland spiky, Bornholm smoother, Faroe lots of small epis. 
+Figure \ref{figIncidence} shows the reported incidence for Bornholm, the Faroe Islands, and four districts of Iceland.
 
 
 
@@ -188,63 +172,137 @@ Data very spiky, monthly. Interpolated two points per point ( not quite biweekly
 
 
 
-\section*{Model}
 
-\begin{align}
-I_{t} &= r_{t} \, I_{t-1}^\alpha \, S_{t-1} \, \varepsilon_t \\
-S_{t} &= B_{t-d} + S_{t-1} - I_{t-1}
-\end{align}
 
+\subsubsection*{The TSIR model}
+
+For systems with small, heterogeneous populations, epidemic dynamics are driven by stochasticity in the timing of disease recolonisations and in population mixing. As such, dynamical models such as the well established SIR model are unable to adequately represent the underlying biological processes which dictate the evolution of disease incidence over time. The time-series SIR model \cite{Finkenstadt2000} is a discrete-time, stochastic model of disease progression written in terms of a set of difference equations. Assuming that the infection is fully immunising and that the infectious period is well-defined, then the evolution of the number of infected cases, $I$, can be written,
 \begin{equation}
-I_t = \rho_t \, C_t
+\mathbb{E}\left[I_{t+1}\right] = r_t \, S_t \, I_t^\alpha,
+\label{TSIR_I}
 \end{equation}
+where $S_t$ is the number of susceptible individuals at time $t$, seasonal contact rates are represented by the periodic parameter $r_t = r_{t+P}$ for $P$ time steps per year, $0 < \alpha < 1$ is an inhomogeneity parameter, and where $\mathbb{E}\left[\,\cdot\,\right]$ denotes the expectation operator. The time step is set as the generation time of the infection. Then, the number of susceptible individuals is defined by,
+\begin{equation}
+S_{t+1} = S_t + B_{t-d} - I_t + u_t, \quad \mathbb{E}\left[u_t\right] = 0.
+\label{TSIR_S}
+\end{equation}
+Here, $u_t$ is  zero-mean additive noise. $B_{t-d}$ is the number of births born $d$ time step prior to $t$, the delay $d$ assumed due to maternal immunity, and set at four months \cite{Anderson1991}.
+
+The observed number of cases, $C_t$, is assumed to be underreported by a reciprocal reporting rate $\rho_t \ge 1$, such that the true number of infected cases at time $t$ is given by $I_t = \rho_t \,C_t$. If the number of susceptible individuals $S_t$ fluctuates around a mean $\bar{S}$ such that $S_t = \bar{S} + Z_t$, then, from equation (\ref{TSIR_S}), the dynamics of the susceptible individuals are given by
+\begin{equation}
+Z_{t+1} = B_{t-d} + Z_{t} - \rho_t\,C_t + u_t.
+\label{iter}
+\end{equation}
+A major assumption made by the TSIR model is that all individuals will eventually become infected. As such, the incidence of infected cases should track births. Successive iteration of equation (\ref{iter}) yields,
+\begin{equation}
+Z_{t+1} = \sum_{i=1}^t B_{i-d} - \sum_{i=1}^t \rho_i \, C_i + \sum_{i=1}^t u_i + Z_0.
+\label{sums}
+\end{equation}
+If $\rho_t = \rho$ is a constant, and $u_t$ is small, then equation (\ref{sums}) reflects a linear relationship between the cumulative births and the cumulative incidence. However, as $Z_{t+1}$ depends on $Z_t$, it can be shown that the reporting rate need not be a constant, and that it could be estimated using locally linear regression methods. Then, $Z_t$ can be found as the residuals of this regression. 
 
 
-\begin{align}
-S_t = \bar{S} + Z_t
-\end{align}
+
+
+
+
+\subsubsection*{Fitting}
+
+The time step in the difference equations (\ref{TSIR_I}) and (\ref{TSIR_S}) is fixed at the generation time of the infection. For measles, the period of time from infection to recovery is approximately two weeks \cite{Anderson1991}. Due to the very spiky nature of the reported incidence data (whose derivatives are non-smooth due to low sampling rates), interpolation must be done such that peaks in the data are not missed or reduced. As such, a linear interpolant with an integer multiple of the number of points per year was used. This yielded 24 time points per year, thus maintaining the maximum values of the peaks in the data, and fixing the generation time at just over fifteen days.
+
+Population and live births, assumed to be smooth, were interpolated cubically to 24 time points per year. Despite large intervals between some of the reported demographics data, Finkenst\"{a}dt and Grenfell \cite{Finkenstadt2000} report that the regression for reconstructing susceptibles is robust to pronounced changes in birth rates.
+
+The reporting rate $\rho_t$ was estimated using Gaussian process regression, given the births and reported cases. Unlike splines or locally-weighted regression methods, Gaussian process regressions do not optimise smoothness of the fitted values, but instead yield the best unbiased estimates, assuming the error in the underlying process is normally distributed. Once found, $\rho_t$ is the derivative of the Gaussian process prediction for the cumulative number of births, with respect to the cumulative number of cases, and $Z_t$ are the residuals of the regression.
+
+The mean number of susceptibles $\bar{S}$ was estimated marginally by profiling the likelihood of the logarithmic form of equation (\ref{TSIR_I}) :
+\begin{equation}
+\ln\big(\mathbb{E}\left[I_{t+1}\right]\big) = \ln(r_t) + \ln\left(\bar{S} + Z_t\right) + \alpha \ln\left(I_t\right),
+\end{equation}
+after which the seasonal contact rates $r_t$ were estimated conditionally on $\bar{S}$. The inhomogeneity parameter was fixed at $\alpha = 0.97$, as in \cite{Metcalf2010}, implying a small, nonlinear inhomogeneity, yet not significantly impacting transmission dynamics between large and small epidemics. \textcolor{red}{Not sure this is relevant here -- there are no epidemic troughs because we just go to zero. Perhaps best to try inferring this once more, now that sensitivity thresholds are better established.}
+
+
+
+
+
+
+\subsubsection*{Predictions}
+
+Using the TSIR model as defined by the system of equations (\ref{TSIR_I}, \ref{TSIR_S}), predictions for epidemic dynamics were made by sampling the incidence $I_{t+1}$ from a binomial distribution :
+\begin{equation}
+I_{t+1} \sim \mathrm{Bin}\left(S_t, \, 1-\mathrm{e}^{-\lambda}\right),
+\end{equation}
+where the number of Bernoulli trials is given by the number of susceptible individuals, $S_t$. The probability of a successful infection is defined by the force of infection, $\lambda = r_t\,I_t^\alpha$, cumulated over one biweek period. This assumes that each individual spends an exponentially-distributed period of time in the infected class.
+
+Due to the abundance of zeros in the incidence time-series, initial conditions cannot simply be taken as the point $\left(I_0, S_0\right)$. Instead, each epidemic must be simulated independently, with initial conditions given by the data at the time that the epidemic begins. For each epidemic, we fix the number of infected cases and of susceptible individuals as per the data, and allow the simulation to continue until the next epidemic begins. Thus, we always simulate the same number of epidemics as given by the incidence data, where each epidemic is simulated conditioned on the data available at the beginning of that epidemic. \textcolor{red}{Is this clear, or does it need rewording ?}
+
+In order to clearly establish when this time is, a sensitivity threshold must be set. Let $\tau \in \mathbb{Z}^+$ define the number of reported infected cases necessary for any particular biweek period to be considered part of an epidemic. A choice of $\tau = 1$ ensures that all available non-zero data is used. However, many potential epidemics go extinct before propagating through the population, especially in highly heterogeneous populations. As such, using $\tau=1$ would cause a large number of strongly overestimated epidemics, which in turn would deplete the susceptible pool, and underestimate future epidemics. As such, we treat $\tau$ as a sensitivity parameter, and fit it by selecting the sensitivity threshold which yields the highest correlation between the mean predicted epidemic traces and the incidence data, as defined by Pearson's $R^2$. Then, the first point in a sequence of time steps whose incidence is greater than or equal to the threshold is considered the beginning of that epidemic.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 % Results and Discussion can be combined.
 \section*{Results}
 
-\begin{figure}[H]
-\label{fig_timeseries}
-\caption{\textbf{Reported incidence and inferred reporting rates} for Bornholm, the Faroe Islands, and four localities in Iceland. Localities were eliminated if mean reporting rates were above one. Certain localities still have reporting rates going above one for some time - likely due to poor matching between disease data ( district level ) and demographic data ( municipality level ).}
-\centering
-\includegraphics[width=0.9\textwidth]{figures/0_incidence.pdf}
-\end{figure}
+\subsubsection*{Dynamics}
 
-
-
-\begin{figure}[H]
-\label{fig_seasonality}
-\caption{\textbf{Seasonality.} Numbers reported are $r$ in main TSIR equation ( method section to be written ). Overall notes : magnitude fairly small; effectively flat when considering CIs.}
-\centering
-\includegraphics[width=0.9\textwidth]{figures/1_seasonality.pdf}
-\end{figure}
+After fitting parameters as described above, predicted epidemic time-series were generated for each of the six localities, using the sensitivity thresholds reported in Table \ref{tableTau}. The mean of fifty thousand simulations, and the inferred seasonalities, are shown in Figure~\ref{figSims}, with their respective 95\% confidence intervals. The reported zero-corrected correlation coefficient is simply Pearson's $R^2$ computed between the mean prediction and the observed incidences, with points where both time-series are zero left out, to reduce inflation of the correlation due to the large number of zeroes in the time-series. 
 
 
 
 
 
-\begin{figure}[H]
-\label{fig_predictions}
-\caption{\textbf{Predictions.} Simulations are conditioned on first time step of an epidemic, and are allowed to run until next epidemic starts. Some reasonable predictions ? Fits better with spikier data (!) when a good, clean epidemic occurs.}
-\centering
-\includegraphics[width=0.9\textwidth]{figures/2_predictions.pdf}
-\end{figure}
+A significant number of predicted epidemics have a right shoulder, where the model predicts that epidemics take longer to go extinct than those observed. Depending on locality, many of these shoulders are small (Akureyri, Hafnarfj\"{o}r\dh{}ur, and Vestmannaeyjar), whilst for other localities, predicted epidemics may fail to go extinct entirely, demonstrating cyclical behaviour until the beginning of the next epidemic (Bornholm, the Faroe Islands, and Reykjav\'{i}k). This may indicate that the inhomogeneity parameter, fixed at $\alpha=0.97$ for these simulations, is an overestimate. \textcolor{red}{Thoughts on this ? Inferred values are between 0.8 and 0.92, but resulting predictions are fairly poor.}
+
+
+The inferred seasonalities have wide distributions, demonstrated by their large confidence intervals. This is potentially due to the highly stochastic nature of measles recolonisations into their respective localities, which is the primary driver for when epidemics occur. \textcolor{red}{Need to expand, or is it clear that this wouldn't be the case in large populations, where measles can be sustained ?}
+
+\textcolor{red}{What else should be said here about Figure~\ref{figSims} ?}
+
+
+
+
+
+\subsubsection*{Predictability in Epidemic Sizes}
+
+Rather than considering a point-wise comparison between the predicted and observed epidemic time-series, a potentially more robust measure of predictability is the total number of infected cases that a particular epidemic will generate. We define the size of an epidemic as the sum of reported cases $C_t$ for observed data, or $I_t / \rho_t$ for predicted data, from the first time point in an epidemic to the time point before the next epidemic begins. Figure~\ref{fig_sizes} shows the mean predicted epidemic size for each observed epidemic for the six localities. Several of these localities show a strong linear relationship, with near-zero intercepts and gradients around one. \textcolor{blue}{Fill in numbers after simulations.}
+
+\textcolor{red}{Any more to be said in this section ?}
 
 
 
 
 
 
-\begin{figure}[H]
-\label{fig_sizes}
-\caption{\textbf{Predictability of Epidemic Sizes.} With 10000 simulations. Note Bornholm ( single island, clean data effect ) vs Faroe ( many small islands, aggregate incidence data ) vs Icelandic areas ( disconnected demographics vs incidence borders ). In good locations, we can certainly give a good prediction of epi size. Tend to do better for large epidemics. Gradients all ABOUT one, some slightly over ( right shoulder effect ? ). Large variability in error bars - some epidemics are easier to predict than others ( why ? )}
-\centering
-\includegraphics[width=0.9\textwidth]{figures/3_sizes.pdf}
-\end{figure}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -261,6 +319,13 @@ S_t = \bar{S} + Z_t
 
 
 \section*{Discussion}
+
+Predictions on epidemic sizes can be made with a significant level of certainty, despite sparse demographic data for all localities, mismatching incidence and demography information in Iceland, and strong spatial barriers to population mixing in the Faroe Islands. 
+
+
+TAU
+
+
 
 Interpolated our monthly data for 24 periods - discuss effects of this. Trajectory matching vs simple interpolation.
 
@@ -279,6 +344,19 @@ Intercept on size plot - we should be seeing zero intercept, gradient one. We're
 
 
 
+
+Note Bornholm ( single island, clean data effect ) vs Faroe ( many small islands, aggregate incidence data ) vs Icelandic areas ( disconnected demographics vs incidence borders ). In good locations, we can certainly give a good prediction of epi size. Tend to do better for large epidemics. Gradients all ABOUT one, some slightly over ( right shoulder effect ? ). Large variability in error bars - some epidemics are easier to predict than others ( why ? )
+
+
+
+
+ROMAIN :
+
+Why did this method work on other datasets and not this one ? Demography
+
+What other methods could work on this data ?
+
+What can be done to improve the quality of the data ?
 
 
 
@@ -340,6 +418,61 @@ Intercept on size plot - we should be seeing zero intercept, gradient one. We're
 %\end{flushleft}
 %\label{tab:label}
 % \end{table}
+
+
+
+\vspace{0.4cm}
+\begin{table}[!h]
+\centering
+\begin{tabular}{ l  c }
+\hline \\[-0.9em]
+\textbf{Locality} & {$\mathbf{\tau}$} \\[0.1em]
+  \hline \\[-0.9em]                   
+  Akureyri & 19 \\[0.1em]
+  Bornholm & 15 \\[0.1em]
+  Faroe Islands & 15 \\[0.1em]
+  Hafnarfj\"{o}r\dh{}ur & 8 \\[0.1em]
+  Reykjav\'{i}k & 18 \\[0.1em]
+  Vestmannaeyjar \hspace{0.2cm} & 7 \\[0.1em]
+  \hline  
+\end{tabular}
+\caption{Sensitivity thresholds $\tau$ for each locality, fit by maximising the correlation between the mean simulated epidemic time-series and the reported incidence data.}
+\label{tableTau}
+\end{table}
+
+
+
+
+
+\section*{Figures}
+
+\begin{figure}[!h]
+\centering
+\includegraphics[width=\textwidth]{figures/0_incidence.pdf}
+\caption{\textbf{Reported incidence for Bornholm, the Faroe Islands, and four localities in Iceland.} High temporal synchronicity can be seen in the Icelandic localities. }
+\label{figIncidence}
+\end{figure}
+
+
+
+\begin{figure}[!h]
+\centering
+\includegraphics[width=\textwidth]{figures/2_predictions.pdf}
+\caption{\textbf{Predicted incidence and inferred seasonal trends.} For the predicted time-series, the mean value of incidence simulations is plotted as a dark red line, with 95\% confidence intervals given in light red. Seasonality is plotted as a function of the biweek, with 95\% confidence intervals in light blue.}
+\label{figSims}
+\end{figure}
+
+
+\begin{figure}[!h]
+\centering
+\includegraphics[width=\textwidth]{figures/4_sizes.pdf}
+\caption{\textbf{Predictability of epidemic sizes.} The predicted size of each observed epidemic is given as a function of its observed size. \textcolor{red}{Do we want to force the fits through the origin, or report the best regression line with floating intercept as we are now ?}}
+\label{fig_sizes}
+\end{figure}
+
+
+
+
 
 \end{document}
 

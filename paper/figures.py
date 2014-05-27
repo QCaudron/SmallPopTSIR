@@ -48,6 +48,7 @@ Z = []
 grad = []
 ciu = []
 cid = []
+alpha = []
 
 
 
@@ -80,40 +81,65 @@ for file in os.listdir("figures/") :
 		sn.append(data["sn"].values[0])
 		ciu.append(data["predciu"].values[0])
 		cid.append(data["predcid"].values[0])
+		alpha.append(data["alpha"].values[0])
 
 
 
-"""
-plt.figure(figsize=(xdim*210/scalefactor, ydim*297/scalefactor))
-##plt.suptitle("Reported Incidence and Inferred Reporting Rate", fontsize=20, y=.999)
+
+print "ALPHA : ", alpha
+
+
+
+# Births
+B = []
+for file in os.listdir("../data/iceland") :
+	if file.endswith(".csv") :
+		B.append(pd.read_csv("../data/iceland/" + file)["births"].values)
+
+B.insert(1, pd.read_csv("../data/bornholm/bornholm.csv")["births"].values)
+B.insert(2, pd.read_csv("../data/faroe/faroe.csv")["births"].values)
+
+
+for i in range(len(B)) :
+	v = np.where(np.array(t[i]) > 1965)[0][0] if t[i][-1] > 1965 else len(t[i])
+	B[i] = B[i][:v]
+
+
+
+
+
+fig, ax = plt.subplots(len(name), 1, sharex=True, figsize=(xdim*210/scalefactor, ydim*297/scalefactor))
 for i in range(len(name)) :
 
-	ax1 = plt.subplot(len(name), 1, i+1)
-	#ax1.plot(t[i], ts[i], lw=2)
-	#ax1.plot(t[i], ts[i], lw=2, c=colours[2], alpha=0.6)
-	ax1.plot(t[i], ts[i], lw=2, c=colours[0])
-	ax1.set_title(u"%s" % name[i].decode("utf-8"), fontsize=16, loc="left")
-	ax1.tick_params(labelsize=16)
-	ax1.locator_params(nbins=5, axis="y")
+	ax[i].plot(t[i], ts[i], lw=2, c=colours[0])
+	ax[i].set_title(u"%s" % name[i].decode("utf-8"), fontsize=16, loc="left")
+	ax[i].tick_params(labelsize=16)
+	ax[i].locator_params(nbins=5, axis="y")
+	ax[i].set_xlim([1901, 1965])
+	ax[i].set_ylim([0, np.max(ts[i])*1.1])
+
+	#ax[i][1].plot(t[i], B[i], lw=2, c=colours[2])
+	#ax[i][1].tick_params(labelsize=16)
+	#ax[i][1].locator_params(nbins=5, axis="y")
+	#ax[i][1].set_xlim([np.min(t[i]), np.max(t[i])])
 	
-	
-	ax2 = ax1.twinx()
-	ax2.plot(t[i], rho[i], lw=3, c=colours[2], alpha=0.6)
-	ax2.grid(False)
-	ax2.tick_params(labelsize=16)
-	ax2.locator_params(nbins=5, axis="y")
+	#ax2 = ax1.twinx()
+	#ax2.plot(t[i], rho[i], lw=3, c=colours[2], alpha=0.6)
+	#ax2.grid(False)
+	#ax2.tick_params(labelsize=16)
+	#ax2.locator_params(nbins=5, axis="y")
 	
 
-	ax1.set_xlim([np.min(t[i]), np.max(t[i])])
-	ax2.set_xlim([np.min(t[i]), np.max(t[i])])
+	
+	#ax2.set_xlim([np.min(t[i]), np.max(t[i])])
 
-	if i == 0 :
-		ax1.legend(["Incidence", "Reporting Rate"], loc=2)
+	#if i == 0 :
+	#	ax[i].legend(["Incidence", "Reporting Rate"], loc=2)
 
-plt.figtext(.01, 0.5, r"Reported Incidence, $C$", ha="center", va="center", rotation="vertical", fontsize=16)
-plt.figtext(.99, 0.5, r"Reporting Rate, $1/\rho$", ha="center", va="center", rotation="vertical", fontsize=16)
-plt.figtext(.5, 0.01, "Time", ha="center", va="center", fontsize=16)
-plt.tight_layout(rect=(0.01, 0.015, .98, 1))
+plt.figtext(.015, 0.5, r"Reported Incidence, $C_t$", ha="center", va="center", rotation="vertical", fontsize=16)
+#plt.figtext(.99, 0.5, r"Reporting Rate, $1/\rho$", ha="center", va="center", rotation="vertical", fontsize=16)
+plt.figtext(.55, 0.01, "Time", ha="center", va="center", fontsize=16)
+plt.tight_layout(rect=(0.015, 0.015, .98, 1))
 plt.savefig("figures/0_incidence.pdf")
 plt.close()
 
@@ -124,16 +150,24 @@ plt.close()
 
 
 
-fig, axs = plt.subplots(3, 2, sharex=True, figsize=(xdim*210/scalefactor, ydim*297/scalefactor))
+fig, axs = plt.subplots(len(name), 2, sharex=True, figsize=(xdim*210/scalefactor, ydim*297/scalefactor))
 ##plt.suptitle("Seasonality", fontsize=20, y=.999)
 for i in range(len(name)) :
-	axs[i % 3][np.floor(i/3)].plot(r[i] * sbar[i], lw=2)
-	axs[i % 3][np.floor(i/3)].fill_between(range(24), rup[i] * sbar[i], rdn[i] * sbar[i], color=colours[0], alpha=0.3)
-	axs[i % 3][np.floor(i/3)].set_title(name[i], fontsize=16, loc="left")
-	axs[i % 3][np.floor(i/3)].set_xlim([0, 23])
-	axs[i % 3][np.floor(i/3)].set_xticks(range(0, 23, 4))
-	axs[i % 3][np.floor(i/3)].tick_params(labelsize=16)
-	axs[i % 3][np.floor(i/3)].locator_params(nbins=5, axis="y")
+	axs[i][0].plot(r[i] * sbar[i], lw=2)
+	axs[i][0].fill_between(range(24), rup[i] * sbar[i], rdn[i] * sbar[i], color=colours[0], alpha=0.3)
+	axs[i][0].set_title(name[i], fontsize=16, loc="left")
+	axs[i][0].set_xlim([0, 23])
+	axs[i][0].set_xticks(range(0, 23, 4))
+	axs[i][0].tick_params(labelsize=16)
+	axs[i][0].locator_params(nbins=5, axis="y")
+
+	axs[i][1].plot(t[i], rho[i], lw=2)
+	axs[i][1].grid(False)
+	axs[i][1].tick_params(labelsize=16)
+	axs[i][1].locator_params(nbins=5, axis="y")
+	axs[i][1].set_xlim([np.min(t[i]), np.max(t[i])])
+
+
 plt.figtext(.5, 0.01, "Period", ha="center", va="center", fontsize=16)
 plt.figtext(.01, 0.5, r"Seasonality, $r \bar{S}$", ha="center", va="center", rotation="vertical", fontsize=16)
 plt.tight_layout(rect=(0.015, 0.015, .99, 1)) # (left, bottom, right, top) 
@@ -146,22 +180,34 @@ plt.close()
 
 
 
-fig, axs = plt.subplots(len(name), 1, figsize=(xdim*210/scalefactor, ydim*297/scalefactor))
+fig, axs = plt.subplots(len(name), 2, sharex='col', figsize=(xdim*210/scalefactor, ydim*297/scalefactor))
 ##plt.suptitle("Predicted Cases", fontsize=20, y=.999)
 for i in range(len(name)) :
-	axs[i].plot(t[i], ts[i], lw=2, c=colours[0])
-	axs[i].plot(t[i], pred[i], lw=1, c=colours[2], alpha=1)
-	axs[i].fill_between(t[i], cid[i], ciu[i], color=colours[2], alpha=0.3)
-	axs[i].tick_params(labelsize=16)
-	axs[i].locator_params(nbins=5, axis="y")
-	axs[i].set_title(u"%s. $R^2$ = %.03f, zero-corrected $R^2$ = %.03f" % (name[i].decode("utf-8"), pearson[i], pearsonzero[i]), fontsize=16, loc="left")
-	axs[i].set_xlim([np.min(t[i]), np.max(t[i])])
+	axs[i][0].plot(t[i], ts[i], lw=2, c=colours[0])
+	axs[i][0].plot(t[i], pred[i], lw=1, c=colours[2], alpha=1)
+	axs[i][0].fill_between(t[i], cid[i], ciu[i], color=colours[2], alpha=0.3)
+	axs[i][0].tick_params(labelsize=16)
+	axs[i][0].locator_params(nbins=5, axis="y")
+	axs[i][0].set_title(u"%s. Zero-corrected $R^2$ = %.03f" % (name[i].decode("utf-8"), pearsonzero[i]), fontsize=16, loc="left")
+	axs[i][0].set_xlim([1901, 1965])
+	axs[i][0].set_ylim([0, np.max([np.max(ts[i]), np.max(pred[i])])*1.1])
 	if i == 0 :
-		axs[i].legend([r"Observed Incidence", "Predicted Incidence"], loc=2)
+		axs[i][0].legend([r"Observed Incidence", "Predicted Incidence"], loc=2)
 
-plt.figtext(.01, 0.5, r"Incidence, $\rho\,C$", ha="center", va="center", rotation="vertical", fontsize=16)
-plt.figtext(.5, 0.01, "Time", ha="center", va="center", fontsize=16)
-plt.tight_layout(rect=(0.01, 0.015, .99, 1))
+
+	axs[i][1].plot(r[i] * sbar[i], lw=2)
+	axs[i][1].fill_between(range(24), rup[i] * sbar[i], rdn[i] * sbar[i], color=colours[0], alpha=0.3)
+	#axs[i][1].set_title(name[i], fontsize=16, loc="left")
+	axs[i][1].set_xlim([0, 23])
+	axs[i][1].set_xticks(range(0, 23, 4))
+	axs[i][1].tick_params(labelsize=16)
+	axs[i][1].locator_params(nbins=5, axis="y")
+
+plt.figtext(.015, 0.5, r"Observed Incidence, $C_t$ and Predicted Incidence, $I_t / \rho_t$", ha="center", va="center", rotation="vertical", fontsize=16)
+plt.figtext(.99, 0.5, r"Seasonality, $r_t\,\bar{S}$", ha="center", va="center", rotation="vertical", fontsize=16)
+plt.figtext(.285, 0.011, "Time", ha="center", va="center", fontsize=16)
+plt.figtext(.751, 0.011, "Period", ha="center", va="center", fontsize=16)
+plt.tight_layout(rect=(0.02, 0.02, .97, 1))
 plt.savefig("figures/2_predictions.pdf")
 plt.close()
 
@@ -175,14 +221,16 @@ plt.close()
 fig, axs = plt.subplots(len(name), 1, figsize=(xdim*210/scalefactor, ydim*297/scalefactor))
 #fig.suptitle("Predicted Epidemic Sizes", fontsize=20, y=.999)
 for i in range(len(name)) :
-	axs[i].errorbar(sizeerrx[i], sizeerry[i], yerr = sizeerre[i], fmt="o", ms=8, c=colours[0])
-	axs[i].plot(sizex[i], sizey[i], lw=2, c=colours[2])
+	axs[i].errorbar(sizeerrx[i], np.array(sizeerry[i]) / np.array(sizeerrx[i]), yerr = np.array(sizeerre[i]) / np.array(sizeerrx[i]), fmt="o", ms=8, c=colours[0])
+	#axs[i].set_yscale("log")
+	#axs[i].plot(sizex[i], np.array(sizey[i]) / np.array(sizex[i]), lw=2, c=colours[2])
+	axs[i].axhline(np.mean(np.array(sizeerry[i]) / np.array(sizeerrx[i])), color=colours[2], lw=2)
 	axs[i].tick_params(labelsize=16)
 	axs[i].locator_params(nbins=5, axis="y")
 	axs[i].set_xlim([0, np.max(sizex[i])*1.02])
-	axs[i].set_title(u"%s. $R^2$ = %.2f, slope = %.02f" % (name[i].decode("utf-8"), r2[i], grad[i]), fontsize=16, loc="left")
+	axs[i].set_title(r"%s. $\bar{q}$ = %.02f" % (name[i].decode("utf-8"), grad[i]), fontsize=16, loc="left")
 
-plt.figtext(.01, 0.5, "Simulated Epidemic Size", ha="center", va="center", rotation="vertical", fontsize=16)
+plt.figtext(.01, 0.5, "Predicted Size Coefficient $q$", ha="center", va="center", rotation="vertical", fontsize=16)
 plt.figtext(.5, 0.01, "Actual Epidemic Size", ha="center", va="center", fontsize=16)
 plt.tight_layout(rect=(0.01, 0.015, .99, 1))
 plt.savefig("figures/3_sizes.pdf")
@@ -191,6 +239,31 @@ plt.close()
 
 
 
+
+
+
+
+fig, axs = plt.subplots(len(name), 1, figsize=(xdim*210/scalefactor, ydim*297/scalefactor))
+#fig.suptitle("Predicted Epidemic Sizes", fontsize=20, y=.999)
+for i in range(len(name)) :
+	axs[i].plot(sizex[i], np.array(sizey[i]), lw=2, c=colours[2])
+	axs[i].plot([0, np.max(sizex[i])], [0, np.max(sizex[i])], lw=2, c=colours[1], alpha=0.7)
+	axs[i].errorbar(sizeerrx[i], np.array(sizeerry[i]), yerr = np.array(sizeerre[i]), fmt="o", ms=8, c=colours[0])
+	#plt.axhline(1, color=colours[2], lw=2)
+	axs[i].tick_params(labelsize=16)
+	axs[i].set_ylim([0, 1.1*np.max([np.max(sizeerry[i]), np.max(sizey[i])])])
+	axs[i].locator_params(nbins=5, axis="y")
+	axs[i].set_xlim([0, np.max(sizex[i])*1.02])
+	axs[i].set_title(u"%s. $R^2$ = %.2f, slope = %.02f" % (name[i].decode("utf-8"), r2[i], grad[i]), fontsize=16, loc="left")
+
+	if i == 0 :
+		axs[i].legend(["Regression", "Unity"], loc=2)
+
+plt.figtext(.01, 0.5, "Predicted Epidemic Size", ha="center", va="center", rotation="vertical", fontsize=16)
+plt.figtext(.5, 0.01, "Actual Epidemic Size", ha="center", va="center", fontsize=16)
+plt.tight_layout(rect=(0.01, 0.015, .99, 1))
+plt.savefig("figures/4_sizes.pdf")
+plt.close()
 
 
 
@@ -223,7 +296,6 @@ plt.tight_layout(rect=(0.02, 0.015, .99, 1))
 plt.savefig("figures/5_infectiontiming.pdf")
 plt.close()
 
-"""
 
 
 
