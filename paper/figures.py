@@ -254,13 +254,13 @@ for i in range(len(name)) :
 	axs[i].set_ylim([0, 1.1*np.max([np.max(sizeerry[i]), np.max(sizey[i])])])
 	axs[i].locator_params(nbins=5, axis="y")
 	axs[i].set_xlim([0, np.max(sizex[i])*1.02])
-	axs[i].set_title(u"%s. $R^2$ = %.2f, slope = %.02f" % (name[i].decode("utf-8"), r2[i], grad[i]), fontsize=16, loc="left")
+	axs[i].set_title(u"%s. $R^2$ = %.2f, gradient = %.02f" % (name[i].decode("utf-8"), r2[i], grad[i]), fontsize=16, loc="left")
 
 	if i == 0 :
-		axs[i].legend(["Regression", "Unity"], loc=2)
+		axs[i].legend(["Regression", "Identity"], loc=2)
 
-plt.figtext(.01, 0.5, "Predicted Epidemic Size", ha="center", va="center", rotation="vertical", fontsize=16)
-plt.figtext(.5, 0.01, "Actual Epidemic Size", ha="center", va="center", fontsize=16)
+plt.figtext(.01, 0.5, r"Predicted Epidemic Size, $I_t / \rho_t$", ha="center", va="center", rotation="vertical", fontsize=16)
+plt.figtext(.5, 0.01, r"Observed Epidemic Size, $C_t$", ha="center", va="center", fontsize=16)
 plt.tight_layout(rect=(0.01, 0.015, .99, 1))
 plt.savefig("figures/4_sizes.pdf")
 plt.close()

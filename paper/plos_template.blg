@@ -3,47 +3,45 @@ Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
 The top-level auxiliary file: plos_template.aux
 The style file: plos2009.bst
 Database file #1: qbib.bib
-Warning--I didn't find a database entry for "Cliff1983B"
 Reallocated singl_function (elt_size=4) to 100 items from 50.
-You've used 20 entries,
+You've used 28 entries,
             2441 wiz_defined-function locations,
-            678 strings with 7786 characters,
-and the built_in function-call counts, 15218 in all, are:
-= -- 1447
-> -- 159
+            700 strings with 9076 characters,
+and the built_in function-call counts, 17200 in all, are:
+= -- 1558
+> -- 181
 < -- 0
-+ -- 81
-- -- 39
-* -- 1314
-:= -- 1770
-add.period$ -- 40
-call.type$ -- 20
-change.case$ -- 18
++ -- 95
+- -- 43
+* -- 1394
+:= -- 1925
+add.period$ -- 47
+call.type$ -- 28
+change.case$ -- 24
 chr.to.int$ -- 0
-cite$ -- 40
-duplicate$ -- 1548
-empty$ -- 1648
-format.name$ -- 53
-if$ -- 3405
+cite$ -- 56
+duplicate$ -- 1784
+empty$ -- 1935
+format.name$ -- 58
+if$ -- 3871
 int.to.chr$ -- 0
-int.to.str$ -- 20
-missing$ -- 177
-newline$ -- 115
-num.names$ -- 17
-pop$ -- 235
+int.to.str$ -- 28
+missing$ -- 229
+newline$ -- 146
+num.names$ -- 19
+pop$ -- 381
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 0
-skip$ -- 121
+skip$ -- 217
 stack$ -- 0
-substring$ -- 2288
-swap$ -- 331
+substring$ -- 2382
+swap$ -- 403
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
 type$ -- 0
 warning$ -- 0
-while$ -- 86
-width$ -- 22
-write$ -- 223
-(There was 1 warning)
+while$ -- 92
+width$ -- 30
+write$ -- 273

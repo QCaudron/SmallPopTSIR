@@ -104,7 +104,7 @@ $\ast$ E-mail: qcaudron@princeton.edu
 % Please keep the abstract between 250 and 300 words
 \section*{Abstract}
 
-A standard assumption in the modelling of epidemic dynamics is that of a certain level of homogeneity. The well-known and oft-used SIR model, arguably the most important compartmental model in theoretical epidemiology, assumes that the disease being modelled is strongly immunising, directly transmitted, and has a well-defined period of infection, in addition to these homogeneity assumptions. Childhood infections, such as measles, are prime examples of diseases that fit the SIR-like mechanism, and these infections have been well studied for many systems. Populations are typically assumed to be large and well-mixed, and the data assumed to contain a high signal-to-noise ratio. Differential equations can then be used to model the disease's dynamics, generally with positive results, both in terms of explaining the underlying mechanisms for infection, and for the prediction of future time series data on disease incidence. Here, we consider a setting where populations are small and heterogeneous, and where the dynamics of infection are driven by extinction-recolonisation events. Using a TSIR model, we fit prevaccination measles incidence and demographic data in Bornholm, the Faroe Islands, and four districts of Iceland, between 1901 and 1965. The datasets for each of these countries suffers from different levels of data heterogeneity and sparsity. We explore the potential for prediction of this model~: given historical incidence data and up-to-date demographic information, and knowing that a new epidemic has just begun, can we predict how large it will be~? We show that, despite a lack of significant seasonality in the incidence of measles cases, and potentially severe heterogeneity at the population level, we are able to estimate the size of upcoming epidemics, conditioned on the first time step, to within reasonable confidence. \textcolor{red}{Predictions are best in localities with low}
+A standard assumption in the modelling of epidemic dynamics is that of a certain level of homogeneity. The well-known and oft-used SIR model, arguably the most important compartmental model in theoretical epidemiology, assumes that the disease being modelled is strongly immunising, directly transmitted, and has a well-defined period of infection, in addition to these homogeneity assumptions. Childhood infections, such as measles, are prime examples of diseases that fit the SIR-like mechanism, and these infections have been well studied for many systems. Populations are typically assumed to be large and well-mixed, and the data assumed to contain a high signal-to-noise ratio. Differential equations can then be used to model the disease's dynamics, generally with positive results, both in terms of explaining the underlying mechanisms for infection, and for the prediction of future time series data on disease incidence. Here, we consider a setting where populations are small and heterogeneous, and where the dynamics of infection are driven by extinction-recolonisation events. Using a TSIR model, we fit prevaccination measles incidence and demographic data in Bornholm, the Faroe Islands, and four districts of Iceland, between 1901 and 1965. The datasets for each of these countries suffers from different levels of data heterogeneity and sparsity. We explore the potential for prediction of this model~: given historical incidence data and up-to-date demographic information, and knowing that a new epidemic has just begun, can we predict how large it will be~? We show that, despite a lack of significant seasonality in the incidence of measles cases, and potentially severe heterogeneity at the population level, we are able to estimate the size of upcoming epidemics, conditioned on the first time step, to within reasonable confidence. \textcolor{red}{One more sentence ?}
 
 
 
@@ -128,7 +128,7 @@ In small populations, however, the dynamics of measles cases are vastly differen
 
 A discrete-time adaptation of SIR-like models was developed by Finkenst\"{a}dt and Grenfell \cite{Finkenstadt2000}. The TSIR model is a simple and computationally inexpensive system of difference equations which can be parameterised against observed incidence time-series, and is able to estimate a non-analytical time-varying contact rate. It has been successfully used in the analysis of seasonal variation of measles in several systems with large populations \cite{Bjornstad2002, Grenfell2002, Glass2003, Metcalf2010}. \textcolor{red}{Is this true ? Any other citations recommended here to show that the TSIR can reproduce dynamics that are difficult to model in continuous-time ?} However, little has been done on applying the TSIR model to small populations, despite being theoretically able to tackle fast dynamics such as large epidemics in subendemic populations. \textcolor{red}{Any suggested improvement to this sentence ? Also, has anything been published on small populations and TSIR ?}
 
-In this paper, we address the question of predictability of measles epidemics in small populations. First, we present data on the demographics and disease incidence in prevaccination-era Bornholm, the Faroe Islands, and four districts in Iceland. Then, we summarise the TSIR model and fit the parameters of the model to the data. After generating predictions for the evolution of each epidemic, we compare the mean predictions with the original time-series, and the predicted size of each observed epidemic.
+In this paper, we address the question of predictability of measles epidemics in small populations. First, we present data on the demographics and disease incidence in prevaccination-era Bornholm, the Faroe Islands, and four districts in Iceland. Then, we summarise the TSIR model and fit the parameters of the model to the data. After generating predictions for the evolution of each epidemic, we compare the mean predictions with the original time-series, and the predicted size of each observed epidemic. Finally, we discuss the factors which may influence the accuracy of predictions, and possible improvements to the data and methods used for improved results.
 
 
 
@@ -147,18 +147,13 @@ In this paper, we address the question of predictability of measles epidemics in
 
 \subsubsection*{Data}
 
-Measles incidence data were obtained for Iceland, the Faroe Islands, and Bornholm (CONFIRM?), from 1900 to 1965, from \cite{Cliff1981}. For Iceland, this dataset collects monthly figures for measles cases reported in 47 medical districts, originally sourced from \textit{Heilbrig\dh{}issk\'{y}rslur} (Public Health in Iceland). Major revisions to the boundaries of medical districts took place twice during the study period : in 1907 and 1932. For the Faroe Islands and Bornholm, the data were originally published WHERE?. 
+Measles incidence data were obtained for Iceland, from 1901 to 1965, from \cite{Cliff1981}. This dataset consists of monthly figures for measles cases reported in 47 medical districts, originally sourced from \textit{Heilbrig\dh{}issk\'{y}rslur} (Public Health in Iceland). Medical districts, the basic reporting unit for disease data in Iceland, are composed of \textit{hreppar} (communes) that are roughly equivalent to English parishes or American townships. Major revisions to the boundaries of medical districts took place twice during the study period : in 1907 and 1932. Monthly incidence data for the Faroe Islands, from 1912 to 1965, were obtained from \cite{Cliff2000}; this data was originally sourced from \cite{Lancaster1990}. For Bornholm, monthly measles incidence data from 1925 to 1965 were acquired from \cite{Kingdom}.
 
-Medical Report for the Kingdom of Denmark,
-1927-1968, National Health Service of Denmark, Copenhagen
+Demographic data for Iceland were obtained from \cite{StatsIceland}. Annual data on population and number of live births for the entire country were taken from \cite{StatsIcelandBirths}. Decadal population data from 1901 to 1965, for 262 municipalities, were obtained from \cite{StatsIcelandPop}. Municipality borders changed from three to five times during the study period. In addition, many municipalities had missing data. Medical districts and municipalities were matched based on names. Several matched districts were discarded either due to missing population data, or lack of confidence in the matching of the geographical boundaries. With the data available, we were able to match four district-- municipality pairs~: Akureyri, Reykjav\'{i}k, Hafnarfj\"{o}r\dh{}ur, and Vestmannaeyjar. It is worth noting that matched medical district--municipality pairs may not encompass the exact same area, but one may be a (potentially partial) subset of the other. 
 
-Demographic data for Iceland were obtained from two sources. Annual data on population and number of live births for the entire country were taken from \cite{Cliff1983B}. Decadal population data from 1901 to 1965, for 262 municipalities, were obtained from online publication in \cite{StatsIceland}. Municipality boundaries changed from three to five times during the study period. In addition, many municipalities had missing data. Medical districts and municipalities were matched based on names, and confirmed using latitude and longitudes. Using this procedure, we were able to confidently match four medical districts with municipalities. Several matched districts were discarded either due to missing population data, or lack of confidence in the matching of the geographical boundaries. It is also worth noting that matched medical district -- municipality pairs may not encompass the exact same area, but one may be a (potentially partial) subset of the other. With the data available, we were able to match four district -- municipality pairs~: Akureyri, Reykjav\'{i}k, Hafnarfj\"{o}r\dh{}ur, and Vestmannaeyjar.
+Data on the demographics of the Faroe Islands were taken from the Statistical Yearbooks of Denmark published by Statistics Denmark \cite{StatsDenmark}, and from Statistics Faroe Islands \cite{StatsFaroe}. Annual data on population and births from 1901 to 1965 were found in aggregated form for all of the islands in the Faroe archipelago. 
 
-Data on the demographics of the Faroe Islands were taken from the Statistical Yearbooks of Denmark published by \cite{StatsDenmark}, and from Statistics Faroe Islands \cite{StatsFaroe}. Annual data on population and births from 1901-1965 were obtained in aggregated form for all of the islands in the Faroe archipelago. 
-
-Demographic data for Bornholm was collected from several publications from \cite{StatsDenmark}. Annual population data for Bornholm were obtained from \cite{StatsDenmark}, which contains detailed statistical information collected by Statistics Denmark. Pre-1930 annual birth data were obtained from the \textit{\AE{}gteskaber, F\o{}dte og D\o{}de} (Marriages, Births and Death) publications of Statistics Denmark. Post-1930 annual birth data were obtained from \textit{Befolkningsudvikling og sundhedsforhold 1901-60} (Population, Development and Health 1901 - 1960), also from Danmarks Statistik.
-
-All locations experienced a slight decline in birth rates just prior to 1940, followed by a sharp increase in births after 1940. In Bornholm, births declined steadily from around 1945 onwards. In Iceland and the Faroe Islands, aggregate births increased steadily from 1940s onwards, with a slight decline in Iceland around 1960.
+Demographic data for Bornholm was collected from several publications from \cite{StatsDenmark}. Annual population data for Bornholm were obtained from \cite{StatsDenmarkPop}, which contains detailed statistical information collected by Statistics Denmark. Pre-1930 annual birth data were obtained from the \textit{\AE{}gteskaber, F\o{}dte og D\o{}de} (Marriages, Births and Death) available from \cite{StatsDenmarkBirths1}. Post-1930 annual birth data were obtained from \textit{Befolkningsudvikling og sundhedsforhold 1901-60} (Population, Development and Health 1901--1960), from \cite{StatsDenmarkBirths2}.
 
 Figure \ref{figIncidence} shows the reported incidence for Bornholm, the Faroe Islands, and four districts of Iceland.
 
@@ -214,7 +209,8 @@ The mean number of susceptibles $\bar{S}$ was estimated marginally by profiling 
 \begin{equation}
 \ln\big(\mathbb{E}\left[I_{t+1}\right]\big) = \ln(r_t) + \ln\left(\bar{S} + Z_t\right) + \alpha \ln\left(I_t\right),
 \end{equation}
-after which the seasonal contact rates $r_t$ were estimated conditionally on $\bar{S}$. The inhomogeneity parameter was fixed at $\alpha = 0.97$, as in \cite{Metcalf2010}, implying a small, nonlinear inhomogeneity, yet not significantly impacting transmission dynamics between large and small epidemics. \textcolor{red}{Not sure this is relevant here -- there are no epidemic troughs because we just go to zero. Perhaps best to try inferring this once more, now that sensitivity thresholds are better established.}
+after which the seasonal contact rates $r_t$ were estimated conditionally on $\bar{S}$. The inhomogeneity parameter was fixed at $\alpha = 0.97$, as in \cite{Metcalf2010}, implying a small, nonlinear inhomogeneity, yet not significantly impacting transmission dynamics between large and small epidemics.
+
 
 
 
@@ -231,7 +227,7 @@ where the number of Bernoulli trials is given by the number of susceptible indiv
 
 Due to the abundance of zeros in the incidence time-series, initial conditions cannot simply be taken as the point $\left(I_0, S_0\right)$. Instead, each epidemic must be simulated independently, with initial conditions given by the data at the time that the epidemic begins. For each epidemic, we fix the number of infected cases and of susceptible individuals as per the data, and allow the simulation to continue until the next epidemic begins. Thus, we always simulate the same number of epidemics as given by the incidence data, where each epidemic is simulated conditioned on the data available at the beginning of that epidemic. \textcolor{red}{Is this clear, or does it need rewording ?}
 
-In order to clearly establish when this time is, a sensitivity threshold must be set. Let $\tau \in \mathbb{Z}^+$ define the number of reported infected cases necessary for any particular biweek period to be considered part of an epidemic. A choice of $\tau = 1$ ensures that all available non-zero data is used. However, many potential epidemics go extinct before propagating through the population, especially in highly heterogeneous populations. As such, using $\tau=1$ would cause a large number of strongly overestimated epidemics, which in turn would deplete the susceptible pool, and underestimate future epidemics. As such, we treat $\tau$ as a sensitivity parameter, and fit it by selecting the sensitivity threshold which yields the highest correlation between the mean predicted epidemic traces and the incidence data, as defined by Pearson's $R^2$. Then, the first point in a sequence of time steps whose incidence is greater than or equal to the threshold is considered the beginning of that epidemic.
+In order to clearly establish when this time is, a sensitivity threshold must be set. Let $\tau \in \mathbb{Z}^+$ define the number of reported infected cases necessary for any particular biweek period to be considered part of an epidemic. A choice of $\tau = 1$ ensures that all available non-zero data is used. However, many potential epidemics go extinct before propagating through the population, especially in highly heterogeneous populations. As such, using $\tau=1$ would cause a large number of strongly overestimated epidemics, which in turn would deplete the susceptible pool, and underestimate future epidemics. As such, we treat $\tau$ as a sensitivity parameter, and fit it by selecting the sensitivity threshold which yields the highest correlation between the mean predicted epidemic traces and the incidence data, as defined by Pearson's $R^2$. Then, the first point in a sequence of time steps whose incidence is greater than or equal to the threshold is considered the beginning of that epidemic. \textcolor{red}{This is a simplification; we use a convolution to be more robust in detecting when epidemics start. Need to look into exactly how much impact this has on epi detection timing; if none, then this is correct. If significant, need to expand on this section.}
 
 
 
@@ -257,16 +253,16 @@ In order to clearly establish when this time is, a sensitivity threshold must be
 
 \subsubsection*{Dynamics}
 
-After fitting parameters as described above, predicted epidemic time-series were generated for each of the six localities, using the sensitivity thresholds reported in Table \ref{tableTau}. The mean of fifty thousand simulations, and the inferred seasonalities, are shown in Figure~\ref{figSims}, with their respective 95\% confidence intervals. The reported zero-corrected correlation coefficient is simply Pearson's $R^2$ computed between the mean prediction and the observed incidences, with points where both time-series are zero left out, to reduce inflation of the correlation due to the large number of zeroes in the time-series. 
+After fitting parameters as described above, predicted epidemic time-series were generated for each of the six localities, using the sensitivity thresholds reported in Table \ref{tableTau}. The mean of fifty thousand simulations, and the inferred seasonalities, are shown in Figure~\ref{figSims}, with their respective 95\% confidence intervals. The reported zero-corrected correlation coefficient is simply Pearson's $R^2$ computed between the mean prediction and the observed incidences, with points where both time-series are zero left out, to reduce inflation of the correlation due to the large number of zeroes in the time-series. Overall, good agreement is generally found with the observed data, with the highest correlation being in Hafnarfj\"{o}r\dh{}ur, a small district about ten kilometres from Reykjav\'{i}k. The worst fit is found in the Faroe Islands, by a significant margin; predictions here are characterised by a number of failed extinctions, general overestimation of epidemic sizes and durations, except for the single, large observed epidemic, which is significantly underestimated. 
 
 
 
 
+A significant number of predicted epidemics have a right shoulder, where the model predicts that epidemics take longer to go extinct than those observed. Depending on locality, many of these shoulders are small (Akureyri, Hafnarfj\"{o}r\dh{}ur, and Vestmannaeyjar). For other localities, predicted epidemics may fail to go extinct entirely, demonstrating cyclical behaviour until the beginning of the next epidemic (Bornholm, the Faroe Islands, and Reykjav\'{i}k). This may indicate that populations are strongly heterogeneous, and that the inhomogeneity parameter, fixed at $\alpha=0.97$ for these simulations, is an overestimate. \textcolor{red}{Thoughts on this ? Inferred values are between 0.8 and 0.92, but resulting predictions are fairly poor, with epidemics not going extinct. Model behaviour with $\alpha$ is not obvious -- a smaller value should overall decrease epidemic size, yet it also seems to reduce extinction probability. Anything worth mentioning about this here ?} 
 
-A significant number of predicted epidemics have a right shoulder, where the model predicts that epidemics take longer to go extinct than those observed. Depending on locality, many of these shoulders are small (Akureyri, Hafnarfj\"{o}r\dh{}ur, and Vestmannaeyjar), whilst for other localities, predicted epidemics may fail to go extinct entirely, demonstrating cyclical behaviour until the beginning of the next epidemic (Bornholm, the Faroe Islands, and Reykjav\'{i}k). This may indicate that the inhomogeneity parameter, fixed at $\alpha=0.97$ for these simulations, is an overestimate. \textcolor{red}{Thoughts on this ? Inferred values are between 0.8 and 0.92, but resulting predictions are fairly poor.}
 
 
-The inferred seasonalities have wide distributions, demonstrated by their large confidence intervals. This is potentially due to the highly stochastic nature of measles recolonisations into their respective localities, which is the primary driver for when epidemics occur. \textcolor{red}{Need to expand, or is it clear that this wouldn't be the case in large populations, where measles can be sustained ?}
+The inferred seasonalities have wide distributions, demonstrated by their large confidence intervals. This is potentially due to the highly stochastic nature of measles recolonisations into their respective localities, which is the primary driver for when epidemics occur. This is in contrast to the seasonality inferred in studies of large populations, such as that of England and Wales in \cite{Finkenstadt2000}, where significant seasonal trends were found, and matched well with school-based contact times.
 
 \textcolor{red}{What else should be said here about Figure~\ref{figSims} ?}
 
@@ -276,9 +272,9 @@ The inferred seasonalities have wide distributions, demonstrated by their large 
 
 \subsubsection*{Predictability in Epidemic Sizes}
 
-Rather than considering a point-wise comparison between the predicted and observed epidemic time-series, a potentially more robust measure of predictability is the total number of infected cases that a particular epidemic will generate. We define the size of an epidemic as the sum of reported cases $C_t$ for observed data, or $I_t / \rho_t$ for predicted data, from the first time point in an epidemic to the time point before the next epidemic begins. Figure~\ref{fig_sizes} shows the mean predicted epidemic size for each observed epidemic for the six localities. Several of these localities show a strong linear relationship, with near-zero intercepts and gradients around one. \textcolor{blue}{Fill in numbers after simulations.}
+Rather than considering a point-wise comparison between the predicted and observed epidemic time-series, a potentially more robust measure of predictability is the total number of infected cases that a particular epidemic will generate. We define the size of an epidemic as the sum of reported cases $C_t$ for observed data, or $I_t / \rho_t$ for predicted data, from the first time point in an epidemic to the time point before the next epidemic begins. Figure~\ref{fig_sizes} shows the mean predicted epidemic size for each observed epidemic for the six localities. Several of these localities show a strong linear relationship, with near-zero intercepts and gradients around one. Again, the highest correlation between predicted and observed epidemic sizes is found in Hafnarfj\"{o}r\dh{}ur, with a correlation coefficient of $R^2 = 0.89$. \textcolor{red}{Is it worth just picking out random parts of this plot to discuss ? Not quite sure what to say here.}
 
-\textcolor{red}{Any more to be said in this section ?}
+\textcolor{red}{Any more to be said in this section, about Figure~\ref{fig_sizes} ?}
 
 
 
@@ -317,53 +313,39 @@ Rather than considering a point-wise comparison between the predicted and observ
 
 \section*{Discussion}
 
+\textcolor{red}{These are just notes. Need to summarise what we did, and then :}
+
 Predictions on epidemic sizes can be made with a significant level of certainty, despite sparse demographic data for all localities, mismatching incidence and demography information in Iceland, and strong spatial barriers to population mixing in the Faroe Islands. 
 
 
-TAU
 
-
-
-Interpolated our monthly data for 24 periods - discuss effects of this. Trajectory matching vs simple interpolation.
-
-Reconstructed susceptibles in six small populations ( discuss Sbar / N ).
-
-Inferred reporting rate - may be indicator of bad dataset if above one ?
-
-Low to no seasonal effects found - do we want a histogram of epidemic periods throughout the year ? No relatable seasonal effects within Iceland. Do we prefer 12-period of 24-period seasonality ? Could $r$ be representative of some simply random effect that is not really a seasonal factor ? Can we do as well in predicting using flat $r$ ?
-
-SOME predictability found - given the simple model, we do OK at reconstructing epidemics. Reasonable correlation between the epidemic sizes. Duration much less predictable - possible due to how we define an epidemic and cut them off as they run into the next one.
-
-In all cases, our epidemics are longer in time - we don't go extinct as much as we should. Can we suggest an improvement in the model to ameliorate this ?
-
-Intercept on size plot - we should be seeing zero intercept, gradient one. We're seeing greater gradient, so we're overestimating size; positive intercept may indicate improvement needed in the model
-
-
-
-
-
-Note Bornholm ( single island, clean data effect ) vs Faroe ( many small islands, aggregate incidence data ) vs Icelandic areas ( disconnected demographics vs incidence borders ). In good locations, we can certainly give a good prediction of epi size. Tend to do better for large epidemics. Gradients all ABOUT one, some slightly over ( right shoulder effect ? ). Large variability in error bars - some epidemics are easier to predict than others ( why ? )
-
-
-
-
-ROMAIN :
-
-Why did this method work on other datasets and not this one ? Demography
-
-What other methods could work on this data ?
-
-What can be done to improve the quality of the data ?
+\begin{itemize}
+\item Sensitivity parameter $\tau$ : do we miss any small epidemics ? Does having a value much greater than zero strongly affect the usefulness of this approach ? ( couldn't use this live as we'd have to wait until $\tau$ cases are detected before predicting ). Maybe elaborate in Methods on convolution peak detection used for epi detection 
+\item Improving the data : get spatial borders for Iceland, get disaggregated incidence data for Faroe 
+\item Improving the method : trajectory matching instead of linearly interpolating over incidence data, creating TSEIR model ?
+\item Drill home ``model-friendly'' aspects : Bornholm is a single island ( no geographical limitations to mixing ) and single population in terms of incidence. Things should work nicely, and they do. Faroe is five populations which we observe in aggregate form, with strong spatial boundaries hindering population mixing. It shouldn't work well, and it doesn't. Iceland is in between, because we're observing several populations somewhat independently ( mixing is involved ), and we have somewhat matched demographics ( but borders probably don't always match ), so some places are expected to be better than others. Hafnarf comes out best, potentially because of boundary matching. Vestmann should be very good too, as it's a small island off the coast of Iceland -- small enough to have its own municipality and medical district, but no more, so we know they match. However, it has a very small population, so mixing may be reduced.
+\item Does this method work better on other systems ( UK ) ? Why ? Is it because of the quality of the data, or because of the assumptions made in the model ?
+\item Are there other methods that could work better on this type of data ? Relate back to Rhodes and Anderson
+\end{itemize}
 
 
 
 
 
 
-% You may title this section "Methods" or "Models". 
-% "Models" is not a valid title for PLoS ONE authors. However, PLoS ONE
-% authors may use "Analysis" 
-\section*{Materials and Methods}
+
+
+
+
+
+
+
+
+
+\section*{Coauthors - Other points}
+
+\textcolor{red}{Haven't mentioned anything about reporting rates. Not sure they're really very important, as they're just the glue between births and cases for susceptible reconstruction. Any thoughts ?}
+
 
 
 
@@ -376,9 +358,9 @@ What can be done to improve the quality of the data ?
 
 
 % Do NOT remove this, even if you are not including acknowledgments
-\section*{Acknowledgments}
+\section*{Acknowledgements}
 
-
+Q. Caudron acknowledges funding from the Department of Homeland Security contract HSHQDC-12-C-00058.
 
 
 
@@ -463,7 +445,7 @@ What can be done to improve the quality of the data ?
 \begin{figure}[!h]
 \centering
 \includegraphics[width=\textwidth]{figures/4_sizes.pdf}
-\caption{\textbf{Predictability of epidemic sizes.} The predicted size of each observed epidemic is given as a function of its observed size. \textcolor{red}{Do we want to force the fits through the origin, or report the best regression line with floating intercept as we are now ?}}
+\caption{\textbf{Predictability of epidemic sizes.} The predicted size of each epidemic as a function of its observed size.}
 \label{fig_sizes}
 \end{figure}
 
