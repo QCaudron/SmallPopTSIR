@@ -5,45 +5,45 @@ The style file: plos2009.bst
 Database file #1: qbib.bib
 Warning--I didn't find a database entry for "Cliff1983B"
 Reallocated singl_function (elt_size=4) to 100 items from 50.
-You've used 8 entries,
+You've used 20 entries,
             2441 wiz_defined-function locations,
-            589 strings with 5743 characters,
-and the built_in function-call counts, 4876 in all, are:
-= -- 427
-> -- 59
+            678 strings with 7786 characters,
+and the built_in function-call counts, 15218 in all, are:
+= -- 1447
+> -- 159
 < -- 0
-+ -- 31
-- -- 14
-* -- 387
-:= -- 537
-add.period$ -- 16
-call.type$ -- 8
-change.case$ -- 6
++ -- 81
+- -- 39
+* -- 1314
+:= -- 1770
+add.period$ -- 40
+call.type$ -- 20
+change.case$ -- 18
 chr.to.int$ -- 0
-cite$ -- 16
-duplicate$ -- 506
-empty$ -- 551
-format.name$ -- 18
-if$ -- 1092
+cite$ -- 40
+duplicate$ -- 1548
+empty$ -- 1648
+format.name$ -- 53
+if$ -- 3405
 int.to.chr$ -- 0
-int.to.str$ -- 8
-missing$ -- 68
-newline$ -- 55
-num.names$ -- 5
-pop$ -- 127
+int.to.str$ -- 20
+missing$ -- 177
+newline$ -- 115
+num.names$ -- 17
+pop$ -- 235
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 0
-skip$ -- 73
+skip$ -- 121
 stack$ -- 0
-substring$ -- 633
-swap$ -- 113
+substring$ -- 2288
+swap$ -- 331
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
 type$ -- 0
 warning$ -- 0
-while$ -- 25
-width$ -- 9
-write$ -- 91
+while$ -- 86
+width$ -- 22
+write$ -- 223
 (There was 1 warning)

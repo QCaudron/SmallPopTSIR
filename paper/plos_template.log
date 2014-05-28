@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012) (format=pdflatex 2013.10.7)  27 MAY 2014 15:01
+This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012) (format=pdflatex 2013.10.7)  27 MAY 2014 20:31
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -509,10 +509,11 @@ File: umsb.fd 2009/06/22 v3.00 AMS symbols B
 
 ]
 
-LaTeX Warning: Citation `Cliff1983B' on page 2 undefined on input line 158.
+LaTeX Warning: Citation `Cliff1983B' on page 2 undefined on input line 155.
 
-[2] [3] [4] [5] (./plos_template.bbl
-LaTeX Font Info:    Try loading font information for T1+cmtt on input line 37.
+[2] [3] [4] [5] (./plos_template.bbl [6]
+LaTeX Font Info:    Try loading font information for T1+cmtt on input line 127.
+
 
 (/usr/local/texlive/2012/texmf-dist/tex/latex/base/t1cmtt.fd
 File: t1cmtt.fd 1999/05/25 v2.5h Standard LaTeX font definitions
@@ -520,59 +521,59 @@ File: t1cmtt.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-<figures/0_incidence.pdf, id=30, 834.71848pt x 1073.20946pt>
+<figures/0_incidence.pdf, id=33, 834.71848pt x 1073.20946pt>
 File: figures/0_incidence.pdf Graphic file (type pdf)
 
 <use figures/0_incidence.pdf>
-Package pdftex.def Info: figures/0_incidence.pdf used on input line 451.
+Package pdftex.def Info: figures/0_incidence.pdf used on input line 448.
 (pdftex.def)             Requested size: 455.24408pt x 585.32152pt.
 
 
-LaTeX Warning: Float too large for page by 21.81364pt on input line 454.
+LaTeX Warning: Float too large for page by 21.81364pt on input line 451.
 
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-<figures/2_predictions.pdf, id=31, 834.71848pt x 1073.20946pt>
+<figures/2_predictions.pdf, id=34, 834.71848pt x 1073.20946pt>
 File: figures/2_predictions.pdf Graphic file (type pdf)
 
 <use figures/2_predictions.pdf>
-Package pdftex.def Info: figures/2_predictions.pdf used on input line 460.
+Package pdftex.def Info: figures/2_predictions.pdf used on input line 457.
 (pdftex.def)             Requested size: 455.24408pt x 585.32152pt.
 
 
-LaTeX Warning: Float too large for page by 33.81364pt on input line 463.
+LaTeX Warning: Float too large for page by 33.81364pt on input line 460.
 
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-<figures/4_sizes.pdf, id=32, 834.71848pt x 1073.20946pt>
+<figures/4_sizes.pdf, id=35, 834.71848pt x 1073.20946pt>
 File: figures/4_sizes.pdf Graphic file (type pdf)
 
 <use figures/4_sizes.pdf>
-Package pdftex.def Info: figures/4_sizes.pdf used on input line 468.
+Package pdftex.def Info: figures/4_sizes.pdf used on input line 465.
 (pdftex.def)             Requested size: 455.24408pt x 585.32152pt.
 
 
-LaTeX Warning: Float too large for page by 33.81364pt on input line 471.
+LaTeX Warning: Float too large for page by 33.81364pt on input line 468.
 
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-[6] [7] [8 <./figures/0_incidence.pdf>] [9 <./figures/2_predictions.pdf>]
-[10 <./figures/4_sizes.pdf>] (./plos_template.aux)
+[7] [8] [9 <./figures/0_incidence.pdf>] [10 <./figures/2_predictions.pdf>]
+[11 <./figures/4_sizes.pdf>] (./plos_template.aux)
 
 LaTeX Warning: There were undefined references.
 
  ) 
 Here is how much of TeX's memory you used:
- 4422 strings out of 493488
- 61468 string characters out of 3141326
- 123491 words of memory out of 3000000
- 7636 multiletter control sequences out of 15000+200000
+ 4446 strings out of 493488
+ 61754 string characters out of 3141326
+ 123539 words of memory out of 3000000
+ 7648 multiletter control sequences out of 15000+200000
  11166 words of font info for 32 fonts, out of 3000000 for 9000
  957 hyphenation exceptions out of 8191
- 38i,11n,38p,1942b,308s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 38i,11n,38p,1953b,308s stack positions out of 5000i,500n,10000p,200000b,50000s
 {/usr/local/texlive/2012/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc}
 </usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb><
 /usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></
@@ -590,10 +591,10 @@ live/2012/texmf-dist/fonts/type1/public/cm-super/sfrm1000.pfb></usr/local/texli
 ve/2012/texmf-dist/fonts/type1/public/cm-super/sfti1000.pfb></usr/local/texlive
 /2012/texmf-dist/fonts/type1/public/cm-super/sftt1000.pfb></usr/local/texlive/2
 012/texmf-dist/fonts/type1/urw/ncntrsbk/uncr8a.pfb>
-Output written on plos_template.pdf (10 pages, 604095 bytes).
+Output written on plos_template.pdf (11 pages, 607177 bytes).
 PDF statistics:
- 231 PDF objects out of 1000 (max. 8388607)
- 117 compressed objects within 2 object streams
+ 234 PDF objects out of 1000 (max. 8388607)
+ 119 compressed objects within 2 object streams
  0 named destinations out of 1000 (max. 500000)
  16 words of extra memory for PDF output out of 10000 (max. 10000000)
 
