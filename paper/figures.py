@@ -94,10 +94,12 @@ print "ALPHA : ", alpha
 B = []
 for file in os.listdir("../data/iceland") :
 	if file.endswith(".csv") :
-		B.append(pd.read_csv("../data/iceland/" + file)["births"].values)
+		if file != "all.csv" :
+			B.append(pd.read_csv("../data/iceland/" + file)["births"].values)
 
 B.insert(1, pd.read_csv("../data/bornholm/bornholm.csv")["births"].values)
 B.insert(2, pd.read_csv("../data/faroe/faroe.csv")["births"].values)
+
 
 
 for i in range(len(B)) :

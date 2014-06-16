@@ -51,7 +51,7 @@ vaccine = 1965
 numSvals = 500
 Alpha = 0.97 # set to None to infer
 gam = 0. # set to None to infer
-
+fixedseasonality = 0
 
 
 
@@ -479,9 +479,13 @@ for idx, file in enumerate(directory) :
         params.add("gamma", min=0.0, max=1.0, value = 0.2)
 
     for i in range(periodicity) : # Seasonalities
-        params.add("r%d" % i, value=0.)
-
-    rstr = ["r%d" % (i % periodicity) for i in z[1:]]
+        if fixedseasonality :
+            params.add("r", value=0.)
+            rstr = ["r" for i in z[1:]]
+        else :
+            params.add("r%d" % i, value=0.)
+            rstr = ["r%d" % (i % periodicity) for i in z[1:]]
+    
 
         
     # Objective function
@@ -538,12 +542,21 @@ for idx, file in enumerate(directory) :
 
     # Extract parameters and errors
     Sbar = L.params["Sest"].value
-    r = np.exp([L.params["r" + str(i)].value for i in range(periodicity)])
+
+    if fixedseasonality :
+        r = np.ones(periodicity) * np.exp(L.params["r"].value)
+        errup = np.ones(periodicity) * np.exp(np.log(r) + 2*L.params["r"].stderr)
+        errdn = np.ones(periodicity) * np.exp(np.log(r) - 2*L.params["r"].stderr)
+
+    else :
+        r = np.exp([L.params["r" + str(i)].value for i in range(periodicity)])
+        errup = np.exp(np.log(r) + [2*L.params["r" + str(i)].stderr for i in range(periodicity)])
+        errdn = np.exp(np.log(r) - [2*L.params["r" + str(i)].stderr for i in range(periodicity)])
+
+
     alphaSbar = L.params["alpha"].value if Alpha is None else Alpha
     gamma = L.params["gamma"].value if gam is None else gam
-    errup = np.exp(np.log(r) + [2*L.params["r" + str(i)].stderr for i in range(periodicity)])
-    errdn = np.exp(np.log(r) - [2*L.params["r" + str(i)].stderr for i in range(periodicity)])
-
+    
 
     export_r.append(r)
     export_sn.append((Sbar) / Nt)
