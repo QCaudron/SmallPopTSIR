@@ -96,13 +96,6 @@ Finkenst\"{a}dt BF, Grenfell BT (2000) {Time series modelling of childhood
   Statistics) 49: 187--205.
 \bibAnnoteFile{Finkenstadt2000}
 
-\bibitem{Grenfell2002}
-Grenfell BT, Bjornstad ON, Finkenst\"{a}dt BF (2002) {Dynamics of measles
-  epidemics: scaling noise, determinism, and predictability with the TSIR
-  model}.
-\newblock Ecological Monographs 72: 185--202.
-\bibAnnoteFile{Grenfell2002}
-
 \bibitem{Glass2003}
 Glass K, Xia Y, Grenfell B (2003) {Interpreting time-series analyses for
   continuous-time biological models -- measles as a case study}.
@@ -115,6 +108,13 @@ Metcalf CJE, Munayco CV, Chowwell G, Grenfell BT, Bj\o{}rnstad ON (2010)
   risk of congenital rubella syndrome in Peru}.
 \newblock Journal of the Royal Society Interface 8: 369--376.
 \bibAnnoteFile{Metcalf2010}
+
+\bibitem{Grenfell2002}
+Grenfell BT, Bjornstad ON, Finkenst\"{a}dt BF (2002) {Dynamics of measles
+  epidemics: scaling noise, determinism, and predictability with the TSIR
+  model}.
+\newblock Ecological Monographs 72: 185--202.
+\bibAnnoteFile{Grenfell2002}
 
 \bibitem{Cliff1981}
 Cliff AD, Haggett P, Ord JK, Versey GR (1981) {Spatial Diffusion: An Historical
@@ -175,5 +175,11 @@ Denmark. {Danmarks Statistik~: \AE{}gteskaber, F\o{}dte og D\o{}de}
 Denmark. {Danmarks Statistik~: Befolkningsudvikling og sundhedsforhold}
   \\\texttt{www.dst.dk/pukora/epub/upload/19335/befsund.pdf}.
 \bibAnnoteFile{StatsDenmarkBirths2}
+
+\bibitem{Earn2000}
+Earn JD, Rohani P, Bolker BM, Grenfell BT (2000) {Measles in England and Wales.
+  I: An analysis of factors underlying seasonal patterns}.
+\newblock Science 287: 667--670.
+\bibAnnoteFile{Earn2000}
 
 \end{thebibliography}

@@ -298,6 +298,10 @@ for idx, file in enumerate(directory) :
     export_sbar = []
     export_Z = []
     export_alpha = []
+    export_b = []
+
+
+
 
 
     
@@ -346,7 +350,7 @@ for idx, file in enumerate(directory) :
 
 
 
-
+   
 
 
 
@@ -654,16 +658,16 @@ for idx, file in enumerate(directory) :
                 """
 
                 # New Negative Binomial
-                """
+                
                 bsi = r[i % periodicity] * predS[i-1] * (predI[i-1] ** (alphaSbar-1)) if np.isfinite(predI[i-1] ** (alphaSbar-1)) else 0
 
                 predI[i] = np.random.negative_binomial(max(np.round(predI[i-1]), 1), \
                                                        1. / ( 1. + bsi ))
-                """
+                
 
 
                 # BINOMIAL now
-                predI[i] = np.random.binomial(predS[i-1], 1. - np.exp(- r[i % periodicity] * (predI[i-1] ** alphaSbar)))
+                #predI[i] = np.random.binomial(predS[i-1], 1. - np.exp(- r[i % periodicity] * (predI[i-1] ** alphaSbar)))
                 predS[i] = max(B[max(i - delay, 0)] + predS[i-1] - predI[i], 0)
 
             
@@ -1040,6 +1044,20 @@ for idx, file in enumerate(directory) :
 
 
 
+    starts = [e[0] for e in epi] 
+    b = []
+
+    for s in range(len(starts)-1) :
+        b.append(np.sum(B[starts[s] : starts[s+1]]))
+
+    export_b.append(b)
+
+
+
+
+
+
+
 
 
 
@@ -1066,7 +1084,8 @@ for idx, file in enumerate(directory) :
                     "grad" : export_grad,
                     "sbar" : export_sbar,
                     "Z" : export_Z,
-                    "alpha": export_alpha
+                    "alpha": export_alpha,
+                    "b" : export_b
         }).to_json(u"paper/figures/%s.json" % names[idx].decode("utf-8"))
 
 
