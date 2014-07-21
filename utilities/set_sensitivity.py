@@ -5,11 +5,9 @@ import seaborn
 
 c = seaborn.color_palette("deep", 8)
 
-os.chdir("../")
-
 sumR = []
 
-for i in range(1, 25) :
+for i in range(1, 22) :
 
 	os.system("python batch.py iceland 500 %d" % i)
 	os.system("python batch.py faroe 500 %d" % i)
@@ -19,7 +17,7 @@ for i in range(1, 25) :
 
 	for file in os.listdir("paper/figures/") :
 		if file.endswith(".json") :
-			data = pd.read_json("paper/figures/%s" % file)
+			data = pd.read_json("./paper/figures/%s" % file)
 			r.append(data["pearson"].values[0])
 
 

@@ -26,6 +26,8 @@ scalefactor = 20.
 xdim = 1.1
 ydim = 1.
 
+fi = [1, 2, 4, 3, 0, 5]
+
 
 name = ["Akureyri", "Bornholm", "Faroe Islands", r"Hafnarfj\"{o}rdur", r"Reykjav\'{i}k", "Vestmannaeyjar"]
 #name = []
@@ -90,8 +92,6 @@ for file in os.listdir("figures/") :
 
 
 
-print "ALPHA : ", alpha
-
 
 
 # Births
@@ -106,9 +106,58 @@ B.insert(2, pd.read_csv("../data/faroe/faroe.csv")["births"].values)
 
 
 
+
 for i in range(len(B)) :
 	v = np.where(np.array(t[i]) > 1965)[0][0] if t[i][-1] > 1965 else len(t[i])
 	B[i] = B[i][:v]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Reorder data
+name = [name[i] for i in fi]
+t = [t[i] for i in fi]
+ts = [ts[i] for i in fi]
+pred = [pred[i] for i in fi]
+rho = [rho[i] for i in fi]
+r = [r[i] for i in fi]
+rup = [rup[i] for i in fi]
+rdn = [rdn[i] for i in fi]
+sizex = [sizex[i] for i in fi]
+sizey = [sizey[i] for i in fi]
+sizeerrx = [sizeerrx[i] for i in fi]
+sizeerry = [sizeerry[i] for i in fi]
+sizeerre = [sizeerre[i] for i in fi]
+r2 = [r2[i] for i in fi]
+p = [p[i] for i in fi]
+pearson = [pearson[i] for i in fi]
+pearsonzero = [pearsonzero[i] for i in fi]
+sbar = [sbar[i] for i in fi]
+grad = [grad[i] for i in fi]
+sn = [sn[i] for i in fi]
+ciu = [ciu[i] for i in fi]
+cid = [cid[i] for i in fi]
+alpha = [alpha[i] for i in fi]
+b = [b[i] for i in fi]
+
+
+
+
+
+
 
 
 

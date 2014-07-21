@@ -77,17 +77,22 @@
 Q. Caudron$^{1,\ast}$, 
 A. S. Mahmud$^{2}$, 
 C. J. E. Metcalf$^{1,3}$,
-M. Gottfre{\dh}sson$^{3,4}$,
+M. Gottfre{\dh}sson$^{3,4,5}$,
 C. Viboud$^{3}$,
+A. D. Cliff$^{6}$,
 B. T. Grenfell$^{1,3}$
 \\
-\bf{1} Department of Ecology and Evolutionary Biology, Princeton University, Princeton, NJ, 08544, USA
+\bf{1} Department of Ecology and Evolutionary Biology, Princeton University, Princeton, NJ, USA
 \\
-\bf{2} Office of Population Research, Woodrow Wilson School of Public and International Affairs, Princeton University, Princeton, NJ, 08544, USA
+\bf{2} Office of Population Research, Woodrow Wilson School of Public and International Affairs, Princeton University, Princeton, NJ, USA
 \\
-\bf{3} Fogarty International Center, National Institutes of Health, Bethesda, MD, 20892, USA
+\bf{3} Fogarty International Center, National Institutes of Health, Bethesda, MD, USA
 \\
-\bf{4} Landsp\'{i}tali University Hospital, Hringbraut 101, Reykjav\'{i}k, Iceland
+\bf{4} Department of Medicine, Landsp\'{i}tali University Hospital, Reykjav\'{i}k, Iceland
+\\
+\bf{5} Faculty of Medicine, School of Health Sciences, University of Iceland, Reykjav\'{i}k, Iceland
+\\
+\bf{6} Department of Geography, University of Cambridge, Cambridge, UK
 \\
 $\ast$ E-mail: qcaudron@princeton.edu
 \end{flushleft}
@@ -150,15 +155,15 @@ In this paper, we address the question of predictability of measles epidemics in
 
 \subsubsection*{Data}
 
-Measles incidence data were obtained for Iceland, from 1901 to 1965, from \cite{Cliff1981}. This dataset consists of monthly figures for measles cases reported in 47 medical districts (\textit{l\ae nish\'{e}ra\dh{}}), originally sourced from \textit{Heilbrig\dh{}issk\'{y}rslur} (Public Health in Iceland). Medical districts, the basic reporting unit for disease data in Iceland, are composed of \textit{hreppar} (communes) that are roughly equivalent to English parishes or American townships. Major revisions to the boundaries of medical districts took place twice during the study period : in 1907 and 1932. Monthly incidence data for the Faroe Islands, from 1912 to 1965, were obtained from \cite{Cliff2000}; this data was originally sourced from \cite{Lancaster1990}. For Bornholm, monthly measles incidence data from 1925 to 1965 were acquired from \cite{Kingdom}.
+Measles incidence data were obtained for Iceland, from 1901 to 1965, from \cite{Cliff1981}. This dataset consists of monthly figures for measles cases reported in 47 medical districts (\textit{l\ae knish\'{e}ra\dh{}}), originally sourced from \textit{Heilbrig\dh{}issk\'{y}rslur} (Public Health in Iceland). Medical districts, the basic reporting unit for disease data in Iceland, are composed of \textit{hreppar} (communes) that are roughly equivalent to English parishes or American townships. Major revisions to the boundaries of medical districts took place twice during the study period : in 1907 and 1932. Monthly incidence data for the Faroe Islands, from 1912 to 1965, were obtained from \cite{Cliff2000}; this data was originally sourced from \cite{Lancaster1990}. For Bornholm, monthly measles incidence data from 1925 to 1965 were acquired from \cite{Kingdom}.
 
-Demographic data for Iceland were obtained from \cite{StatsIceland}. Annual data on population and number of live births for the entire country were taken from \cite{StatsIcelandBirths}. Decennial population data from 1901 to 1965, for 262 municipalities, were obtained from \cite{StatsIcelandPop}. Municipality borders changed from three to five times during the study period. In addition, many municipalities had missing data. Medical districts and municipalities were matched based on names. Several matched districts were discarded either due to missing population data, or lack of confidence in the matching of the geographical boundaries. With the data available, we were able to match four district-- municipality pairs~: Akureyri, Reykjav\'{i}k, Hafnarfj\"{o}r\dh{}ur, and Vestmannaeyjar. It is worth noting that matched medical district--municipality pairs may not encompass the exact same area, but one may be a (potentially partial) subset of the other. 
+Demographic data for Iceland were obtained from \cite{StatsIceland}. Annual data on population and number of live births for the entire country were taken from \cite{StatsIcelandBirths}. Decennial population data from 1901 to 1965, for 262 municipalities, were obtained from \cite{StatsIcelandPop}. Municipality borders changed from three to five times during the study period. In addition, many municipalities had missing data. Medical districts and municipalities were matched based on names. Several matched districts were discarded either due to missing population data, or lack of confidence in the matching of the geographical boundaries. With the data available, we were able to match four district-municipality pairs~: Akureyri, Reykjav\'{i}k, Hafnarfj\"{o}r\dh{}ur, and Vestmannaeyjar. It is worth noting that matched medical district--municipality pairs may not encompass the exact same area, but one may be a (potentially partial) subset of the other. 
 
 Data on the demographics of the Faroe Islands were taken from the Statistical Yearbooks of Denmark published by Statistics Denmark \cite{StatsDenmark}, and from Statistics Faroe Islands \cite{StatsFaroe}. Annual data on population and births from 1901 to 1965 were found in aggregated form for all of the islands in the Faroe archipelago. 
 
 Demographic data for Bornholm was collected from several publications from \cite{StatsDenmark}. Annual population data for Bornholm were obtained from \cite{StatsDenmarkPop}, which contains detailed statistical information collected by Statistics Denmark. Pre-1930 annual birth data were obtained from the \textit{\AE{}gteskaber, F\o{}dte og D\o{}de} (Marriages, Births and Death) available from \cite{StatsDenmarkBirths1}. Post-1930 annual birth data were obtained from \textit{Befolkningsudvikling og sundhedsforhold 1901-60} (Population, Development and Health 1901--1960), from \cite{StatsDenmarkBirths2}.
 
-Figure \ref{figIncidence} shows the reported incidence for Bornholm, the Faroe Islands, and four districts of Iceland.
+Figure \ref{figIncidence} shows the reported incidence for Bornholm, the Faroe Islands, and four districts of Iceland, and Table \ref{tableTau} presents the mean populations and birth rates over the study period. All data for this paper can be found online at \texttt{http://github.com/QCaudron/SmallPopTSIR}.
 
 
 
@@ -184,7 +189,7 @@ S_{t+1} = S_t + B_{t-d} - I_t + u_t, \quad \mathbb{E}\left[u_t\right] = 0.
 \end{equation}
 Here, $u_t$ is  zero-mean additive noise. $B_{t-d}$ is the number of births born $d$ time step prior to $t$, the delay $d$ assumed due to maternal immunity, and set at four months \cite{Anderson1991}.
 
-The observed number of cases, $C_t$, is assumed to be underreported by a reciprocal reporting rate $\rho_t \ge 1$, such that the true number of infected cases at time $t$ is given by $I_t = \rho_t \,C_t$. If the number of susceptible individuals $S_t$ fluctuates around a mean $\bar{S}$ such that $S_t = \bar{S} + Z_t$, then, from equation (\ref{TSIR_S}), the dynamics of the susceptible individuals are given by
+The observed number of cases, $C_t$, is assumed to be underreported by a reciprocal reporting rate $\rho_t \ge 1$, such that the true number of infected cases at time $t$ is given by $I_t = \rho_t \,C_t$. If the number of susceptible individuals $S_t$ fluctuates around a mean $\bar{S}$ such that $S_t = \bar{S} + Z_t$, then, from equation (\ref{TSIR_S}), the dynamics of the susceptible individuals around their mean $\bar{S}$ are given by
 \begin{equation}
 Z_{t+1} = B_{t-d} + Z_{t} - \rho_t\,C_t + u_t.
 \label{iter}
@@ -259,15 +264,15 @@ A choice of $\tau = 1$ ensures that all available non-zero data is used. However
 
 \subsubsection*{Dynamics}
 
-After fitting parameters as described above, predicted epidemic time-series were generated for each of the six localities, using the sensitivity thresholds reported in Table \ref{tableTau}. The statistical fits, computed from the difference equations (\ref{TSIR_S}), (\ref{sums}), and (\ref{log}), illustrate a step-ahead prediction. The simulated time-series are generated from much sparser information, effectively using an $n$-step-ahead prediction, with $n$ the duration of an epidemic -- this is a better test of predictability of the final sizes of epidemics.
+After fitting parameters as described above, predicted epidemic time-series were generated for each of the six localities, using the sensitivity thresholds reported in Table \ref{tableTau}. The statistical fits, computed from the difference equations (\ref{TSIR_S}), (\ref{sums}), and (\ref{log}), illustrate a step-ahead prediction. The simulated time-series are generated from much sparser information, effectively using an $n$-step-ahead prediction, with $n$ representing the duration of an epidemic -- this is a better test of predictability of the final sizes of epidemics.
 
 Figure \ref{figIncidence} shows the time-series of the number of reported and predicted cases in all six localities. Predictions are plotted as the mean incidence across ten thousand simulations, with their respective 95\% confidence intervals. High temporal synchronicity can be seen in the Icelandic localities. In general, epidemics in Iceland are of shorter duration, whilst those in Bornholm and the Faroe Islands are not quite as spiky. In all localities, epidemics seem to occur more frequently in the latter half of the time-series, perhaps due to an increase in birth rates after the baby boom. 
 
-The reported coefficient of determination has been corrected by removing points where both the observed and predicted time-series are simultaneously zero. only considering points in the observed and predicted time-series that are not both zero, to reduce inflation of the coefficient due to the large number of zeroes in the time-series. Overall, good agreement is generally found with the observed data, with the highest correlation being in Hafnarfj\"{o}r\dh{}ur, a small district about ten kilometres from Reykjav\'{i}k. The worst fit is found in the Faroe Islands, by a significant margin; predictions here are characterised by a number of failed extinctions, general overestimation of epidemic sizes and durations, except for the single, large observed epidemic, which is significantly underestimated. 
+The reported coefficient of determination has been corrected by removing points where both the observed and predicted time-series are simultaneously zero, to reduce inflation of the coefficient due to the large number of zeroes in the time-series. Overall, good agreement is generally found with the observed data, with the highest correlation being in Hafnarfj\"{o}r\dh{}ur, a small district about ten kilometres from Reykjav\'{i}k. The worst fit is found in the Faroe Islands, by a significant margin; predictions here are characterised by a number of failed extinctions, general overestimation of epidemic sizes and durations, except for the single, large observed epidemic, which is significantly underestimated. It has been suggested that these very large epidemics may have fundamentally different dynamics \cite{Rhodes1996}, which would cause difficulties in parameter inference.
 
 A number of predicted epidemics have a right shoulder, where the model predicts that epidemics take longer to go extinct than those observed. Depending on locality, many of these shoulders are small (Akureyri, Hafnarfj\"{o}r\dh{}ur, and Vestmannaeyjar). For other localities, predicted epidemics may fail to go extinct entirely, demonstrating cyclical behaviour until the beginning of the next epidemic (Bornholm, the Faroe Islands, and Reykjav\'{i}k). This may indicate that populations are strongly heterogeneous, and that the inhomogeneity parameter, fixed at $\alpha=0.97$ for these simulations, is an overestimate.
 
-Inferred reporting rates and seasonal transmission rates are shown in Figure~\ref{figSims}. The inferred seasonalities have wide distributions, demonstrated by their large confidence intervals. This can be explained by the highly stochastic nature of measles recolonisations into their respective localities, which is the primary driver for when epidemics occur. This is in contrast to the seasonality inferred in studies of large populations, such as that of England and Wales in \cite{Finkenstadt2000}, where significant seasonal trends were found, and matched well with school-based contact times. When the transmission rates were fixed to a constant, such that $r_t = r \, \forall t$, neither the inferred parameters nor the predicted dynamics changed significantly. 
+Inferred reporting rates and seasonal transmission rates are shown in Figure~\ref{figSims}. The inferred seasonalities have wide distributions, demonstrated by their large confidence intervals. This can be explained by the highly stochastic nature of measles recolonisations into their respective localities, which is the primary driver for when epidemics occur. This is in contrast to the seasonality inferred in studies of large populations, such as that of England and Wales in \cite{Finkenstadt2000}, where significant seasonal trends were found, and matched well with school-based contact times. When the transmission rates were fixed to a constant, such that $r_t = r \; \forall \; t$, neither the inferred parameters nor the predicted dynamics changed significantly. 
 
 
 
@@ -323,7 +328,7 @@ Many improvements could be made to the dataset used in this paper to improve pre
 
 With the current data, possible improvements include the use of statistical models such as trajectory matching or hidden Markov models to infer a biweekly incidence rate rather than using a linear interpolant, or the addition of an Exposed state variable to allow for exposed but not infectious individuals in a ``TSEIR'' model. 
 
-Nonetheless, we have demonstrated that a strong signal of SIR-like epidemic dynamics can be found even in systems dominated by noisy importations. These well-known time-series \cite{Cliff1981, Cliff2000} are a paradigm for epidemics in small populations. Our analysis reveals that, even from a highly stochastic incidence time-series and limited demographic data, reasonable predictions for the final size of an epidemic can be made, conditioned on the state of the system at epidemic onset. These results may have implications for the control of future epidemics, potentially informing response strategies based on the predicted size of an epidemic that was just initiated from a recolonisation event.
+Nonetheless, we have demonstrated that a strong signal of SIR-like epidemic dynamics can be found even in systems dominated by noisy importations. These well-known time-series \cite{Cliff1981, Cliff2000} are a paradigm for epidemics in small populations. Their sporadic nature is caused by long periods of time between stochastic importations followed by extinctions. As such, their dynamics are reminiscent of pandemics, where a significant proportion of the population is susceptible to infection at the onset of the epidemic. This interesting analogy extends to the lack of an observed seasonal signature. Our analysis reveals that, even from a highly stochastic incidence time-series and limited demographic data, reasonable predictions for the final size of an epidemic can be made, conditioned on the state of the system at epidemic onset. These results may have implications for the control of future epidemics, potentially informing response strategies based on the predicted size of an epidemic that was just initiated from a recolonisation event.
 
 Significant spatial restrictions to population mixing, such as the fragmented island geography of the Faroe archipelago, may impact the level of predictability that can be found in these results. On the whole, however, we find that a homogeneous mass-action assumption is fairly successful overall -- with $\alpha \approx 1$, the model fits the data well for most localities. Indeed, Earn \textit{et al.} \cite{Earn2000} report that heterogeneous transmission is not required to obtain realistic dynamics in measles models. This is in contrast to the scaling analyses of Rhodes and Anderson \cite{Rhodes1996a, Rhodes1996b}, whose work suggests that heterogeneous dynamics are necessary to explain the distributions of final epidemic sizes and durations. Given the crudeness of the data, however, these results are tentative, and comparisons of our and their approaches are a fruitful area for future work.
 
@@ -355,7 +360,6 @@ Significant spatial restrictions to population mixing, such as the fragmented is
 
 QC, CJEM, and BTG were supported by funding from the US Department of Homeland Security contract HSHQDC-12-C-00058. ASM acknowledges funding from the Eunice Kennedy Shriver National Institute of Child Health and Human Development (grant 5R24HD047879) and from the National Institutes of Health (training grant 5T32HD007163). BTG acknowledges support from the Bill \& Melinda Gates Foundation. CJEM and BTG were funded by the RAPIDD program of the Science and Technology Directorate, Department of Homeland Security, and the Fogarty International Center, National Institutes of Health. 
 
-\textcolor{red}{Coauthors -- what do you need here ?}
 
 
 
@@ -398,19 +402,19 @@ QC, CJEM, and BTG were supported by funding from the US Department of Homeland S
 \vspace{0.4cm}
 \begin{table}[!h]
 \centering
-\begin{tabular}{ l  c }
+\begin{tabular}{ l c c c }
 \hline \\[-0.9em]
-\textbf{Locality} & {$\mathbf{\tau}$} \\[0.1em]
-  \hline \\[-0.9em]                   
-  Akureyri & 19 \\[0.1em]
-  Bornholm & 15 \\[0.1em]
-  Faroe Islands & 15 \\[0.1em]
-  Hafnarfj\"{o}r\dh{}ur & 8 \\[0.1em]
-  Reykjav\'{i}k & 18 \\[0.1em]
-  Vestmannaeyjar \hspace{0.2cm} & 7 \\[0.1em]
+\textbf{Locality} & Population & Birth rate & {$\mathbf{\tau}$} \\[0.1em]
+  \hline \\[-0.9em]        
+  Bornholm & 47100 & 19.4 & 15 \\[0.1em]
+  Faroe Islands & 28200 & 29.4 & 15 \\[0.1em]
+  Reykjav\'{i}k & 47100 & 24.1 & 18 \\[0.1em]
+  Hafnarfj\"{o}r\dh{}ur & 6000 & 22.4 &  8 \\[0.1em]           
+  Akureyri & 7000 & 22.7 & 19 \\[0.1em]
+  Vestmannaeyjar \hspace{0.2cm} & 3600 & 23.5 & 7 \\[0.1em]
   \hline  
 \end{tabular}
-\caption{Sensitivity thresholds $\tau$ for each locality, fit by maximising the correlation between the mean simulated epidemic time-series and the reported incidence data.}
+\caption{Mean population sizes, birth rates, and sensitivity thresholds $\tau$ for each locality. Population sizes and annual birth rates per thousand are given as the mean over the study period. Thresholds were fit by maximising the correlation between the mean simulated epidemic time-series and the reported incidence data.}
 \label{tableTau}
 \end{table}
 
@@ -423,7 +427,7 @@ QC, CJEM, and BTG were supported by funding from the US Department of Homeland S
 \begin{figure}[!h]
 \centering
 \includegraphics[width=\textwidth]{figures/q1.pdf}
-\caption{\textbf{Reported and predicted incidence for Bornholm, the Faroe Islands, and four localities in Iceland.} The observed data is in blue. For the predicted time-series, the mean value of incidence simulations is plotted as a dark red line, with 95\% confidence intervals given in light red. Akureyri~: $R^2=0.80$; Bornholm~: $R^2=0.78$; Faroe Islands~: $R^2=0.55$; Hafnarfj\"{o}r\dh{}ur~: $R^2=0.86$; Reykjav\'{i}k~: $R^2=0.73$; Vestmannaeyjar~: $R^2=0.77$.}
+\caption{\textbf{Reported and predicted biweekly incidence for Bornholm, the Faroe Islands, and four localities in Iceland.} The observed data is in blue. For the predicted time-series, the mean value of incidence simulations is plotted as a dark red line, with 95\% confidence intervals given in light red. Bornholm~: $R^2=0.78$; Faroe Islands~: $R^2=0.55$; Reykjav\'{i}k~: $R^2=0.73$; Hafnarfj\"{o}r\dh{}ur~: $R^2=0.86$; Akureyri~: $R^2=0.80$; Vestmannaeyjar~: $R^2=0.77$.}
 \label{figIncidence}
 \end{figure}
 
@@ -440,7 +444,7 @@ QC, CJEM, and BTG were supported by funding from the US Department of Homeland S
 \begin{figure}[!h]
 \centering
 \includegraphics[width=\textwidth]{figures/q3.pdf}
-\caption{\textbf{Predictability of epidemic sizes.} The predicted size of each epidemic as a function of its observed size. Red lines are the regression lines with the follow coefficients of determination and slopes~-- Akureyri~: $R^2 = 0.49$, gradient~$=0.72$; Bornholm~: $R^2=0.76$, gradient~$=1.07$; Faroe Islands~: $R^2=0.77$, gradient~$=0.60$; Hafnarfj\"{o}r\dh{}ur~: $R^2=0.88$, gradient~$=1.18$; Reykjav\'{i}k~: $R^2=0.64$, gradient~$=0.96$; Vestmannaeyjar~: $R^2=0.76$, gradient~$=1.23$. The green line is the zero-intercept, gradient-one line representing a one-to-one match between observation and prediction.}
+\caption{\textbf{Predictability of epidemic sizes.} The mean predicted size of each epidemic as a function of its observed size, from ten thousand simulations. Red lines are the regression lines with the follow coefficients of determination and slopes~-- Bornholm~: $R^2=0.76$, gradient~$=1.07$; Faroe Islands~: $R^2=0.77$, gradient~$=0.60$; Reykjav\'{i}k~: $R^2=0.64$, gradient~$=0.96$; Hafnarfj\"{o}r\dh{}ur~: $R^2=0.88$, gradient~$=1.18$; Akureyri~: $R^2 = 0.49$, gradient~$=0.72$; Vestmannaeyjar~: $R^2=0.76$, gradient~$=1.23$. The green line is the zero-intercept, gradient-one line representing a one-to-one match between observation and prediction.}
 \label{fig_sizes}
 \end{figure}
 

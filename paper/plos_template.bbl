@@ -176,6 +176,12 @@ Denmark. {Danmarks Statistik~: Befolkningsudvikling og sundhedsforhold}
   \\\texttt{www.dst.dk/pukora/epub/upload/19335/befsund.pdf}.
 \bibAnnoteFile{StatsDenmarkBirths2}
 
+\bibitem{Rhodes1996}
+Rhodes CJ, Anderson RM (1996) {A scaling analysis of measles epidemics in a
+  small population}.
+\newblock Philosophical Transactions: Biological Sciences 351: 1679--1688.
+\bibAnnoteFile{Rhodes1996}
+
 \bibitem{Earn2000}
 Earn JD, Rohani P, Bolker BM, Grenfell BT (2000) {Measles in England and Wales.
   I: An analysis of factors underlying seasonal patterns}.
