@@ -4,7 +4,9 @@ SmallPopTSIR
 Predictability of measles epidemics in small populations, using TSIR model fitting and simulation. This 
 repository goes with the paper :
 
-*Predictability in a highly stochastic system : measles in small populations*, Caudron Q, Mahmud A S, Metcalf C 
+*Predictability in a highly stochastic system : measles in small populations*, 
+
+Caudron Q, Mahmud A S, Metcalf C 
 J E, Gottfredsson M, Viboud C, Cliff A D, Grenfell B T **2014**. Citation soon !
 
 
