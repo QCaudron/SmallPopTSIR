@@ -176,6 +176,11 @@ Denmark. {Danmarks Statistik~: Befolkningsudvikling og sundhedsforhold}
   \\\texttt{www.dst.dk/pukora/epub/upload/19335/befsund.pdf}.
 \bibAnnoteFile{StatsDenmarkBirths2}
 
+\bibitem{github}
+{Complete dataset and code, Github repository}
+  \\\texttt{http://github.com/QCaudron/SmallPopTSIR}.
+\bibAnnoteFile{github}
+
 \bibitem{Rhodes1996}
 Rhodes CJ, Anderson RM (1996) {A scaling analysis of measles epidemics in a
   small population}.
