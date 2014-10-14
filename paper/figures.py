@@ -574,7 +574,7 @@ for i in range(len(name)) :
 	axs[i][1].tick_params(labelsize=16)
 	axs[i][1].locator_params(nbins=4, axis="y")
 
-plt.figtext(.015, 0.5, r"Reporting rate $1/\rho_t$", ha="center", va="center", rotation="vertical", fontsize=16)
+plt.figtext(.015, 0.5, r"Reciprocal observation factor $1/\rho_t$", ha="center", va="center", rotation="vertical", fontsize=16)
 plt.figtext(.99, 0.5, r"Seasonality, $r_t\,\bar{S}$", ha="center", va="center", rotation="vertical", fontsize=16)
 plt.figtext(.285, 0.011, "Time", ha="center", va="center", fontsize=16)
 plt.figtext(.751, 0.011, "Period", ha="center", va="center", fontsize=16)
