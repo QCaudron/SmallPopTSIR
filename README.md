@@ -5,7 +5,8 @@ Predictability of measles epidemics in small populations, using TSIR model fitti
 repository goes with the paper :
 
 
-Caudron Q, Mahmud A S, Metcalf C J E, Gottfredsson M, Viboud C, Cliff A D, Grenfell B T, *Predictability in a highly stochastic system : final size of measles epidemics in small populations*. Journal of the Royal Society Interface **12** (102), 2015.
+Caudron Q, Mahmud A S, Metcalf C J E, Gottfredsson M, Viboud C, Cliff A D, Grenfell B T, 
+*Predictability in a highly stochastic system : final size of measles epidemics in small populations*. Journal of the Royal Society Interface **12** (102), 2014.
 
 
 
