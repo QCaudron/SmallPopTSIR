@@ -1,86 +1,53 @@
-% Template for PLoS
-% Version 1.0 January 2009
-%
-% To compile to pdf, run:
-% latex plos.template
-% bibtex plos.template
-% latex plos.template
-% latex plos.template
-% dvipdf plos.template
-
 \documentclass[10pt]{article}
 
-% amsmath package, useful for mathematical formulas
 \usepackage{amsmath}
-% amssymb package, useful for mathematical symbols
 \usepackage{amssymb}
-
-% graphicx package, useful for including eps and pdf graphics
-% include graphics with the command \includegraphics
 \usepackage{graphicx}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage[icelandic,english]{babel}
 \usepackage{float}
-
-% cite package, to clean up citations in the main text. Do not remove.
 \usepackage{cite}
-
 \usepackage{color} 
 \usepackage{comment}
-
-% Use doublespacing - comment out for single spacing
-%\usepackage{setspace} 
-%\doublespacing
+\usepackage[labelfont=bf,labelsep=period,justification=raggedright]{caption}
 
 
-% Text layout
 \topmargin 0.0cm
 \oddsidemargin 0.5cm
 \evensidemargin 0.5cm
 \textwidth 16cm 
 \textheight 21cm
 
-% Bold the 'Figure #' in the caption and separate it with a period
-% Captions will be left justified
-\usepackage[labelfont=bf,labelsep=period,justification=raggedright]{caption}
 
-% Use the PLoS provided bibtex style
 \bibliographystyle{plos2009}
 
-% Remove brackets from numbering in List of References
 \makeatletter
 \renewcommand{\@biblabel}[1]{\quad#1.}
 \makeatother
 
-
-% Leave date blank
 \date{}
 
 \pagestyle{myheadings}
-%% ** EDIT HERE **
 
 
-%% ** EDIT HERE **
-%% PLEASE INCLUDE ALL MACROS BELOW
 
-%% END MACROS SECTION
+
+
 
 \begin{document}
 
-% Title must be 150 characters or less
 \begin{flushleft}
 {\Large
 \textbf{Predictability in a highly stochastic system~: final size of measles epidemics in small populations}
 }
-% Insert Author names, affiliations and corresponding author email.
 \\
-Q. Caudron$^{1,\ast}$, 
-A. S. Mahmud$^{2}$, 
-C. J. E. Metcalf$^{1,3}$,
-M. Gottfre{\dh}sson$^{3,4,5}$,
-C. Viboud$^{3}$,
-A. D. Cliff$^{6}$,
+Q. Caudron,$^{1,\ast}$ 
+A. S. Mahmud,$^{2}$
+C. J. E. Metcalf,$^{1,3}$
+M. Gottfre{\dh}sson,$^{3,4,5}$
+C. Viboud,$^{3}$
+A. D. Cliff,$^{6}$
 B. T. Grenfell$^{1,3}$
 \\
 \bf{1} Department of Ecology and Evolutionary Biology, Princeton University, Princeton, NJ, USA
@@ -110,7 +77,7 @@ $\ast$ E-mail: qcaudron@princeton.edu
 
 
 
-% Please keep the abstract between 250 and 300 words
+
 \section*{Abstract}
 
 A standard assumption in the modelling of epidemic dynamics is that the population of interest is well-mixed, and that no clusters of metapopulations exist. The well-known and oft-used SIR model, arguably the most important compartmental model in theoretical epidemiology, assumes that the disease being modelled is strongly immunising, directly transmitted, and has a well-defined period of infection, in addition to these population mixing assumptions. Childhood infections, such as measles, are prime examples of diseases that fit the SIR-like mechanism. These infections have been well studied for many systems with large, well-mixed populations with endemic infection. Here, we consider a setting where populations are small and isolated. The dynamics of infection are driven by stochastic extinction-recolonisation events, producing large, sudden, and short-lived epidemics before rapidly dying out from a lack of susceptible hosts. Using a TSIR model, we fit prevaccination measles incidence and demographic data in Bornholm, the Faroe Islands, and four districts of Iceland, between 1901 and 1965. The datasets for each of these countries suffer from different levels of data heterogeneity and sparsity. We explore the potential for prediction of this model~: given historical incidence data and up-to-date demographic information, and knowing that a new epidemic has just begun, can we predict how large it will be~? We show that, despite a lack of significant seasonality in the incidence of measles cases, and potentially severe heterogeneity at the population level, we are able to estimate the size of upcoming epidemics, conditioned on the first time step, to within reasonable confidence. Our results have potential implications for possible control measures for the early stages of new epidemics in small populations.
@@ -177,7 +144,6 @@ Table \ref{tableTau} presents the mean populations and birth rates over the stud
 
 \subsubsection*{The TSIR model}
 
-%For systems with small, heterogeneous populations, epidemic dynamics are driven by stochasticity in the timing of disease recolonisations and in population mixing. As such, dynamical models such as the well established SIR model are unable to adequately represent the underlying biological processes which dictate the evolution of disease incidence over time.
 The time-series SIR model \cite{Finkenstadt2000} is a discrete-time, stochastic model of disease progression written in terms of a set of difference equations. Assuming that the infection is fully immunising and that the infectious period is well-defined, then the evolution of the number of infected cases, $I_t$, can be written,
 \begin{equation}
 \mathbb{E}\left[I_{t+1}\right] = r_t \, S_t \, I_t^\alpha,
@@ -236,7 +202,6 @@ In summary, the TSIR model is fit entirely from a time-series of births, $B_t$ a
 \subsubsection*{Predictions}
 
 Using the TSIR model as defined by the system of equations (\ref{TSIR_I}) and (\ref{TSIR_S}), predictions for epidemic dynamics were made by sampling the incidence $I_{t+1}$ from a negative binomial distribution~:
-%I_{t+1} \sim \mathrm{Bin}\left(S_t, \, 1-\mathrm{e}^{-\,r_t\, I_t^\alpha}\right),
 \begin{equation}
 I_{t+1} \sim \mathrm{NB}\left(r_{t+1}\,S_t\,I_t^\alpha, \, I_t\right),
 \end{equation}
@@ -265,14 +230,12 @@ A choice of $\tau = 1$ ensures that all available non-zero data is used. However
 
 
 
-% Results and Discussion can be combined.
+
 \section*{Results}
 
 \subsubsection*{Dynamics}
 
 After fitting parameters as described above, predicted epidemic time-series were generated for each of the six localities, using the sensitivity thresholds reported in Table \ref{tableTau}. The simulated time-series, computed from the difference equations (\ref{TSIR_S}), (\ref{sums}), and (\ref{log}), are effectively $n$-step-ahead predictions, with $n$ representing the duration of an epidemic.
-
-%The statistical fits, computed from the difference equations (\ref{TSIR_S}), (\ref{sums}), and (\ref{log}), illustrate a step-ahead prediction. The simulated time-series are generated from much sparser information, effectively using an 
 
 Figure \ref{figIncidence} shows the time-series of the number of reported and predicted cases in all six localities. Predictions are plotted as the mean incidences across ten thousand simulations, with their respective 95\% confidence intervals. High temporal synchronicity can be seen in the Icelandic localities. In general, epidemics in Iceland are of shorter duration, whilst those in Bornholm and the Faroe Islands are not quite as spiky. In all localities, epidemics seem to occur more frequently in the latter half of the time-series, perhaps due to an increase in birth rates after the baby boom. 
 
@@ -363,7 +326,7 @@ Significant spatial restrictions to population mixing, such as the fragmented is
 
 
 
-% Do NOT remove this, even if you are not including acknowledgments
+
 \section*{Acknowledgements}
 
 QC, CJEM, and BTG were supported by funding from the US Department of Homeland Security contract HSHQDC-12-C-00058. ASM acknowledges funding from the Eunice Kennedy Shriver National Institute of Child Health and Human Development (grant 5R24HD047879) and from the National Institutes of Health (training grant 5T32HD007163). BTG acknowledges support from the Bill \& Melinda Gates Foundation. CJEM and BTG were funded by the RAPIDD program of the Science and Technology Directorate, Department of Homeland Security, and the Fogarty International Center, National Institutes of Health. 
@@ -375,35 +338,13 @@ QC, CJEM, and BTG were supported by funding from the US Department of Homeland S
 
 
 
-%\section*{References}
-% The bibtex filename
 \bibliography{qbib}
 
-%\section*{Figure Legends}
-%\begin{figure}[!ht]
-%\begin{center}
-%%\includegraphics[width=4in]{figure_name.2.eps}
-%\end{center}
-%\caption{
-%{\bf Bold the first sentence.}  Rest of figure 2  caption.  Caption 
-%should be left justified, as specified by the options to the caption 
-%package.
-%}
-%\label{Figure_label}
-%\end{figure}
+
+
 
 
 \section*{Tables and Figures}
-%\begin{table}[!ht]
-%\caption{
-%\bf{Table title}}
-%\begin{tabular}{|c|c|c|}
-%table information
-%\end{tabular}
-%\begin{flushleft}Table caption
-%\end{flushleft}
-%\label{tab:label}
-% \end{table}
 
 
 
@@ -430,11 +371,14 @@ QC, CJEM, and BTG were supported by funding from the US Department of Homeland S
 
 
 
-%\section*{Figures}
+
+
+
+
 
 \begin{figure}[!h]
 \centering
-\includegraphics[width=\textwidth]{figures/q1.pdf}
+%\includegraphics[width=\textwidth]{figures/q1.pdf}
 \caption{\textbf{Reported and predicted biweekly incidence for Bornholm, the Faroe Islands, and four localities in Iceland.} The observed data is in blue. For the predicted time-series, the mean value of incidence simulations is plotted as a dark red line, with 95\% confidence intervals given in light red. Bornholm~: $R^2=0.78$; Faroe Islands~: $R^2=0.55$; Reykjav\'{i}k~: $R^2=0.73$; Hafnarfj\"{o}r\dh{}ur~: $R^2=0.86$; Akureyri~: $R^2=0.80$; Vestmannaeyjar~: $R^2=0.77$.}
 \label{figIncidence}
 \end{figure}
@@ -443,7 +387,7 @@ QC, CJEM, and BTG were supported by funding from the US Department of Homeland S
 
 \begin{figure}[!h]
 \centering
-\includegraphics[width=\textwidth]{figures/q2.pdf}
+%\includegraphics[width=\textwidth]{figures/q2.pdf}
 \caption{\textbf{Observation factors and seasonalities.} Seasonality is plotted as a function of the biweek, with 95\% confidence intervals in light blue.}
 \label{figSims}
 \end{figure}
@@ -451,7 +395,7 @@ QC, CJEM, and BTG were supported by funding from the US Department of Homeland S
 
 \begin{figure}[!h]
 \centering
-\includegraphics[width=\textwidth]{figures/q3.pdf}
+%\includegraphics[width=\textwidth]{figures/q3.pdf}
 \caption{\textbf{Predictability of epidemic sizes.} The mean predicted size of each epidemic as a function of its observed size, from ten thousand simulations. Red lines are the regression lines with the follow coefficients of determination and slopes~-- Bornholm~: $R^2=0.76$, gradient~$=1.07$; Faroe Islands~: $R^2=0.77$, gradient~$=0.60$; Reykjav\'{i}k~: $R^2=0.64$, gradient~$=0.96$; Hafnarfj\"{o}r\dh{}ur~: $R^2=0.88$, gradient~$=1.18$; Akureyri~: $R^2 = 0.49$, gradient~$=0.72$; Vestmannaeyjar~: $R^2=0.76$, gradient~$=1.23$. The green line is the zero-intercept, gradient-one line representing a one-to-one match between observation and prediction.}
 \label{fig_sizes}
 \end{figure}

@@ -1,0 +1,6 @@
+*.R
+paper/
+.ipynb_checkpoints
+raw_data/uk
+data/icelandall
+data/uk*

@@ -152,6 +152,7 @@ ciu = [ciu[i] for i in fi]
 cid = [cid[i] for i in fi]
 alpha = [alpha[i] for i in fi]
 b = [b[i] for i in fi]
+B = [B[i] for i in fi]
 
 
 
@@ -582,6 +583,60 @@ plt.tight_layout(rect=(0.03, 0.025, .97, 1))
 plt.savefig("figures/q2.pdf")
 plt.close()
 print "Figure 2 made."
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+"""
+# RESIDUALS
+fig, axs = plt.subplots(3,2, figsize=(xdim*210/scalefactor, ydim*180/scalefactor))
+#fig.suptitle("Predicted Epidemic Sizes", fontsize=20, y=.999)
+for i in range(len(name)) :
+	xx = ts[i] - np.array(pred[i])
+	nozeros = xx
+	X_plot = np.linspace(np.min(nozeros), np.max(nozeros), 1000)
+	kde = KernelDensity(kernel = "gaussian", bandwidth=5).fit(nozeros[:, np.newaxis])
+	plt.plot(X_plot, np.exp(kde.score_samples(X_plot[:, np.newaxis])), lw=2)
+plt.legend(name, loc="upper left")
+
+
+	axs[i%3][int(i>2)].plot(sizex[i], np.array(sizey[i]), lw=2, c=colours[2])
+	axs[i%3][int(i>2)].plot([0, np.max(sizex[i])], [0, np.max(sizex[i])], lw=2, c=colours[1], alpha=0.7)
+	axs[i%3][int(i>2)].errorbar(sizeerrx[i], np.array(sizeerry[i]), yerr = np.array(sizeerre[i]), fmt="o", ms=8, c=colours[0])
+	#plt.axhline(1, color=colours[2], lw=2)
+	axs[i%3][int(i>2)].tick_params(labelsize=16)
+	axs[i%3][int(i>2)].set_ylim([0, 1.15*np.max([np.max(sizeerry[i]), np.max(sizey[i])])])
+	axs[i%3][int(i>2)].locator_params(nbins=5, axis="y")
+	axs[i%3][int(i>2)].set_xlim([0, np.max(sizex[i])*1.02])
+	axs[i%3][int(i>2)].text(0.04, 0.85, "%s." % name[i].decode("utf-8"), fontsize=16, horizontalalignment="left", transform=axs[i%3][int(i>2)].transAxes)
+	#axs[i%3][int(i>2)].text(0.04, 0.85, "%s. $R^2$ = %.2f, gradient = %.02f" % (name[i].decode("utf-8"), r2[i], grad[i]), fontsize=16, horizontalalignment="left", transform=axs[i%3][int(i>2)].transAxes)
+
+	#if i == 0 :
+	#	axs[i%3][int(i>2)].legend(["Regression", "Identity"], loc=2, prop={"size" : 14})
+
+plt.figtext(.015, 0.5, r"Predicted Epidemic Size, $I_t / \rho_t$", ha="center", va="center", rotation="vertical", fontsize=16)
+plt.figtext(.5, 0.01, r"Observed Epidemic Size, $C_t$", ha="center", va="center", fontsize=16)
+plt.tight_layout(rect=(0.03, 0.02, .99, 1))
+plt.savefig("figures/q3.pdf")
+plt.close()
+print "Figure 3 made."
+"""
+
+
+
 
 
 

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012) (format=pdflatex 2013.10.7)  13 OCT 2014 20:44
+This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012) (format=pdflatex 2013.10.7)  5 NOV 2014 12:21
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -424,18 +424,18 @@ Package caption Info: float package is loaded.
 (./plos_template.aux)
 \openout1 = `plos_template.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 69.
-LaTeX Font Info:    ... okay on input line 69.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 69.
-LaTeX Font Info:    ... okay on input line 69.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 69.
-LaTeX Font Info:    ... okay on input line 69.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 69.
-LaTeX Font Info:    ... okay on input line 69.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 69.
-LaTeX Font Info:    ... okay on input line 69.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 69.
-LaTeX Font Info:    ... okay on input line 69.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 38.
+LaTeX Font Info:    ... okay on input line 38.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 38.
+LaTeX Font Info:    ... okay on input line 38.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 38.
+LaTeX Font Info:    ... okay on input line 38.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 38.
+LaTeX Font Info:    ... okay on input line 38.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 38.
+LaTeX Font Info:    ... okay on input line 38.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 38.
+LaTeX Font Info:    ... okay on input line 38.
 
 (/usr/local/texlive/2012/texmf-dist/tex/context/base/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
@@ -500,12 +500,12 @@ e
 ))
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: End \AtBeginDocument code.
-LaTeX Font Info:    Try loading font information for U+msa on input line 78.
+LaTeX Font Info:    Try loading font information for U+msa on input line 45.
 
 (/usr/local/texlive/2012/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2009/06/22 v3.00 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 78.
+LaTeX Font Info:    Try loading font information for U+msb on input line 45.
 
 (/usr/local/texlive/2012/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2009/06/22 v3.00 AMS symbols B
@@ -519,64 +519,43 @@ LaTeX Font Info:    Try loading font information for T1+cmtt on input line 142.
 (/usr/local/texlive/2012/texmf-dist/tex/latex/base/t1cmtt.fd
 File: t1cmtt.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 ) [8])
-<figures/q1.pdf, id=41, 834.71848pt x 650.43pt>
-File: figures/q1.pdf Graphic file (type pdf)
- <use figures/q1.pdf>
-Package pdftex.def Info: figures/q1.pdf used on input line 437.
-(pdftex.def)             Requested size: 455.24408pt x 354.74033pt.
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-<figures/q2.pdf, id=42, 834.71848pt x 650.43pt>
-File: figures/q2.pdf Graphic file (type pdf)
- <use figures/q2.pdf>
-Package pdftex.def Info: figures/q2.pdf used on input line 446.
-(pdftex.def)             Requested size: 455.24408pt x 354.74033pt.
-
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-<figures/q3.pdf, id=43, 834.71848pt x 650.43pt>
-File: figures/q3.pdf Graphic file (type pdf)
- <use figures/q3.pdf>
-Package pdftex.def Info: figures/q3.pdf used on input line 454.
-(pdftex.def)             Requested size: 455.24408pt x 354.74033pt.
-
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-[9] [10 <./figures/q1.pdf>] [11 <./figures/q2.pdf>] [12 <./figures/q3.pdf>]
-(./plos_template.aux) ) 
+[9] [10] (./plos_template.aux) ) 
 Here is how much of TeX's memory you used:
- 4509 strings out of 493488
- 62597 string characters out of 3141326
+ 4493 strings out of 493488
+ 62346 string characters out of 3141326
  125259 words of memory out of 3000000
- 7696 multiletter control sequences out of 15000+200000
+ 7684 multiletter control sequences out of 15000+200000
  11166 words of font info for 32 fonts, out of 3000000 for 9000
  957 hyphenation exceptions out of 8191
- 38i,11n,38p,1870b,306s stack positions out of 5000i,500n,10000p,200000b,50000s
-{/usr/local/texlive/2012/texmf-dist/fonts/enc/dvips/cm-s
-uper/cm-super-t1.enc}</usr/local/texlive/2012/texmf-dist/fonts/type1/public/ams
-fonts/cm/cmex10.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsf
-onts/cm/cmmi10.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfo
-nts/cm/cmmi12.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfon
-ts/cm/cmmi7.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts
-/cm/cmr10.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/c
-m/cmr12.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/
-cmr7.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cms
-y10.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy
-7.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/symbols/m
-sbm10.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/public/cm-super/sfbx1
-000.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/public/cm-super/sfbx144
-0.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/public/cm-super/sfrm1000.
-pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/public/cm-super/sfti1000.pf
-b></usr/local/texlive/2012/texmf-dist/fonts/type1/public/cm-super/sftt1000.pfb>
-</usr/local/texlive/2012/texmf-dist/fonts/type1/urw/ncntrsbk/uncr8a.pfb>
-Output written on plos_template.pdf (12 pages, 615525 bytes).
+ 38i,11n,38p,1870b,300s stack positions out of 5000i,500n,10000p,200000b,50000s
+{/usr/local/texlive/2012/texmf-dist/fonts/enc/d
+vips/cm-super/cm-super-t1.enc}</usr/local/texlive/2012/texmf-dist/fonts/type1/p
+ublic/amsfonts/cm/cmex10.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/pu
+blic/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/pub
+lic/amsfonts/cm/cmmi7.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/publi
+c/amsfonts/cm/cmr10.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/public/
+amsfonts/cm/cmr7.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/public/ams
+fonts/cm/cmsy10.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsf
+onts/cm/cmsy7.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfon
+ts/symbols/msbm10.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/public/cm
+-super/sfbx1000.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/public/cm-s
+uper/sfbx1440.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/public/cm-sup
+er/sfrm1000.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/public/cm-super
+/sfti1000.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/public/cm-super/s
+ftt1000.pfb>
+Output written on plos_template.pdf (10 pages, 224496 bytes).
 PDF statistics:
- 237 PDF objects out of 1000 (max. 8388607)
- 121 compressed objects within 2 object streams
+ 90 PDF objects out of 1000 (max. 8388607)
+ 64 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
- 16 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 1 words of extra memory for PDF output out of 10000 (max. 10000000)
 
